@@ -6,7 +6,7 @@ services:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
     volumes:
-      - ./backend:/var/www/backend   # tu código, sincronizado en vivo
+      - ./backend:/var/www/backend
     depends_on:
       postgres:
         condition: service_healthy
@@ -14,7 +14,7 @@ services:
   nginx:                       # puerta de entrada de la API
     image: nginx:stable-alpine
     ports:
-      - "8000:80"              # localhost:8000 en tu PC → puerto 80 del contenedor
+      - "8000:80"
     volumes:
       - ./backend:/var/www/backend
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
@@ -28,9 +28,9 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"            # para conectarte con DBeaver
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql   # los datos sobreviven aunque borres el contenedor
+      - pgdata:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
       interval: 5s
@@ -39,19 +39,19 @@ services:
   frontend:                    # Next.js
     image: node:24
     user: node
-    working_dir: /app
+    working_dir: /home/node/app
     command: npm run dev -- -H 0.0.0.0
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./frontend:/home/node/app
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8000
 
   mailpit:                     # atrapa los correos de desarrollo
     image: axllent/mailpit
     ports:
-      - "8025:8025"            # interfaz web para ver los correos
+      - "8025:8025"
 
 volumes:
   pgdata:
