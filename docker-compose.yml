@@ -1,0 +1,57 @@
+services:
+  app:                         # Laravel (PHP-FPM)
+    build:
+      context: ./docker/php
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    volumes:
+      - ./backend:/var/www/backend   # tu código, sincronizado en vivo
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  nginx:                       # puerta de entrada de la API
+    image: nginx:stable-alpine
+    ports:
+      - "8000:80"              # localhost:8000 en tu PC → puerto 80 del contenedor
+    volumes:
+      - ./backend:/var/www/backend
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+  postgres:                    # base de datos
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"            # para conectarte con DBeaver
+    volumes:
+      - pgdata:/var/lib/postgresql   # los datos sobreviven aunque borres el contenedor
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 5s
+      retries: 10
+
+  frontend:                    # Next.js
+    image: node:24
+    user: node
+    working_dir: /app
+    command: npm run dev -- -H 0.0.0.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+
+  mailpit:                     # atrapa los correos de desarrollo
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"            # interfaz web para ver los correos
+
+volumes:
+  pgdata:
