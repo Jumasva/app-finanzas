@@ -1,0 +1,63 @@
+# Pint, pruebas y auditoría de dependencias del backend (definición de terminado, GUÍA PARA DESARROLLO v1)
+name: Backend
+
+on:
+  push:
+    branches: [main]
+    paths: ['backend/**', '.github/workflows/backend.yml']
+  pull_request:
+    paths: ['backend/**', '.github/workflows/backend.yml']
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: finanzas_test
+          POSTGRES_USER: finanzas
+          POSTGRES_PASSWORD: finanzas
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U finanzas -d finanzas_test"
+          --health-interval 5s
+          --health-retries 10
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USERNAME: finanzas
+      DB_PASSWORD: finanzas
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, zip, intl, bcmath
+          coverage: none
+
+      - name: Instalar dependencias
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Preparar .env
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Estilo de código (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Pruebas (Pest)
+        run: php artisan test
+
+      - name: Auditoría de dependencias
+        run: composer audit
