@@ -27,19 +27,22 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'currency_code' => 'COP',
+            'status' => 'active',
+            'deactivated_at' => null,
             'remember_token' => Str::random(10),
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Cuenta desactivada, para probar que no puede iniciar sesión.
      */
-    public function unverified(): static
+    public function inactive(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'status' => 'inactive',
+            'deactivated_at' => now(),
         ]);
     }
 }
