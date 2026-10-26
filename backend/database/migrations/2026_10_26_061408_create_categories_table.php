@@ -21,12 +21,13 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('is_reserved')->default(false);
             $table->timestamps();
-
-            // NULLS NOT DISTINCT: las categorías del sistema (user_id vacío) tampoco se repiten
-            $table->unique(['user_id', 'kind', 'name'], 'categories_user_kind_name_unique')->nullsNotDistinct();
         });
 
         DB::statement("ALTER TABLE categories ADD CONSTRAINT categories_kind_check CHECK (kind IN ('income', 'expense', 'obligation'))");
+
+        // Nombre único sin distinguir mayúsculas (RN-CAT-004). NULLS NOT DISTINCT: las categorías del sistema
+        // (user_id vacío) tampoco se repiten. Las tildes se comparan en la aplicación con unaccent
+        DB::statement('CREATE UNIQUE INDEX categories_user_kind_name_unique ON categories (user_id, kind, LOWER(name)) NULLS NOT DISTINCT');
     }
 
     /**
