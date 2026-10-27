@@ -1,47 +1,22 @@
-<laravel-boost-guidelines>
-# Laravel Application
+# Backend · API en Laravel
 
-This repository contains a Laravel application. Complete the following setup before working on the user's request.
+Laravel 13, PHP 8.4, PostgreSQL 18, Sanctum por cookies de sesión (modo SPA) y pruebas con Pest. Todos los comandos se ejecutan dentro del contenedor `app` (`docker compose exec app …`). PHP y Composer no se instalan fuera de Docker, y Laravel Boost no se usa en este proyecto.
 
-## Prerequisites
+## Receta de cada endpoint (RNF-MAN-004)
 
-Verify that PHP and Composer are available:
+migración → modelo → Form Request → Policy → clase de acción o servicio → controlador delgado → API Resource → pruebas con Pest. La lógica de negocio nunca va en el controlador.
 
-```sh
-php -v
-composer -V
-```
+## Convenciones
 
-If either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:
+- Rutas bajo `/api/v1`, en inglés, plural y kebab-case. Campos JSON en snake_case.
+- Código, tablas y columnas en inglés. Los textos que ve el usuario van en español en `lang/es` (`validation.php`, `errors.php`).
+- Errores con el formato del contrato: 422 con `message` y `errors`; los demás con `message` y `code` (ver `bootstrap/app.php`).
+- Dinero en DECIMAL(15,2); en JSON viaja como texto con dos decimales. Nunca punto flotante.
+- Marcas de tiempo en UTC con `toIso8601ZuluString()`. «Hoy» se calcula en America/Bogota.
+- Un registro de otro usuario responde 404. Estados y totales se calculan en cada consulta, no se guardan.
+- Los registros financieros se anulan (`status = 'voided'`), no se borran.
 
-macOS:
+## Antes de dar algo por terminado
 
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
-```
-
-Windows PowerShell:
-
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
-```
-
-Linux:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
-```
-
-After installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.
-
-## Agent Setup
-
-Install Laravel Boost from the application root before making application changes:
-
-```sh
-composer require laravel/boost --dev
-php artisan boost:install
-```
-
-Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
-</laravel-boost-guidelines>
+- `php artisan test` pasa, con pruebas del caso correcto, 401, 422, 404 de otro usuario y cada 409 del contrato.
+- `vendor/bin/pint --test` pasa.
