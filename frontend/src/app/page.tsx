@@ -7,7 +7,7 @@ export default function Home() {
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/health`)
       .then((res) => res.json())
-      .then((data) => setStatus(data.estado))
+      .then((data) => setStatus(data.status))
       .catch(() => setStatus('error: la API no responde'));
   }, []);
 
