@@ -18,6 +18,14 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * Valores iniciales de una cuenta nueva: activa y en COP (RF-REUSU-008).
+     */
+    protected $attributes = [
+        'currency_code' => 'COP',
+        'status' => 'active',
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
