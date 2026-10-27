@@ -1,11 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HealthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LogoutController;
-
 
 // grupo v1 endpoints
 Route::prefix('v1')->group(function () {
@@ -18,7 +17,6 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/register', RegisterController::class)->middleware('throttle:register');
     Route::post('/auth/login', LoginController::class);
 
-
     Route::middleware('auth:sanctum')->group(function () {
         // # Rutas privadas
 
@@ -26,5 +24,3 @@ Route::prefix('v1')->group(function () {
         Route::post('/auth/logout', LogoutController::class);
     });
 });
-
-
