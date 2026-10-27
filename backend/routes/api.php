@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HealthController;
 use Illuminate\Support\Facades\Route;
@@ -22,5 +23,8 @@ Route::prefix('v1')->group(function () {
 
         // ruta privada de cierre de sesion (solo usuario con sesion iniciada)
         Route::post('/auth/logout', LogoutController::class);
+
+        // usuario de la sesión actual (el frontend lo consulta al recargar la página)
+        Route::get('/auth/me', MeController::class);
     });
 });
