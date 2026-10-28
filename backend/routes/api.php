@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\Profile\UpdateProfileController;
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\EnsureSessionIsNotExpired;
 use Illuminate\Support\Facades\Route;
@@ -27,5 +28,8 @@ Route::prefix('v1')->group(function () {
 
         // usuario de la sesión actual (el frontend lo consulta al recargar la página)
         Route::get('/auth/me', MeController::class);
+
+        // actualizar nombre o correo del usuario
+        Route::patch('/profile', UpdateProfileController::class);
     });
 });
