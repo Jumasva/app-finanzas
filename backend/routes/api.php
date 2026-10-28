@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HealthController;
+use App\Http\Middleware\EnsureAccountIsActive;
+use App\Http\Middleware\EnsureSessionIsNotExpired;
 use Illuminate\Support\Facades\Route;
 
 // grupo v1 endpoints
@@ -18,9 +20,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/register', RegisterController::class)->middleware('throttle:register');
     Route::post('/auth/login', LoginController::class);
 
-    Route::middleware('auth:sanctum')->group(function () {
-        // # Rutas privadas
-
+    // # Rutas privadas: sesión iniciada, de menos de 12 horas, cuenta activa y máximo 120 peticiones por minuto
+    Route::middleware(['auth:sanctum', EnsureSessionIsNotExpired::class, EnsureAccountIsActive::class, 'throttle:private'])->group(function () {
         // ruta privada de cierre de sesion (solo usuario con sesion iniciada)
         Route::post('/auth/logout', LogoutController::class);
 

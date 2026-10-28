@@ -36,6 +36,9 @@ return [
 
     'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
 
+    // Duración máxima de una sesión desde el inicio de sesión, aunque haya actividad (RNF-SEG-008)
+    'max_lifetime' => (int) env('SESSION_MAX_LIFETIME', 720),
+
     /*
     |--------------------------------------------------------------------------
     | Session Encryption
