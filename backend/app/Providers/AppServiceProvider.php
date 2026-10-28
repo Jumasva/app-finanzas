@@ -30,5 +30,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Registro: máximo 5 solicitudes por minuto por IP (RNF-SEG-006)
         RateLimiter::for('register', fn (Request $request) => Limit::perMinute(5)->by($request->ip()));
+
+        // Rutas privadas: máximo 120 peticiones por minuto por usuario (RNF-SEG-018)
+        RateLimiter::for('private', fn (Request $request) => Limit::perMinute(120)->by($request->user()?->id ?: $request->ip()));
     }
 }
