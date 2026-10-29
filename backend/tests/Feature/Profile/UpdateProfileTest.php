@@ -1,9 +1,13 @@
 <?php
 
 use App\Models\User;
+use App\Notifications\VerifyEmailNotification;
+use Illuminate\Support\Facades\Notification;
 
 // Las peticiones del frontend llegan con su origen; sin él, Sanctum no usa la sesión
 beforeEach(function () {
+    Notification::fake();
+
     $this->withHeader('Origin', 'http://localhost:3000');
 
     $this->user = User::factory()->create(['name' => 'Ana Pérez', 'email' => 'ana@correo.com']);
@@ -24,7 +28,20 @@ it('actualiza el correo y lo guarda en minúsculas', function () {
         ->patchJson('/api/v1/profile', ['email' => 'Ana.Perez@Correo.com'])
         ->assertOk()
         ->assertJsonPath('data.email', 'ana.perez@correo.com')
-        ->assertJsonPath('data.name', 'Ana Pérez');
+        ->assertJsonPath('data.name', 'Ana Pérez')
+        ->assertJsonPath('data.email_verified_at', null);
+
+    // El correo nuevo debe verificarse otra vez (RF-VECOR-064)
+    Notification::assertSentTo($this->user, VerifyEmailNotification::class);
+});
+
+it('no pide verificar otra vez cuando el correo no cambia', function () {
+    $this->actingAs($this->user)
+        ->patchJson('/api/v1/profile', ['name' => 'Ana', 'email' => 'ANA@correo.com'])
+        ->assertOk()
+        ->assertJsonPath('data.email_verified_at', $this->user->email_verified_at->toIso8601ZuluString());
+
+    Notification::assertNothingSent();
 });
 
 it('acepta que envíe su mismo correo', function () {

@@ -7,6 +7,12 @@ it('borra los tokens vencidos y las sesiones expiradas, y conserva los vigentes'
     $user = User::factory()->create();
     $old = now()->subMinutes(61);
 
+    // email_verification_tokens vence a las 24 horas: su token «vencido» es de hace 25
+    DB::table('email_verification_tokens')->insert([
+        ['email' => 'vencido@correo.com', 'token' => 'hash', 'created_at' => now()->subHours(25)],
+        ['email' => 'vigente@correo.com', 'token' => 'hash', 'created_at' => now()->subHours(23)],
+    ]);
+
     foreach (['password_reset_tokens', 'account_reactivation_tokens'] as $table) {
         DB::table($table)->insert([
             ['email' => 'vencido@correo.com', 'token' => 'hash', 'created_at' => $old],
@@ -21,7 +27,7 @@ it('borra los tokens vencidos y las sesiones expiradas, y conserva los vigentes'
 
     $this->artisan('auth:prune-expired')->assertSuccessful();
 
-    foreach (['password_reset_tokens', 'account_reactivation_tokens'] as $table) {
+    foreach (['password_reset_tokens', 'account_reactivation_tokens', 'email_verification_tokens'] as $table) {
         $this->assertDatabaseMissing($table, ['email' => 'vencido@correo.com']);
         $this->assertDatabaseHas($table, ['email' => 'vigente@correo.com']);
     }

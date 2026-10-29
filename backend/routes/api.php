@@ -9,12 +9,15 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\SendVerificationEmailController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ListCurrenciesController;
 use App\Http\Controllers\Profile\UpdatePasswordController;
 use App\Http\Controllers\Profile\UpdatePreferencesController;
 use App\Http\Controllers\Profile\UpdateProfileController;
 use App\Http\Middleware\EnsureAccountIsActive;
+use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnsureSessionIsNotExpired;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +40,9 @@ Route::prefix('v1')->group(function () {
     Route::post('/account/reactivation-request', RequestReactivationController::class)->middleware('throttle:account-email');
     Route::post('/account/reactivate', ReactivateAccountController::class);
 
+    // verificación del correo: el enlace del correo llega aquí, con o sin sesión
+    Route::post('/auth/verify-email', VerifyEmailController::class);
+
     // # Rutas privadas: sesión iniciada, de menos de 12 horas, cuenta activa y máximo 120 peticiones por minuto
     Route::middleware(['auth:sanctum', EnsureSessionIsNotExpired::class, EnsureAccountIsActive::class, 'throttle:private'])->group(function () {
         // ruta privada de cierre de sesion (solo usuario con sesion iniciada)
@@ -45,19 +51,25 @@ Route::prefix('v1')->group(function () {
         // usuario de la sesión actual (el frontend lo consulta al recargar la página)
         Route::get('/auth/me', MeController::class);
 
-        // actualizar nombre o correo del usuario
-        Route::patch('/profile', UpdateProfileController::class);
+        // reenviar el correo de verificación (1 por minuto)
+        Route::post('/auth/verification-email', SendVerificationEmailController::class)->middleware('throttle:verification-email');
 
-        // cambiar la contraseña (cierra las demás sesiones)
-        Route::patch('/profile/password', UpdatePasswordController::class);
+        // # Rutas que además exigen el correo verificado (403 email_not_verified)
+        Route::middleware(EnsureEmailIsVerified::class)->group(function () {
+            // actualizar nombre o correo del usuario
+            Route::patch('/profile', UpdateProfileController::class);
 
-        // cambiar la moneda principal (no convierte ningún monto)
-        Route::patch('/profile/preferences', UpdatePreferencesController::class);
+            // cambiar la contraseña (cierra las demás sesiones)
+            Route::patch('/profile/password', UpdatePasswordController::class);
 
-        // monedas disponibles
-        Route::get('/currencies', ListCurrenciesController::class);
+            // cambiar la moneda principal (no convierte ningún monto)
+            Route::patch('/profile/preferences', UpdatePreferencesController::class);
 
-        // desactivar la cuenta (cierra todas sus sesiones; la información se conserva)
-        Route::post('/account/deactivate', DeactivateAccountController::class);
+            // monedas disponibles
+            Route::get('/currencies', ListCurrenciesController::class);
+
+            // desactivar la cuenta (cierra todas sus sesiones; la información se conserva)
+            Route::post('/account/deactivate', DeactivateAccountController::class);
+        });
     });
 });

@@ -18,6 +18,7 @@ it('devuelve el usuario de la sesión con los campos del contrato', function () 
                 'id' => $user->id,
                 'name' => 'Ana Pérez',
                 'email' => 'ana@correo.com',
+                'email_verified_at' => $user->email_verified_at->toIso8601ZuluString(),
                 'currency_code' => 'COP',
                 'status' => 'active',
                 'created_at' => $user->created_at->toIso8601ZuluString(),

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Auth\EmailVerificationTokenRepository;
 use App\Auth\ReactivationTokenRepository;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -16,18 +18,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Mismo mecanismo que los tokens de recuperación, con su propia tabla y vigencia (RNF-SEG-013)
-        $this->app->singleton(ReactivationTokenRepository::class, function ($app) {
-            $key = config('app.key');
+        // Mismo mecanismo que los tokens de recuperación, cada uno con su tabla y vigencia (RNF-SEG-013 y 026)
+        $this->app->singleton(ReactivationTokenRepository::class, fn ($app) => new ReactivationTokenRepository(
+            ...$this->tokenRepositoryArguments($app, 'auth.reactivation'),
+        ));
 
-            return new ReactivationTokenRepository(
-                $app['db']->connection(),
-                $app['hash'],
-                config('auth.reactivation.table'),
-                str_starts_with($key, 'base64:') ? base64_decode(substr($key, 7)) : $key,
-                config('auth.reactivation.expire') * 60,
-            );
-        });
+        $this->app->singleton(EmailVerificationTokenRepository::class, fn ($app) => new EmailVerificationTokenRepository(
+            ...$this->tokenRepositoryArguments($app, 'auth.verification'),
+        ));
     }
 
     /**
@@ -49,7 +47,28 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(1)->by('email:'.mb_strtolower((string) $request->input('email'))),
         ]);
 
+        // Reenvío del correo de verificación: uno por minuto por cuenta (RNF-SEG-006)
+        RateLimiter::for('verification-email', fn (Request $request) => Limit::perMinute(1)->by($request->user()?->id ?: $request->ip()));
+
         // Rutas privadas: máximo 120 peticiones por minuto por usuario (RNF-SEG-018)
         RateLimiter::for('private', fn (Request $request) => Limit::perMinute(120)->by($request->user()?->id ?: $request->ip()));
+    }
+
+    /**
+     * Conexión, hasher, tabla, llave y vigencia en segundos de un repositorio de tokens (config/auth.php).
+     *
+     * @return array<int, mixed>
+     */
+    private function tokenRepositoryArguments(Application $app, string $config): array
+    {
+        $key = config('app.key');
+
+        return [
+            $app['db']->connection(),
+            $app['hash'],
+            config("$config.table"),
+            str_starts_with($key, 'base64:') ? base64_decode(substr($key, 7)) : $key,
+            config("$config.expire") * 60,
+        ];
     }
 }

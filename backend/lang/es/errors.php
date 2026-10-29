@@ -5,6 +5,7 @@ return [
     'validation' => 'Revisa los datos del formulario.',
     'unauthenticated' => 'Tu sesión no está activa. Inicia sesión para continuar.',
     'account_inactive' => 'Tu cuenta está inactiva. Reactívala para volver a entrar.',
+    'email_not_verified' => 'Verifica tu correo para continuar. Revisa el enlace que te enviamos.',
     'not_found' => 'No encontramos este registro.',
     'too_many_requests' => 'Hiciste demasiados intentos. Espera un momento y vuelve a intentarlo.',
     'server_error' => 'Ocurrió un error inesperado. Intenta de nuevo más tarde.',
