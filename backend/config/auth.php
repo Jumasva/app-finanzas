@@ -112,6 +112,12 @@ return [
     |
     */
 
+    // Tokens de reactivación de cuenta: 60 minutos y un solo uso (RNF-SEG-013)
+    'reactivation' => [
+        'table' => 'account_reactivation_tokens',
+        'expire' => 60,
+    ],
+
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
 ];

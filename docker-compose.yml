@@ -25,6 +25,20 @@ services:
       postgres:
         condition: service_healthy
 
+  scheduler:                   # tareas programadas: limpieza de tokens y sesiones (RNF-OPE-004)
+    build:
+      context: ./docker/php
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    command: php artisan schedule:work
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   nginx:                       # puerta de entrada de la API
     image: nginx:stable-alpine
     ports:
