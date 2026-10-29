@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -46,5 +47,13 @@ class User extends Authenticatable
         return Attribute::make(
             set: fn (string $value) => mb_strtolower(trim($value)),
         );
+    }
+
+    /**
+     * Envía el enlace de recuperación en español y apuntando al frontend (REACC-023).
+     */
+    public function sendPasswordResetNotification(#[\SensitiveParameter] $token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

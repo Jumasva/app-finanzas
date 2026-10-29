@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ListCurrenciesController;
 use App\Http\Controllers\Profile\UpdatePasswordController;
@@ -23,6 +25,10 @@ Route::prefix('v1')->group(function () {
     // rutas publicas de inicio de sesion y registro
     Route::post('/auth/register', RegisterController::class)->middleware('throttle:register');
     Route::post('/auth/login', LoginController::class);
+
+    // recuperación de contraseña: pedir el enlace por correo y poner la contraseña nueva
+    Route::post('/auth/forgot-password', ForgotPasswordController::class)->middleware('throttle:account-email');
+    Route::post('/auth/reset-password', ResetPasswordController::class);
 
     // # Rutas privadas: sesión iniciada, de menos de 12 horas, cuenta activa y máximo 120 peticiones por minuto
     Route::middleware(['auth:sanctum', EnsureSessionIsNotExpired::class, EnsureAccountIsActive::class, 'throttle:private'])->group(function () {
