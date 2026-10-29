@@ -18,6 +18,7 @@ class RegisterUser
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
+            'currency_code' => config('finance.default_currency'),
         ]);
     }
 }

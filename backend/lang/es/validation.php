@@ -5,6 +5,7 @@ return [
     'confirmed' => 'La confirmación de :attribute no coincide.',
     'current_password' => 'La contraseña actual no es correcta.',
     'email' => 'Escribe un :attribute válido.',
+    'in' => 'Elige una :attribute de la lista.',
     'max' => [
         'string' => ':Attribute no puede tener más de :max caracteres.',
     ],
@@ -23,6 +24,9 @@ return [
 
     // Mensajes para un campo y una regla concretos
     'custom' => [
+        'currency_code' => [
+            'required' => 'Elige tu moneda.',
+        ],
         'password' => [
             'different' => 'Tu contraseña nueva debe ser distinta de la actual.',
         ],
@@ -34,5 +38,6 @@ return [
         'email' => 'correo',
         'password' => 'contraseña',
         'current_password' => 'contraseña actual',
+        'currency_code' => 'moneda',
     ],
 ];
