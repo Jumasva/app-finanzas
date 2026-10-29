@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Auth\ReactivationTokenRepository;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -15,7 +16,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Mismo mecanismo que los tokens de recuperación, con su propia tabla y vigencia (RNF-SEG-013)
+        $this->app->singleton(ReactivationTokenRepository::class, function ($app) {
+            $key = config('app.key');
+
+            return new ReactivationTokenRepository(
+                $app['db']->connection(),
+                $app['hash'],
+                config('auth.reactivation.table'),
+                str_starts_with($key, 'base64:') ? base64_decode(substr($key, 7)) : $key,
+                config('auth.reactivation.expire') * 60,
+            );
+        });
     }
 
     /**

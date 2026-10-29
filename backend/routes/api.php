@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Account\DeactivateAccountController;
+use App\Http\Controllers\Account\ReactivateAccountController;
+use App\Http\Controllers\Account\RequestReactivationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -30,6 +33,10 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/forgot-password', ForgotPasswordController::class)->middleware('throttle:account-email');
     Route::post('/auth/reset-password', ResetPasswordController::class);
 
+    // reactivación de la cuenta: pedir el enlace por correo y reactivarla
+    Route::post('/account/reactivation-request', RequestReactivationController::class)->middleware('throttle:account-email');
+    Route::post('/account/reactivate', ReactivateAccountController::class);
+
     // # Rutas privadas: sesión iniciada, de menos de 12 horas, cuenta activa y máximo 120 peticiones por minuto
     Route::middleware(['auth:sanctum', EnsureSessionIsNotExpired::class, EnsureAccountIsActive::class, 'throttle:private'])->group(function () {
         // ruta privada de cierre de sesion (solo usuario con sesion iniciada)
@@ -49,5 +56,8 @@ Route::prefix('v1')->group(function () {
 
         // monedas disponibles
         Route::get('/currencies', ListCurrenciesController::class);
+
+        // desactivar la cuenta (cierra todas sus sesiones; la información se conserva)
+        Route::post('/account/deactivate', DeactivateAccountController::class);
     });
 });

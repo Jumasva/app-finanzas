@@ -22,7 +22,7 @@ class LoginUser
         }
 
         // Solo cuentas activas: una inactiva recibe el mismo mensaje genérico (RNF-SEG-015)
-        if (! Auth::attempt(['email' => $email, 'password' => $password, 'status' => 'active'])) {
+        if (! Auth::guard('web')->attempt(['email' => $email, 'password' => $password, 'status' => 'active'])) {
             RateLimiter::hit($key, 60);
 
             throw ValidationException::withMessages(['email' => __('auth.failed')]);
@@ -30,6 +30,6 @@ class LoginUser
 
         RateLimiter::clear($key);
 
-        return Auth::user();
+        return Auth::guard('web')->user();
     }
 }

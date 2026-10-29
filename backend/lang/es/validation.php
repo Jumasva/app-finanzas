@@ -28,6 +28,7 @@ return [
             'required' => 'Elige tu moneda.',
         ],
         'password' => [
+            'current_password' => 'La contraseña no es correcta.',
             'different' => 'Tu contraseña nueva debe ser distinta de la actual.',
         ],
     ],
