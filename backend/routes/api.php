@@ -5,7 +5,9 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\ListCurrenciesController;
 use App\Http\Controllers\Profile\UpdatePasswordController;
+use App\Http\Controllers\Profile\UpdatePreferencesController;
 use App\Http\Controllers\Profile\UpdateProfileController;
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\EnsureSessionIsNotExpired;
@@ -35,5 +37,11 @@ Route::prefix('v1')->group(function () {
 
         // cambiar la contraseña (cierra las demás sesiones)
         Route::patch('/profile/password', UpdatePasswordController::class);
+
+        // cambiar la moneda principal (no convierte ningún monto)
+        Route::patch('/profile/preferences', UpdatePreferencesController::class);
+
+        // monedas disponibles
+        Route::get('/currencies', ListCurrenciesController::class);
     });
 });
