@@ -118,6 +118,12 @@ return [
         'expire' => 60,
     ],
 
+    // Tokens de verificación del correo: 24 horas y un solo uso (RNF-SEG-026)
+    'verification' => [
+        'table' => 'email_verification_tokens',
+        'expire' => 1440,
+    ],
+
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
 ];

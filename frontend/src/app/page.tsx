@@ -1,15 +1,27 @@
-'use client';
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
+
+const pages = [
+  ['/registro', 'Crear cuenta'],
+  ['/ingresar', 'Iniciar sesión'],
+  ['/cuenta', 'Mi cuenta'],
+  ['/olvide-contrasena', 'Olvidé mi contraseña'],
+  ['/reactivar-cuenta', 'Reactivar cuenta'],
+];
 
 export default function Home() {
-  const [status, setStatus] = useState('cargando...');
+  return (
+    <main className="p-8">
+      <h1 className="mb-4 text-xl font-bold">App Finanzas · pantallas de prueba</h1>
 
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/health`)
-      .then((res) => res.json())
-      .then((data) => setStatus(data.status))
-      .catch(() => setStatus('error: la API no responde'));
-  }, []);
-
-  return <main className="p-8 text-lg">Estado de la API: {status}</main>;
-} 
+      <ul className="list-disc pl-6">
+        {pages.map(([href, label]) => (
+          <li key={href}>
+            <Link href={href} className="text-blue-700 underline">
+              {label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}

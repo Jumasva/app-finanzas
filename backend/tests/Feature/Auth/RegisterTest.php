@@ -3,11 +3,14 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 
 // Las peticiones del frontend llegan con su origen; sin él, Sanctum no inicia la sesión
 beforeEach(function () {
     $this->pwnedResponse = '';
     Http::fake(['api.pwnedpasswords.com/*' => fn () => Http::response($this->pwnedResponse)]);
+
+    Notification::fake();
 
     $this->withHeader('Origin', 'http://localhost:3000');
 });
@@ -29,6 +32,7 @@ it('crea la cuenta activa en COP e inicia la sesión', function () {
         ->assertJsonPath('data.email', 'ana@correo.com')
         ->assertJsonPath('data.currency_code', 'COP')
         ->assertJsonPath('data.status', 'active')
+        ->assertJsonPath('data.email_verified_at', null)
         ->assertJsonMissingPath('data.password');
 
     $user = User::sole();
