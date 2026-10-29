@@ -11,6 +11,20 @@ services:
       postgres:
         condition: service_healthy
 
+  queue:                       # envía los correos en segundo plano (RNF-REN-005)
+    build:
+      context: ./docker/php
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    command: php artisan queue:work --tries=3
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   nginx:                       # puerta de entrada de la API
     image: nginx:stable-alpine
     ports:
