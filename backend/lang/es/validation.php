@@ -3,6 +3,7 @@
 // Mensajes de validación (RNF-MAN-001). Se agregan según los usen los Form Requests.
 return [
     'confirmed' => 'La confirmación de :attribute no coincide.',
+    'current_password' => 'La contraseña actual no es correcta.',
     'email' => 'Escribe un :attribute válido.',
     'max' => [
         'string' => ':Attribute no puede tener más de :max caracteres.',
@@ -20,10 +21,18 @@ return [
         'uncompromised' => 'Esta contraseña apareció en una filtración de datos. Elige otra.',
     ],
 
+    // Mensajes para un campo y una regla concretos
+    'custom' => [
+        'password' => [
+            'different' => 'Tu contraseña nueva debe ser distinta de la actual.',
+        ],
+    ],
+
     // Nombres de los campos tal como los ve el usuario
     'attributes' => [
         'name' => 'nombre',
         'email' => 'correo',
         'password' => 'contraseña',
+        'current_password' => 'contraseña actual',
     ],
 ];
