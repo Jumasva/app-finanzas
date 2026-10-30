@@ -17,7 +17,7 @@ export default function ForgotPasswordPage() {
 
       <form action={requestLink} className="flex flex-col gap-2">
         <input name="email" placeholder="Correo" className="border p-2" />
-        <button className="border bg-gray-200 p-2">Enviar enlace</button>
+        <button className="border bg-gray-200 p-2 text-black">Enviar enlace</button>
       </form>
 
       <p className="mt-4 text-sm">El correo llega a Mailpit: http://localhost:8025</p>

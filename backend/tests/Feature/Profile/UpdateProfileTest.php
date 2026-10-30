@@ -72,6 +72,17 @@ it('responde 422 cuando un campo enviado no cumple el formato', function (array 
     'correo sin formato' => [['email' => 'ana-correo.com'], 'email', 'Escribe un correo válido.'],
 ]);
 
+it('deja corregir el correo aunque no esté verificado', function () {
+    $user = User::factory()->unverified()->create(['email' => 'luis@corre.com']);
+
+    $this->actingAs($user)
+        ->patchJson('/api/v1/profile', ['email' => 'luis@correo.com'])
+        ->assertOk()
+        ->assertJsonPath('data.email', 'luis@correo.com');
+
+    Notification::assertSentTo($user, VerifyEmailNotification::class);
+});
+
 it('responde 401 cuando no hay sesión', function () {
     $this->patchJson('/api/v1/profile', ['name' => 'Ana'])
         ->assertUnauthorized()

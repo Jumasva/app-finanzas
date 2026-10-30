@@ -25,7 +25,7 @@ function registrationData(array $overrides = []): array
     ], $overrides);
 }
 
-it('crea la cuenta activa en COP e inicia la sesión', function () {
+it('crea la cuenta activa en COP, sin verificar y sin iniciar sesión', function () {
     $this->postJson('/api/v1/auth/register', registrationData())
         ->assertCreated()
         ->assertJsonPath('data.name', 'Ana Pérez')
@@ -38,7 +38,7 @@ it('crea la cuenta activa en COP e inicia la sesión', function () {
     $user = User::sole();
 
     expect(Hash::check('mi clave segura 7', $user->password))->toBeTrue();
-    $this->assertAuthenticatedAs($user);
+    $this->assertGuest('web');
 });
 
 it('responde 422 cuando faltan los datos', function () {

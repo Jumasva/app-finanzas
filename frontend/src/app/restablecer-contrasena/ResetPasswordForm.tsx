@@ -20,7 +20,7 @@ export function ResetPasswordForm() {
         <input name="email" defaultValue={searchParams.get('email') ?? ''} readOnly className="border bg-gray-100 p-2" />
         <input name="password" type="password" placeholder="Contraseña nueva" className="border p-2" />
         <input name="password_confirmation" type="password" placeholder="Confirmar contraseña nueva" className="border p-2" />
-        <button className="border bg-gray-200 p-2">Guardar contraseña</button>
+        <button className="border bg-gray-200 p-2 text-black">Guardar contraseña</button>
       </form>
 
       <Result result={result} />

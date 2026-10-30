@@ -2,9 +2,8 @@
 
 // Verificación del correo (contrato de API v1, POST /auth/verify-email y /auth/verification-email)
 return [
-    'sent' => 'Te enviamos un enlace para verificar tu correo.',
-    'already_verified' => 'Tu correo ya está verificado.',
-    'verified' => 'Verificamos tu correo. Ya puedes usar la aplicación.',
+    'sent' => 'Si hay una cuenta pendiente de verificar con ese correo, te enviamos un enlace.',
+    'verified' => 'Verificamos tu correo. Ya puedes iniciar sesión.',
     'token' => 'El enlace no es válido o ya venció. Pide uno nuevo.',
 
     'mail' => [

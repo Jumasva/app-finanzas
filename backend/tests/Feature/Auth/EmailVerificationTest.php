@@ -46,22 +46,21 @@ it('envía el correo de verificación por la cola', function () {
     expect(new VerifyEmailNotification('token'))->toBeInstanceOf(ShouldQueue::class);
 });
 
-it('bloquea las rutas que exigen el correo verificado con 403 y mantiene la sesión', function () {
+it('bloquea con 403 las rutas que exigen el correo verificado cuando el correo cambió', function () {
+    // Una sesión abierta queda sin verificar si el usuario cambia su correo en el perfil
     $user = User::factory()->unverified()->create();
 
     $this->actingAs($user)
         ->getJson('/api/v1/currencies')
         ->assertForbidden()
         ->assertExactJson([
-            'message' => 'Verifica tu correo para continuar. Revisa el enlace que te enviamos.',
+            'message' => 'Verifica tu correo para iniciar sesión. Revisa el enlace que te enviamos.',
             'code' => 'email_not_verified',
         ]);
 
     $this->getJson('/api/v1/auth/me')
         ->assertOk()
         ->assertJsonPath('data.email_verified_at', null);
-
-    $this->assertAuthenticatedAs($user);
 });
 
 it('verifica el correo con un enlace vigente', function () {
@@ -69,12 +68,12 @@ it('verifica el correo con un enlace vigente', function () {
 
     $this->postJson('/api/v1/auth/verify-email', ['email' => 'ANA@correo.com', 'token' => verificationToken($user)])
         ->assertOk()
-        ->assertExactJson(['message' => 'Verificamos tu correo. Ya puedes usar la aplicación.']);
+        ->assertExactJson(['message' => 'Verificamos tu correo. Ya puedes iniciar sesión.']);
 
     expect($user->fresh()->email_verified_at)->not->toBeNull();
+    $this->assertGuest('web');
 
-    $this->actingAs($user->fresh())
-        ->getJson('/api/v1/currencies')
+    $this->postJson('/api/v1/auth/login', ['email' => 'ana@correo.com', 'password' => 'password'])
         ->assertOk();
 });
 
@@ -114,38 +113,41 @@ it('responde 422 cuando el token no es válido o faltan los datos', function (ar
     'sin datos' => [[], ['email', 'token']],
 ]);
 
-it('reenvía el correo de verificación a la cuenta de la sesión', function () {
-    $user = User::factory()->unverified()->create();
+it('reenvía el enlace a una cuenta pendiente de verificar', function () {
+    $user = User::factory()->unverified()->create(['email' => 'ana@correo.com']);
 
-    $this->actingAs($user)
-        ->postJson('/api/v1/auth/verification-email')
+    $this->postJson('/api/v1/auth/verification-email', ['email' => 'ANA@correo.com'])
         ->assertOk()
-        ->assertExactJson(['message' => 'Te enviamos un enlace para verificar tu correo.']);
+        ->assertExactJson(['message' => 'Si hay una cuenta pendiente de verificar con ese correo, te enviamos un enlace.']);
 
     Notification::assertSentTo($user, VerifyEmailNotification::class);
 });
 
-it('no reenvía nada cuando el correo ya está verificado', function () {
-    $this->actingAs(User::factory()->create())
-        ->postJson('/api/v1/auth/verification-email')
+it('responde lo mismo y no envía nada cuando no hay una cuenta pendiente de verificar', function (string $email) {
+    User::factory()->create(['email' => 'verificada@correo.com']);
+    User::factory()->unverified()->inactive()->create(['email' => 'inactiva@correo.com']);
+
+    $this->postJson('/api/v1/auth/verification-email', ['email' => $email])
         ->assertOk()
-        ->assertExactJson(['message' => 'Tu correo ya está verificado.']);
+        ->assertExactJson(['message' => 'Si hay una cuenta pendiente de verificar con ese correo, te enviamos un enlace.']);
 
     Notification::assertNothingSent();
+})->with([
+    'correo ya verificado' => ['verificada@correo.com'],
+    'cuenta inactiva' => ['inactiva@correo.com'],
+    'correo que no existe' => ['nadie@correo.com'],
+]);
+
+it('responde 422 al pedir el reenvío con un correo sin formato válido', function () {
+    $this->postJson('/api/v1/auth/verification-email', ['email' => 'ana-correo.com'])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['email' => 'Escribe un correo válido.']);
 });
 
-it('responde 429 cuando se reenvía el correo otra vez antes de 60 segundos', function () {
-    $this->actingAs(User::factory()->unverified()->create());
+it('responde 429 cuando se pide el reenvío otra vez antes de 60 segundos', function () {
+    $this->postJson('/api/v1/auth/verification-email', ['email' => 'ana@correo.com'])->assertOk();
 
-    $this->postJson('/api/v1/auth/verification-email')->assertOk();
-
-    $this->postJson('/api/v1/auth/verification-email')
+    $this->postJson('/api/v1/auth/verification-email', ['email' => 'ana@correo.com'])
         ->assertTooManyRequests()
         ->assertJsonPath('code', 'too_many_requests');
-});
-
-it('responde 401 al reenviar el correo sin sesión', function () {
-    $this->postJson('/api/v1/auth/verification-email')
-        ->assertUnauthorized()
-        ->assertJsonPath('code', 'unauthenticated');
 });

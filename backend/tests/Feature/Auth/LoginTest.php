@@ -55,6 +55,27 @@ it('responde el mismo 422 cuando la cuenta está inactiva', function () {
     $this->assertGuest();
 });
 
+it('responde 403 sin iniciar sesión cuando el correo no está verificado', function () {
+    User::factory()->unverified()->create(['email' => 'ana@correo.com']);
+
+    $this->postJson('/api/v1/auth/login', ['email' => 'ana@correo.com', 'password' => 'password'])
+        ->assertForbidden()
+        ->assertExactJson([
+            'message' => 'Verifica tu correo para iniciar sesión. Revisa el enlace que te enviamos.',
+            'code' => 'email_not_verified',
+        ]);
+
+    $this->assertGuest('web');
+});
+
+it('responde el 422 genérico cuando el correo no está verificado y la contraseña es incorrecta', function () {
+    User::factory()->unverified()->create(['email' => 'ana@correo.com']);
+
+    $this->postJson('/api/v1/auth/login', ['email' => 'ana@correo.com', 'password' => 'otra-clave'])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['email' => 'El correo o la contraseña no son válidos.']);
+});
+
 it('responde 422 cuando faltan los datos', function () {
     $this->postJson('/api/v1/auth/login', [])
         ->assertUnprocessable()
