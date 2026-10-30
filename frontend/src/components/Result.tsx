@@ -7,7 +7,7 @@ export function Result({ result }: { result: ApiResult | null }) {
   }
 
   return (
-    <pre className="mt-4 bg-gray-100 p-4 text-sm whitespace-pre-wrap">
+    <pre className="mt-4 bg-black p-4 text-sm whitespace-pre-wrap text-white">
       {result.status}
       {'\n'}
       {JSON.stringify(result.data, null, 2)}

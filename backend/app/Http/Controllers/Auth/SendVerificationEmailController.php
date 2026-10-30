@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Auth\SendEmailVerification;
+use App\Actions\Auth\ResendEmailVerification;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ResendVerificationEmailRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SendVerificationEmailController extends Controller
 {
     /**
-     * POST /auth/verification-email: reenvía el enlace de verificación al correo de la sesión (RF-VECOR-063).
+     * POST /auth/verification-email: siempre responde el mismo mensaje, exista o no una cuenta pendiente.
      */
-    public function __invoke(Request $request, SendEmailVerification $sendEmailVerification): JsonResponse
+    public function __invoke(ResendVerificationEmailRequest $request, ResendEmailVerification $resendEmailVerification): JsonResponse
     {
-        if ($request->user()->email_verified_at !== null) {
-            return response()->json(['message' => __('verification.already_verified')]);
-        }
-
-        $sendEmailVerification->handle($request->user());
+        $resendEmailVerification->handle($request->validated('email'));
 
         return response()->json(['message' => __('verification.sent')]);
     }

@@ -40,8 +40,9 @@ Route::prefix('v1')->group(function () {
     Route::post('/account/reactivation-request', RequestReactivationController::class)->middleware('throttle:account-email');
     Route::post('/account/reactivate', ReactivateAccountController::class);
 
-    // verificación del correo: el enlace del correo llega aquí, con o sin sesión
+    // verificación del correo: verificar con el enlace y pedir que se reenvíe; sin correo verificado no hay sesión
     Route::post('/auth/verify-email', VerifyEmailController::class);
+    Route::post('/auth/verification-email', SendVerificationEmailController::class)->middleware('throttle:account-email');
 
     // # Rutas privadas: sesión iniciada, de menos de 12 horas, cuenta activa y máximo 120 peticiones por minuto
     Route::middleware(['auth:sanctum', EnsureSessionIsNotExpired::class, EnsureAccountIsActive::class, 'throttle:private'])->group(function () {
@@ -51,14 +52,11 @@ Route::prefix('v1')->group(function () {
         // usuario de la sesión actual (el frontend lo consulta al recargar la página)
         Route::get('/auth/me', MeController::class);
 
-        // reenviar el correo de verificación (1 por minuto)
-        Route::post('/auth/verification-email', SendVerificationEmailController::class)->middleware('throttle:verification-email');
+        // actualizar nombre o correo; se permite sin verificar para poder corregir un correo mal escrito
+        Route::patch('/profile', UpdateProfileController::class);
 
         // # Rutas que además exigen el correo verificado (403 email_not_verified)
         Route::middleware(EnsureEmailIsVerified::class)->group(function () {
-            // actualizar nombre o correo del usuario
-            Route::patch('/profile', UpdateProfileController::class);
-
             // cambiar la contraseña (cierra las demás sesiones)
             Route::patch('/profile/password', UpdatePasswordController::class);
 

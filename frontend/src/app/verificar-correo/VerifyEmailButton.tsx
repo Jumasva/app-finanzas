@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Result } from '@/components/Result';
@@ -18,11 +19,17 @@ export function VerifyEmailButton() {
 
   return (
     <>
-      <button onClick={verify} className="border bg-gray-200 p-2">
+      <button onClick={verify} className="border bg-gray-200 p-2 text-black">
         Verificar {searchParams.get('email')}
       </button>
 
       <Result result={result} />
+
+      {result?.status === 200 && (
+        <Link href="/ingresar" className="mt-4 block text-blue-700 underline">
+          Iniciar sesión
+        </Link>
+      )}
     </>
   );
 }

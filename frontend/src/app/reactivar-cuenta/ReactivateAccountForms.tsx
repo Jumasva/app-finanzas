@@ -21,13 +21,13 @@ export function ReactivateAccountForms() {
   return (
     <>
       {token ? (
-        <button onClick={reactivate} className="border bg-gray-200 p-2">
+        <button onClick={reactivate} className="border bg-gray-200 p-2 text-black">
           Reactivar {searchParams.get('email')}
         </button>
       ) : (
         <form action={requestLink} className="flex flex-col gap-2">
           <input name="email" placeholder="Correo de la cuenta inactiva" className="border p-2" />
-          <button className="border bg-gray-200 p-2">Enviar enlace</button>
+          <button className="border bg-gray-200 p-2 text-black">Enviar enlace</button>
         </form>
       )}
 
