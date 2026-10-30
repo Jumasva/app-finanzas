@@ -2,26 +2,19 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\Concerns\NormalizesEmail;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
 {
+    use NormalizesEmail;
+
     /**
      * Cualquier visitante puede intentar iniciar sesión: la ruta es pública.
      */
     public function authorize(): bool
     {
         return true;
-    }
-
-    /**
-     * El correo se guarda en minúsculas, así que se busca en minúsculas (RNF-SEG-014).
-     */
-    protected function prepareForValidation(): void
-    {
-        if (is_string($this->email)) {
-            $this->merge(['email' => mb_strtolower($this->email)]);
-        }
     }
 
     /**

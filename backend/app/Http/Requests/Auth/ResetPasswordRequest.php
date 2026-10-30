@@ -2,27 +2,20 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\Concerns\NormalizesEmail;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
 class ResetPasswordRequest extends FormRequest
 {
+    use NormalizesEmail;
+
     /**
      * Cualquier visitante con el enlace puede usarlo: la ruta es pública.
      */
     public function authorize(): bool
     {
         return true;
-    }
-
-    /**
-     * El correo se guarda en minúsculas, así que se busca en minúsculas (RNF-SEG-014).
-     */
-    protected function prepareForValidation(): void
-    {
-        if (is_string($this->email)) {
-            $this->merge(['email' => mb_strtolower($this->email)]);
-        }
     }
 
     /**

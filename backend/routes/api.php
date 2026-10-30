@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SendVerificationEmailController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ListCurrenciesController;
 use App\Http\Controllers\Profile\UpdatePasswordController;
@@ -68,6 +69,13 @@ Route::prefix('v1')->group(function () {
 
             // desactivar la cuenta (cierra todas sus sesiones; la información se conserva)
             Route::post('/account/deactivate', DeactivateAccountController::class);
+
+            // categorías: las del sistema y las personalizadas del usuario
+            Route::get('/categories', [CategoryController::class, 'index']);
+            Route::post('/categories', [CategoryController::class, 'store']);
+            Route::patch('/categories/{category}', [CategoryController::class, 'update'])->whereNumber('category');
+            Route::patch('/categories/{category}/deactivate', [CategoryController::class, 'deactivate'])->whereNumber('category');
+            Route::patch('/categories/{category}/activate', [CategoryController::class, 'activate'])->whereNumber('category');
         });
     });
 });

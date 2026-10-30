@@ -40,5 +40,6 @@ return [
         'password' => 'contraseña',
         'current_password' => 'contraseña actual',
         'currency_code' => 'moneda',
+        'kind' => 'clase',
     ],
 ];

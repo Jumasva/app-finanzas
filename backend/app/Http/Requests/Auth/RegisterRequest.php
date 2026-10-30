@@ -2,28 +2,21 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\Concerns\NormalizesEmail;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
+    use NormalizesEmail;
+
     /**
      * Cualquier visitante puede registrarse: la ruta es pública.
      */
     public function authorize(): bool
     {
         return true;
-    }
-
-    /**
-     * El correo se compara en minúsculas para que la unicidad no distinga mayúsculas (RNF-SEG-014).
-     */
-    protected function prepareForValidation(): void
-    {
-        if (is_string($this->email)) {
-            $this->merge(['email' => mb_strtolower($this->email)]);
-        }
     }
 
     /**
