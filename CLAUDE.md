@@ -1,6 +1,6 @@
 # App Finanzas
 
-Sistema de información de finanzas personales. Es **únicamente una aplicación web** que se usa desde el navegador: no hay app móvil nativa ni app de escritorio (RNF-COM-002). Los tamaños "móvil", "tablet" y "desktop" de la guía de diseño son anchos de la ventana del navegador.
+Sistema de información de finanzas personales. Es **únicamente una aplicación web** que se usa desde el navegador: no hay app móvil nativa ni app de escritorio (RNF-COM-002). Los tamaños "móvil", "tablet" y "desktop" del diseño en Figma son anchos de la ventana del navegador. El diseño visual sale de Figma: la antigua guía de estándares de diseño se eliminó.
 
 ## Documentación (Google Drive, carpeta PROYECTO APP FINANZAS)
 
