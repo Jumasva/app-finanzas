@@ -6,6 +6,7 @@ use App\Auth\EmailVerificationTokenRepository;
 use App\Auth\ReactivationTokenRepository;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Alias públicos de los modelos auditados: audit_logs.auditable_type guarda el alias y no la clase (cambio C).
+        // Cada modelo auditado se agrega aquí al crearse: opening_balance, financial_movement, savings_goal,
+        // savings_contribution, obligation, obligation_payment, credit_card y credit_card_payment.
+        Relation::enforceMorphMap([]);
+
         // RNF-SEG 1 A 3, 10 a 64 caracteres para la contraseña.
         // Composicion de 10 caracteres, 1 simbolo, 1 numero
         // No contraseñas comprometidas
