@@ -1,0 +1,110 @@
+
+@theme {
+
+  --text-*: initial;
+
+
+  /* ══ TÍTULOS · Nunito (font-heading) ══ */
+  /* Valores desktop; los de móvil están abajo */
+
+  /* display · saldo total, cifras grandes */
+  --text-display: 2.25rem; /* 36px */
+  --text-display--line-height: 2.75rem; /* 44px */
+  --text-display--font-weight: 800;
+  --text-display--letter-spacing: -0.5px;
+
+  /* h1 · título de la página */
+  --text-h1: 1.875rem; /* 30px */
+  --text-h1--line-height: 2.375rem; /* 38px */
+  --text-h1--font-weight: 700;
+  --text-h1--letter-spacing: -0.5px;
+
+  /* h2 · título de formularios y secciones */
+  --text-h2: 1.5rem; /* 24px */
+  --text-h2--line-height: 2rem; /* 32px */
+  --text-h2--font-weight: 700;
+
+  /* h3 · título de tarjetas */
+  --text-h3: 1.25rem; /* 20px */
+  --text-h3--line-height: 1.75rem; /* 28px */
+  --text-h3--font-weight: 700;
+
+  /* h4 · modales, subtítulos de sección */
+  --text-h4: 1.125rem; /* 18px */
+  --text-h4--line-height: 1.5rem; /* 24px */
+  --text-h4--font-weight: 600;
+
+
+  /* ══ TEXTOS · Inter (font-sans) ══ */
+  /* Mismos valores en desktop y móvil */
+
+  /* body-lg · texto principal, valor dentro de inputs */
+  --text-body-lg: 1rem; /* 16px */
+  --text-body-lg--line-height: 1.5rem; /* 24px */
+  --text-body-lg--font-weight: 400;
+
+  /* body · texto secundario, tablas, subtítulos */
+  --text-body: 0.875rem; /* 14px */
+  --text-body--line-height: 1.25rem; /* 20px */
+  --text-body--font-weight: 400;
+
+  /* body-sm · fechas, ayudas, metadatos */
+  --text-body-sm: 0.75rem; /* 12px */
+  --text-body-sm--line-height: 1rem; /* 16px */
+  --text-body-sm--font-weight: 400;
+
+  /* label-lg · botones grandes (login, registro) */
+  --text-label-lg: 1rem; /* 16px */
+  --text-label-lg--line-height: 1.5rem; /* 24px */
+  --text-label-lg--font-weight: 600;
+
+  /* label · etiquetas de campos, botones normales */
+  --text-label: 0.875rem; /* 14px */
+  --text-label--line-height: 1.25rem; /* 20px */
+  --text-label--font-weight: 600;
+
+  /* label-sm · chips, badges, navegación inferior */
+  --text-label-sm: 0.75rem; /* 12px */
+  --text-label-sm--line-height: 1rem; /* 16px */
+  --text-label-sm--font-weight: 500;
+
+  /* overline · texto en mayúsculas sobre secciones (usar con uppercase) */
+  --text-overline: 0.75rem; /* 12px */
+  --text-overline--line-height: 1rem; /* 16px */
+  --text-overline--font-weight: 600;
+  --text-overline--letter-spacing: 0.5px;
+
+  /* number · montos en listas y tablas (usar con tabular-nums) */
+  --text-number: 0.875rem; /* 14px */
+  --text-number--line-height: 1.25rem; /* 20px */
+  --text-number--font-weight: 500;
+}
+
+/* Fuentes: apuntan a las variables que crea next/font en layout.tsx, por eso van en inline */
+@theme inline {
+  --font-sans: var(--font-inter); /* fuente por defecto de toda la página */
+  --font-heading: var(--font-nunito);
+}
+
+
+/* ══ TÍTULOS EN MÓVIL ══ */
+/* Debajo de md (768px) los títulos bajan a la columna «Móvil» de Figma.
+   Como la clase text-h1 lee var(--text-h1), cambiar la variable basta: no hace falta md:text-… */
+@media (width < 48rem) {
+  :root {
+    --text-display: 1.875rem; /* 30px */
+    --text-display--line-height: 2.375rem; /* 38px */
+
+    --text-h1: 1.625rem; /* 26px */
+    --text-h1--line-height: 2.125rem; /* 34px */
+
+    --text-h2: 1.375rem; /* 22px */
+    --text-h2--line-height: 1.875rem; /* 30px */
+
+    --text-h3: 1.125rem; /* 18px */
+    --text-h3--line-height: 1.625rem; /* 26px */
+
+    --text-h4: 1rem; /* 16px */
+    --text-h4--line-height: 1.5rem; /* 24px */
+  }
+}

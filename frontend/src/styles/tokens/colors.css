@@ -1,0 +1,177 @@
+@theme {
+  --color-*: initial;
+
+
+  /* ══ PRIMITIVOS ══ */
+  
+  --color-white: #FFF;
+  --color-black: #000;
+
+  
+  /* ══ MARCA ══ */
+
+  /* teal */
+  --color-teal-50: #F1F9F8;
+  --color-teal-100: #DFEFEE;
+  --color-teal-200: #C2E1DE;
+  --color-teal-300: #9CCCC8;
+  --color-teal-400: #71B3AE;
+  --color-teal-500: #4A9994;
+  --color-teal-600: #287B76;
+  --color-teal-700: #126460; /* BASE */
+  --color-teal-800: #004E4A;
+  --color-teal-900: #033735;
+  --color-teal-950: #012321;
+
+  /* emerald */
+  --color-emerald-50: #F0F9F5;
+  --color-emerald-100: #DCF1E7;
+  --color-emerald-200: #BCE4D2;
+  --color-emerald-300: #92D2B6;
+  --color-emerald-400: #63BC98;
+  --color-emerald-500: #33A47C; /* BASE */
+  --color-emerald-600: #0E8561;
+  --color-emerald-700: #016E4F; 
+  --color-emerald-800: #06543C;
+  --color-emerald-900: #013C29;
+  --color-emerald-950: #002518;
+
+  /* green */
+  --color-green-50: #F0FAF1;
+  --color-green-100: #DCF1DF;
+  --color-green-200: #BCE4C1;
+  --color-green-300: #93D09C;
+  --color-green-400: #65B975; /* BASE */
+  --color-green-500: #39A254; 
+  --color-green-600: #0F8538;
+  --color-green-700: #046F2C; 
+  --color-green-800: #095522;
+  --color-green-900: #033D16;
+  --color-green-950: #01260A;
+
+  /* navy */
+  --color-navy-50: #F3F7FC;
+  --color-navy-100: #E3ECF6;
+  --color-navy-200: #CBDBED;
+  --color-navy-300: #ABC4E0;
+  --color-navy-400: #89AACD; 
+  --color-navy-500: #6A90B8; 
+  --color-navy-600: #4D7198;
+  --color-navy-700: #3A5B7E; 
+  --color-navy-800: #274361;
+  --color-navy-900: #152C44; /* BASE */
+  --color-navy-950: #081A2D;
+
+  /* indigo */
+  --color-indigo-50: #F5F6FF;
+  --color-indigo-100: #E6EAFF;
+  --color-indigo-200: #D0D6FF;
+  --color-indigo-300: #B1B9FE;
+  --color-indigo-400: #8F97FF; 
+  --color-indigo-500: #7174F9; 
+  --color-indigo-600: #5754D6; /* BASE */
+  --color-indigo-700: #4742BA; 
+  --color-indigo-800: #362F97;
+  --color-indigo-900: #261E74; 
+  --color-indigo-950: #170E52;
+
+
+  /* ══ APOYO ══ */
+
+  /* red · errores, gastos */
+  --color-red-50: #FFF4F2;
+  --color-red-100: #FEE5E0;
+  --color-red-200: #FDCCC3;
+  --color-red-300: #FDAB9E;
+  --color-red-400: #FD8170;
+  --color-red-500: #F94F3E;
+  --color-red-600: #D92D20; /* BASE */
+  --color-red-700: #B81209;
+  --color-red-800: #8F0300;
+  --color-red-900: #660401;
+  --color-red-950: #3F0201;
+
+  /* amber · alertas, pagos próximos */
+  --color-amber-50: #FEF5EB;
+  --color-amber-100: #FBE8D2;
+  --color-amber-200: #FEDEBA;
+  --color-amber-300: #FFCB8F;
+  --color-amber-400: #FFB352;
+  --color-amber-500: #F59E0B; /* BASE */
+  --color-amber-600: #BF7C13;
+  --color-amber-700: #986109;
+  --color-amber-800: #6E4401;
+  --color-amber-900: #472A01;
+  --color-amber-950: #2D1900;
+
+  /* blue · información */
+  --color-blue-50: #F2F7FF;
+  --color-blue-100: #E0ECFF;
+  --color-blue-200: #C4DBFE;
+  --color-blue-300: #A0C5FD;
+  --color-blue-400: #77ABFC;
+  --color-blue-500: #488FFD;
+  --color-blue-600: #1570EF; /* BASE */
+  --color-blue-700: #085AC8;
+  --color-blue-800: #00449D;
+  --color-blue-900: #012F70;
+  --color-blue-950: #011B46;
+
+  /* neutral · textos secundarios, bordes, fondos (sin 950) */
+  --color-neutral-50: #F1F1F1;
+  --color-neutral-100: #D4D4D4;
+  --color-neutral-200: #BFBFBF;
+  --color-neutral-300: #A1A1A1;
+  --color-neutral-400: #8F8F8F;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #696969;
+  --color-neutral-700: #525252;
+  --color-neutral-800: #3F3F3F;
+  --color-neutral-900: #303030;
+
+
+  /* ══ SEMÁNTICOS ══ */
+
+  /* ── brand ── */
+  --color-brand-primary: var(--color-emerald-600);
+  --color-brand-primary-hover: var(--color-emerald-700);
+  --color-brand-secondary: var(--color-teal-700);
+  --color-brand-tertiary: var(--color-green-400);
+  --color-brand-accent: var(--color-indigo-600);
+
+  /* ── content ── */
+  --color-content-primary: var(--color-navy-900);
+  --color-content-secondary: var(--color-neutral-600);
+  --color-content-tertiary: var(--color-neutral-500);
+  --color-content-inverse: var(--color-white);
+  --color-content-link: var(--color-emerald-700);
+
+  /* ── background ── */
+  --color-background-page: var(--color-white);
+  --color-background-subtle: var(--color-neutral-50);
+  --color-background-brand-subtle: var(--color-emerald-50);
+  --color-background-inverse: var(--color-navy-900);
+
+  /* ── border ── */
+  --color-border-default: var(--color-neutral-400);
+  --color-border-subtle: var(--color-neutral-100);
+  --color-border-focus: var(--color-emerald-600);
+
+  /* ── Estados · Figma color/semantic/<estado>/<main|dark|light> ── */
+  /* success */
+  --color-success: var(--color-green-600);
+  --color-success-dark: var(--color-green-800);
+  --color-success-light: var(--color-green-50);
+  /* warning · solo fondo e íconos; el texto va en warning-dark */
+  --color-warning: var(--color-amber-500);
+  --color-warning-dark: var(--color-amber-800);
+  --color-warning-light: var(--color-amber-50);
+  /* danger */
+  --color-danger: var(--color-red-600);
+  --color-danger-dark: var(--color-red-800);
+  --color-danger-light: var(--color-red-50);
+  /* info */
+  --color-info: var(--color-blue-600);
+  --color-info-dark: var(--color-blue-800);
+  --color-info-light: var(--color-blue-50);
+}

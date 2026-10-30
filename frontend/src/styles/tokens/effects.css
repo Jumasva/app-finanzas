@@ -1,0 +1,22 @@
+/* Radios y sombras · Figma › Atomic Design */
+@theme {
+  /* Quita los radios y las sombras que trae Tailwind (rounded-full sigue existiendo) */
+  --radius-*: initial;
+  --shadow-*: initial;
+
+
+  /* ══ RADIOS ══ */
+
+  --radius-sm: 5px;
+  --radius-md: 10px; /* botones e inputs */
+  --radius-lg: 12px; /* menús, tiles */
+  --radius-xl: 16px; /* tarjetas */
+
+
+  /* ══ SOMBRAS ══ */
+  /* Todas usan navy-900 (#152C44 = 21 44 68) con transparencia */
+
+  --shadow-elevation-1: 0 1px 3px rgb(21 44 68 / 0.12);  /* segmented, switch */
+  --shadow-elevation-2: 0 4px 12px rgb(21 44 68 / 0.10); /* menús desplegables */
+  --shadow-elevation-3: 0 12px 32px rgb(21 44 68 / 0.14); /* modal, panel */
+}
