@@ -7,8 +7,8 @@ it('crea las categorías iniciales del sistema y es idempotente', function () {
     $this->seed(CategorySeeder::class);
     $this->seed(CategorySeeder::class);
 
-    expect(Category::whereNull('user_id')->count())->toBe(28)
-        ->and(Category::whereNull('user_id')->where('kind', 'income')->count())->toBe(8)
+    expect(Category::whereNull('user_id')->count())->toBe(27)
+        ->and(Category::whereNull('user_id')->where('kind', 'income')->count())->toBe(7)
         ->and(Category::whereNull('user_id')->where('kind', 'expense')->count())->toBe(15)
         ->and(Category::whereNull('user_id')->where('kind', 'obligation')->count())->toBe(5);
 });
