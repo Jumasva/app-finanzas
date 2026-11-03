@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import type { LucideIcon } from 'lucide-react';
+import type { IconComponent } from '@/components/ui/atoms/icons';
 import { cn } from '@/lib/cn';
 
 type Variant = 'standalone' | 'inline';
 
 type TextLinkProps = React.ComponentProps<typeof Link> & {
   variant?: Variant;
-  iconLeft?: LucideIcon;
-  iconRight?: LucideIcon;
+  iconLeft?: IconComponent;
+  iconRight?: IconComponent;
 };
 
 /* ══ CLASES · Figma › Atomic Design › Link ══ */
@@ -35,9 +35,9 @@ export function TextLink({
 }: TextLinkProps) {
   return (
     <Link className={cn(base, variants[variant], className)} {...props}>
-      {IconLeft && <IconLeft className="size-4 shrink-0" aria-hidden="true" />}
+      {IconLeft && <IconLeft size={16} />}
       {children}
-      {IconRight && <IconRight className="size-4 shrink-0" aria-hidden="true" />}
+      {IconRight && <IconRight size={16} />}
     </Link>
   );
 }

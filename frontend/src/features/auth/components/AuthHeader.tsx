@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeftIcon } from '@/components/ui/atoms/icons';
 import { useAuthScreen } from '@/features/auth/hooks/useAuthScreen';
 import { ButtonLink } from '@/components/ui/atoms/Button';
 import { TextLink } from '@/components/ui/atoms/TextLink';
@@ -17,17 +17,14 @@ export function AuthHeader() {
 
       {header.kind === 'cta' ? (
         <div className="flex items-center gap-3">
-
           <span className="hidden text-body-sm text-content-secondary sm:inline">{header.question}</span>
 
           <ButtonLink href={header.href} variant="secondary" size="sm">
             {header.label}
           </ButtonLink>
-
         </div>
       ) : (
-        
-        <TextLink href={header.href} variant="standalone" iconLeft={ChevronLeft}>
+        <TextLink href={header.href} variant="standalone" iconLeft={ChevronLeftIcon}>
           {header.label}
         </TextLink>
       )}

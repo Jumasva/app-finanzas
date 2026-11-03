@@ -8,7 +8,7 @@ export function AuthHero() {
   const { hero } = useAuthScreen();
 
   return (
-    <aside className="hidden w-[38%] flex-col gap-10 overflow-hidden rounded-[28px] bg-auth-hero p-12 lg:sticky lg:top-4 lg:flex lg:h-[calc(100vh-2rem)]">
+    <aside className="hidden w-[40%] flex-col gap-10 overflow-hidden rounded-[28px] bg-auth-hero p-12 lg:sticky lg:top-4 lg:flex lg:h-[calc(100vh-2rem)]">
       <Image src="/logo/logo_horizontal_blanco.svg" alt="Finanzas" width={130} height={36} />
 
       <div className="relative mt-10 min-h-0 flex-1 [@media(max-height:800px)]:mt-0">

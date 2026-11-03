@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LoaderCircle, type LucideIcon } from 'lucide-react';
+import { LoaderIcon, type IconComponent, type IconSize } from '@/components/ui/atoms/icons';
 import { cn } from '@/lib/cn';
 
 type Variant = 'primary' | 'secondary' | 'tertiary' | 'destructive';
@@ -8,8 +8,8 @@ type Size = 'sm' | 'md' | 'lg';
 type ButtonStyleProps = {
   variant?: Variant;
   size?: Size;
-  iconLeft?: LucideIcon;
-  iconRight?: LucideIcon;
+  iconLeft?: IconComponent;
+  iconRight?: IconComponent;
   loading?: boolean;
 };
 
@@ -47,7 +47,7 @@ const iconOnlySizes: Record<Size, string> = {
   lg: 'w-12 min-w-0 px-0',
 };
 
-const iconSizes: Record<Size, string> = { sm: 'size-4', md: 'size-5', lg: 'size-5' };
+const iconSizes: Record<Size, IconSize> = { sm: 16, md: 20, lg: 20 };
 
 /* ══ PIEZAS COMPARTIDAS ══ */
 
@@ -80,17 +80,13 @@ function ButtonContent({
   loading,
   children,
 }: ButtonStyleProps & { children?: React.ReactNode }) {
-  const iconClass = iconSizes[size];
+  const iconSize = iconSizes[size];
 
   return (
     <>
-      {loading ? (
-        <LoaderCircle className={cn(iconClass, 'animate-spin')} aria-hidden="true" />
-      ) : (
-        IconLeft && <IconLeft className={iconClass} aria-hidden="true" />
-      )}
+      {loading ? <LoaderIcon size={iconSize} className="animate-spin" /> : IconLeft && <IconLeft size={iconSize} />}
       {children}
-      {IconRight && <IconRight className={iconClass} aria-hidden="true" />}
+      {IconRight && <IconRight size={iconSize} />}
     </>
   );
 }
