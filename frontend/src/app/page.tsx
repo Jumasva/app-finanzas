@@ -11,7 +11,7 @@ const pages = [
 export default function Home() {
   return (
     <main className="p-8">
-      <h1 className="mb-4 text-xl font-bold">App Finanzas · pantallas de prueba</h1>
+      <h1 className="mb-4 font-heading text-h1 text-content-primary">App Finanzas · pantallas de prueba</h1>
 
       <ul className="list-disc pl-6">
         {pages.map(([href, label]) => (
