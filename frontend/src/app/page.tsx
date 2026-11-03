@@ -1,27 +1,7 @@
-import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-const pages = [
-  ['/registro', 'Crear cuenta'],
-  ['/ingresar', 'Iniciar sesión'],
-  ['/cuenta', 'Mi cuenta'],
-  ['/olvide-contrasena', 'Olvidé mi contraseña'],
-  ['/reactivar-cuenta', 'Reactivar cuenta'],
-];
-
+// La raíz no tiene contenido propio: manda al login.
+// En el paso 5, proxy.ts decidirá entre /ingresar y /inicio según la sesión.
 export default function Home() {
-  return (
-    <main className="p-8">
-      <h1 className="mb-4 font-heading text-h1 text-content-primary">App Finanzas · pantallas de prueba</h1>
-
-      <ul className="list-disc pl-6">
-        {pages.map(([href, label]) => (
-          <li key={href}>
-            <Link href={href} className="text-blue-700 underline">
-              {label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </main>
-  );
+  redirect('/ingresar');
 }

@@ -1,8 +1,5 @@
-
 @theme {
-
   --text-*: initial;
-
 
   /* ══ TÍTULOS · Nunito (font-heading) ══ */
   /* Valores desktop; los de móvil están abajo */
@@ -33,7 +30,6 @@
   --text-h4: 1.125rem; /* 18px */
   --text-h4--line-height: 1.5rem; /* 24px */
   --text-h4--font-weight: 600;
-
 
   /* ══ TEXTOS · Inter (font-sans) ══ */
   /* Mismos valores en desktop y móvil */
@@ -85,7 +81,6 @@
   --font-sans: var(--font-inter); /* fuente por defecto de toda la página */
   --font-heading: var(--font-nunito);
 }
-
 
 /* ══ TÍTULOS EN MÓVIL ══ */
 /* Debajo de md (768px) los títulos bajan a la columna «Móvil» de Figma.

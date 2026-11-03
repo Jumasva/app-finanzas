@@ -1,42 +1,40 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Tokens de diseño: cada archivo agrupa un tipo de token */
-@import "../styles/tokens/colors.css";
-@import "../styles/tokens/typography.css";
-@import "../styles/tokens/effects.css";
+@import '../styles/tokens/colors.css';
+@import '../styles/tokens/typography.css';
+@import '../styles/tokens/effects.css';
 
 /* Estilos base de las etiquetas HTML (body, títulos, foco) */
 @layer base {
+  /* 1. Valores por defecto de toda la página */
+  body {
+    @apply bg-background-page text-body text-content-primary;
+  }
 
-    /* 1. Valores por defecto de toda la página */
-    body {
-        @apply bg-background-page text-content-primary text-body;
+  /* 2. Los títulos usan Nunito; el tamaño lo pone la clase (text-h1, text-h3…) */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+
+  /* 3. Anillo de foco para quien navega con teclado (WCAG) */
+  :focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+
+  /* reducir el movimiento, las animaciones y transiciones son instantáneas (opcional usuario) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
-
-    /* 2. Los títulos usan Nunito; el tamaño lo pone la clase (text-h1, text-h3…) */
-    h1,
-    h2,
-    h3,
-    h4 {
-        @apply font-heading;
-    }
-
-    /* 3. Anillo de foco para quien navega con teclado (WCAG) */
-    :focus-visible {
-        outline: 2px solid var(--color-border-focus);
-        outline-offset: 2px;
-    }
-
-    /* reducir el movimiento, las animaciones y transiciones son instantáneas (opcional usuario) */
-    @media (prefers-reduced-motion: reduce) {
-
-        *,
-        *::before,
-        *::after {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-            scroll-behavior: auto !important;
-        }
-    }
+  }
 }
