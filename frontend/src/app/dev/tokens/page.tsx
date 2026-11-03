@@ -79,17 +79,37 @@ const colorGroups = [
 const textStyles = [
   { name: 'display', className: 'text-display font-heading', spec: '36/44 · 800 · móvil 30/38', sample: '$4.250.000' },
   { name: 'h1', className: 'text-h1 font-heading', spec: '30/38 · 700 · móvil 26/34', sample: 'Título de la página' },
-  { name: 'h2', className: 'text-h2 font-heading', spec: '24/32 · 700 · móvil 22/30', sample: 'Título de formularios y secciones' },
+  {
+    name: 'h2',
+    className: 'text-h2 font-heading',
+    spec: '24/32 · 700 · móvil 22/30',
+    sample: 'Título de formularios y secciones',
+  },
   { name: 'h3', className: 'text-h3 font-heading', spec: '20/28 · 700 · móvil 18/26', sample: 'Título de tarjetas' },
-  { name: 'h4', className: 'text-h4 font-heading', spec: '18/24 · 600 · móvil 16/24', sample: 'Modales, subtítulos de sección' },
-  { name: 'body-lg', className: 'text-body-lg', spec: '16/24 · 400', sample: 'Registra tus gastos y mira crecer tus ahorros.' },
+  {
+    name: 'h4',
+    className: 'text-h4 font-heading',
+    spec: '18/24 · 600 · móvil 16/24',
+    sample: 'Modales, subtítulos de sección',
+  },
+  {
+    name: 'body-lg',
+    className: 'text-body-lg',
+    spec: '16/24 · 400',
+    sample: 'Registra tus gastos y mira crecer tus ahorros.',
+  },
   { name: 'body', className: 'text-body', spec: '14/20 · 400', sample: 'Ingresa tus datos para continuar.' },
   { name: 'body-sm', className: 'text-body-sm', spec: '12/16 · 400', sample: '23 oct 2026 · Mercado' },
   { name: 'label-lg', className: 'text-label-lg', spec: '16/24 · 600', sample: 'Iniciar sesión' },
   { name: 'label', className: 'text-label', spec: '14/20 · 600', sample: 'Correo electrónico' },
   { name: 'label-sm', className: 'text-label-sm', spec: '12/16 · 500', sample: 'Alimentación' },
   { name: 'overline', className: 'text-overline uppercase', spec: '12/16 · 600 · +0.5', sample: 'Resumen del mes' },
-  { name: 'number', className: 'text-number tabular-nums', spec: '14/20 · 500 · tabular', sample: '$1.250.000 · $980.000' },
+  {
+    name: 'number',
+    className: 'text-number tabular-nums',
+    spec: '14/20 · 500 · tabular',
+    sample: '$1.250.000 · $980.000',
+  },
 ];
 
 const radii = [
@@ -124,7 +144,7 @@ export default function TokensPage() {
             <div className="flex flex-wrap gap-4">
               {group.tokens.map((token) => (
                 <div key={token.name} className="flex w-32 flex-col gap-2">
-                  <div className={`border-border-subtle h-16 rounded-md border ${token.className}`} />
+                  <div className={`h-16 rounded-md border border-border-subtle ${token.className}`} />
                   <span className="text-body-sm">{token.name}</span>
                 </div>
               ))}
@@ -139,7 +159,7 @@ export default function TokensPage() {
 
         <div className="flex flex-col gap-4">
           {textStyles.map((style) => (
-            <div key={style.name} className="border-border-subtle flex flex-col gap-1 border-b pb-4">
+            <div key={style.name} className="flex flex-col gap-1 border-b border-border-subtle pb-4">
               <span className="text-body-sm text-content-tertiary">
                 text-{style.name} · {style.spec}
               </span>
@@ -156,7 +176,7 @@ export default function TokensPage() {
         <div className="flex flex-wrap gap-6">
           {radii.map((radius) => (
             <div key={radius.name} className="flex flex-col items-center gap-2">
-              <div className={`border-brand-primary bg-background-brand-subtle size-20 border-2 ${radius.className}`} />
+              <div className={`size-20 border-2 border-brand-primary bg-background-brand-subtle ${radius.className}`} />
               <span className="text-body-sm">{radius.name}</span>
               <span className="text-body-sm text-content-tertiary">{radius.spec}</span>
             </div>
@@ -168,9 +188,12 @@ export default function TokensPage() {
       <section className="flex flex-col gap-6">
         <h2 className="text-h2">Sombras</h2>
 
-        <div className="bg-background-subtle flex flex-wrap gap-8 rounded-xl p-8">
+        <div className="flex flex-wrap gap-8 rounded-xl bg-background-subtle p-8">
           {shadows.map((shadow) => (
-            <div key={shadow.name} className={`bg-background-page flex w-48 flex-col gap-1 rounded-lg p-6 ${shadow.className}`}>
+            <div
+              key={shadow.name}
+              className={`flex w-48 flex-col gap-1 rounded-lg bg-background-page p-6 ${shadow.className}`}
+            >
               <span className="text-label">{shadow.name}</span>
               <span className="text-body-sm text-content-tertiary">{shadow.spec}</span>
             </div>
