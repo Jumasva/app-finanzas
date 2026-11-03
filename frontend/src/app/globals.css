@@ -7,4 +7,23 @@
 
 /* Estilos base de las etiquetas HTML (body, títulos, foco) */
 @layer base {
+
+    /* 1. Valores por defecto de toda la página */
+    body {
+        @apply bg-background-page text-content-primary text-body;
+    }
+
+    /* 2. Los títulos usan Nunito; el tamaño lo pone la clase (text-h1, text-h3…) */
+    h1,
+    h2,
+    h3,
+    h4 {
+        @apply font-heading;
+    }
+
+    /* 3. Anillo de foco para quien navega con teclado (WCAG) */
+    :focus-visible {
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 2px;
+    }
 }
