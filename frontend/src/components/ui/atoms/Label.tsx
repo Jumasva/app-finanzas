@@ -6,7 +6,6 @@ type LabelProps = React.ComponentProps<'label'> & {
   disabled?: boolean;
 };
 
-
 export function Label({
   required = false,
   optional = false,
@@ -16,10 +15,7 @@ export function Label({
   ...props
 }: LabelProps) {
   return (
-    <label
-      className={cn('text-label text-content-primary', disabled && 'text-content-disabled', className)}
-      {...props}
-    >
+    <label className={cn('text-label text-content-primary', disabled && 'text-content-disabled', className)} {...props}>
       {children}
 
       {/* El lector de pantalla no lee el asterisco: el input con `required` ya anuncia «obligatorio» */}

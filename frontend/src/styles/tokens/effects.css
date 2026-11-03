@@ -1,4 +1,4 @@
-/* Radios y sombras · Figma › Atomic Design */
+/* Radios, sombras y animaciones · Figma › Atomic Design */
 @theme {
   /* Quita los radios y las sombras que trae Tailwind (rounded-full sigue existiendo) */
   --radius-*: initial;
@@ -17,4 +17,19 @@
   --shadow-elevation-1: 0 1px 3px rgb(21 44 68 / 0.12); /* segmented, switch */
   --shadow-elevation-2: 0 4px 12px rgb(21 44 68 / 0.1); /* menús desplegables */
   --shadow-elevation-3: 0 12px 32px rgb(21 44 68 / 0.14); /* modal, panel */
+
+  /* ══ ANIMACIONES ══ */
+
+  /* Skeleton: brillo suave de 1.2 s (con reducir movimiento queda quieto, ver globals.css) */
+  --animate-skeleton: skeleton 1.2s ease-in-out infinite;
+
+  @keyframes skeleton {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
 }
