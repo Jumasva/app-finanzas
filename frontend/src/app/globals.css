@@ -5,6 +5,9 @@
 @import '../styles/tokens/typography.css';
 @import '../styles/tokens/effects.css';
 
+/* Clases propias (@utility) */
+@import '../styles/utilities.css';
+
 /* Estilos base de las etiquetas HTML (body, títulos, foco) */
 @layer base {
   /* 1. Valores por defecto de toda la página */
