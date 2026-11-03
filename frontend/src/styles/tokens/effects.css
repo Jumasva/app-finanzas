@@ -6,7 +6,7 @@
 
   /* ══ RADIOS ══ */
 
-  --radius-sm: 5px;
+  --radius-sm: 8px; /* inputs, botones pequeños */
   --radius-md: 10px; /* botones e inputs */
   --radius-lg: 12px; /* menús, tiles */
   --radius-xl: 16px; /* tarjetas */
