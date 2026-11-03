@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeftIcon } from '@/components/ui/atoms/icons';
 import { useAuthScreen } from '@/features/auth/hooks/useAuthScreen';
+import { ButtonLink } from '@/components/ui/atoms/Button';
+import { TextLink } from '@/components/ui/atoms/TextLink';
 
 // Header de las pantallas de autenticación: invita a crear cuenta, a iniciar sesión o a volver
 export function AuthHeader() {
@@ -17,19 +18,15 @@ export function AuthHeader() {
       {header.kind === 'cta' ? (
         <div className="flex items-center gap-3">
           <span className="hidden text-body-sm text-content-secondary sm:inline">{header.question}</span>
-          {/* Provisional: se reemplaza por el átomo Button (secundario, pequeño) */}
-          <Link
-            href={header.href}
-            className="rounded-md border border-brand-primary px-3 py-1.5 text-label text-content-link"
-          >
+
+          <ButtonLink href={header.href} variant="secondary" size="sm">
             {header.label}
-          </Link>
+          </ButtonLink>
         </div>
       ) : (
-        <Link href={header.href} className="flex items-center gap-1 text-label text-content-link">
-          <ChevronLeft className="size-4" aria-hidden="true" />
+        <TextLink href={header.href} variant="standalone" iconLeft={ChevronLeftIcon}>
           {header.label}
-        </Link>
+        </TextLink>
       )}
     </header>
   );
