@@ -1,13 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { authHeroes, defaultAuthHero } from '@/features/auth/hero-content';
+import { useAuthScreen } from '@/features/auth/hooks/useAuthScreen';
 
-// Panel de marca de las pantallas de autenticación: elige imagen y textos según la URL
+// Panel de marca de las pantallas de autenticación: imagen y textos según la URL
 export function AuthHero() {
-  const pathname = usePathname();
-  const hero = authHeroes[pathname] ?? defaultAuthHero;
+  const { hero } = useAuthScreen();
 
   return (
     <aside className="hidden w-[38%] flex-col gap-10 overflow-hidden rounded-[28px] bg-auth-hero p-12 lg:sticky lg:top-4 lg:flex lg:h-[calc(100vh-2rem)]">
