@@ -1,0 +1,19 @@
+/* Fondo del panel de autenticación*/
+@utility bg-auth-hero {
+  background-color: var(--color-teal-900);
+  background-image:
+    /* brillo esmeralda, arriba a la derecha */
+    radial-gradient(
+      circle 307px at calc(100% - 90px) 130px,
+      color-mix(in oklab, var(--color-emerald-500) 45%, transparent),
+      transparent
+    ),
+    /* brillo verde, abajo a la izquierda */
+      radial-gradient(
+        circle 257px at 68px calc(100% - 89px),
+        color-mix(in oklab, var(--color-green-400) 28%, transparent),
+        transparent
+      ),
+    /* degradado base, en diagonal hacia abajo a la derecha */
+      linear-gradient(155deg, var(--color-navy-950), var(--color-teal-900) 55%, var(--color-teal-800));
+}
