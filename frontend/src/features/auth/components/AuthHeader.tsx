@@ -17,9 +17,10 @@ export function AuthHeader() {
 
       {header.kind === 'cta' ? (
         <div className="flex items-center gap-3">
-          <span className="hidden text-body-sm text-content-secondary sm:inline">{header.question}</span>
+          <span className="hidden text-body-md text-content-secondary sm:inline">{header.question}</span>
 
-          <ButtonLink href={header.href} variant="secondary" size="sm">
+          {/* md y secondary: más visible, sin competir con el botón primario del formulario */}
+          <ButtonLink href={header.href} variant="primary" size="md">
             {header.label}
           </ButtonLink>
         </div>
