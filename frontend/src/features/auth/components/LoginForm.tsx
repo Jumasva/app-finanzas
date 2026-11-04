@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Alert } from '@/components/ui/atoms/Alert';
 import { Button } from '@/components/ui/atoms/Button';
+import { Divider } from '@/components/ui/atoms/Divider';
 import { ArrowRightIcon } from '@/components/ui/atoms/icons';
 import { TextLink } from '@/components/ui/atoms/TextLink';
 import { FormField } from '@/components/ui/molecules/FormField';
@@ -82,7 +83,17 @@ export function LoginForm() {
         </Button>
       </form>
 
+      {/* Debajo del botón, donde la gente busca el registro: es la segunda acción más frecuente */}
       <p className="text-center text-body text-content-secondary">
+        ¿No tienes cuenta?{' '}
+        <TextLink href="/registro" variant="inline">
+          Crea una
+        </TextLink>
+      </p>
+
+      {/* Reactivar es un caso raro: separado por el Divider y más discreto, para no confundirlo con el registro */}
+      <Divider />
+      <p className="text-center text-body-sm text-content-tertiary">
         ¿Tu cuenta está inactiva?{' '}
         <TextLink href="/reactiva-tu-cuenta" variant="inline">
           Reactívala
