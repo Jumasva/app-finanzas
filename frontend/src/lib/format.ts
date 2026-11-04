@@ -8,3 +8,8 @@ const moneyFormat = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0, u
 export function formatMoney(value: number) {
   return `$${moneyFormat.format(Math.abs(value))}`;
 }
+
+// Segundos de espera para una cuenta regresiva: 59 → "0:59", 125 → "2:05"
+export function formatWait(seconds: number) {
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+}

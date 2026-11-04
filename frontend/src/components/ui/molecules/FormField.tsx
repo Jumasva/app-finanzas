@@ -12,6 +12,8 @@ type FormFieldProps = React.ComponentProps<typeof Input> & {
   error?: string;
   success?: string;
   optional?: boolean;
+  // Enlace a la derecha del label: «¿La olvidaste?»
+  labelAction?: React.ReactNode;
 };
 
 export function FormField({
@@ -20,6 +22,7 @@ export function FormField({
   error,
   success,
   optional = false,
+  labelAction,
   required = false,
   disabled = false,
   invalid = false,
@@ -37,9 +40,12 @@ export function FormField({
 
   return (
     <div className={cn('flex flex-col', className)}>
-      <Label htmlFor={inputId} required={required} optional={optional} disabled={disabled}>
-        {label}
-      </Label>
+      <div className="flex items-center justify-between gap-3">
+        <Label htmlFor={inputId} required={required} optional={optional} disabled={disabled}>
+          {label}
+        </Label>
+        {labelAction}
+      </div>
 
       {/* 8 px entre label e input */}
       <Input

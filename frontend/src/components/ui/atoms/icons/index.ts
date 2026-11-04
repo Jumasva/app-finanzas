@@ -43,3 +43,4 @@ export { LoaderIcon } from './LoaderIcon';
 export { DotIcon } from './DotIcon';
 export { ArrowUpRightIcon } from './ArrowUpRightIcon';
 export { ArrowDownRightIcon } from './ArrowDownRightIcon';
+export { RefreshIcon } from './RefreshIcon';
