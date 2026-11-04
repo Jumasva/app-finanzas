@@ -66,7 +66,6 @@ export function PasswordRules({ password }: { password: string }) {
           </li>
         ))}
       </ul>
-
       <p className="text-body-sm text-neutral-500">
         También revisamos que no aparezca en filtraciones de datos conocidas.
       </p>
