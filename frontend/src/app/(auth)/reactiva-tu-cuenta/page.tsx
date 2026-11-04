@@ -1,5 +1,5 @@
-import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
+import { ReactivationRequestForm } from '@/features/auth/components/ReactivationRequestForm';
 
 export default function ReactivaTuCuentaPage() {
-  return <AuthFormHeader />;
+  return <ReactivationRequestForm />;
 }

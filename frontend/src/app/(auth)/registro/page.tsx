@@ -1,5 +1,5 @@
-import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
+import { RegisterForm } from '@/features/auth/components/RegisterForm';
 
 export default function RegistroPage() {
-  return <AuthFormHeader />;
+  return <RegisterForm />;
 }

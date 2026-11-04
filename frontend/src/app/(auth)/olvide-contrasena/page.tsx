@@ -1,5 +1,5 @@
-import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
+import { ForgotPasswordForm } from '@/features/auth/components/ForgotPasswordForm';
 
 export default function OlvideContrasenaPage() {
-  return <AuthFormHeader />;
+  return <ForgotPasswordForm />;
 }

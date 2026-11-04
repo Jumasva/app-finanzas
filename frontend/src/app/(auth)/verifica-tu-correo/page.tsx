@@ -1,5 +1,5 @@
-import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
+import { VerifyEmailNotice } from '@/features/auth/components/VerifyEmailNotice';
 
 export default function VerificaTuCorreoPage() {
-  return <AuthFormHeader />;
+  return <VerifyEmailNotice />;
 }
