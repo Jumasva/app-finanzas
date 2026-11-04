@@ -1,3 +1,12 @@
+import { Suspense } from 'react';
+import { ResetPasswordForm } from '@/features/auth/components/ResetPasswordForm';
+
+// El formulario lee ?token=…&email=… del enlace del correo: esos datos solo existen en el navegador,
+// así que va dentro de <Suspense> (Next lo exige para useSearchParams)
 export default function RestablecerContrasenaPage() {
-  return <h1 className="text-h1">Restablecer contraseña</h1>;
+  return (
+    <Suspense>
+      <ResetPasswordForm />
+    </Suspense>
+  );
 }

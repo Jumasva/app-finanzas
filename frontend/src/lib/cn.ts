@@ -6,7 +6,21 @@ import { extendTailwindMerge } from 'tailwind-merge';
 const twMerge = extendTailwindMerge({
   extend: {
     theme: {
-      text: ['display', 'h1', 'h2', 'h3', 'h4', 'body-lg', 'body', 'body-sm', 'label-lg', 'label', 'label-sm', 'overline', 'number'],
+      text: [
+        'display',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'body-lg',
+        'body',
+        'body-sm',
+        'label-lg',
+        'label',
+        'label-sm',
+        'overline',
+        'number',
+      ],
       shadow: ['elevation-1', 'elevation-2', 'elevation-3'],
     },
   },

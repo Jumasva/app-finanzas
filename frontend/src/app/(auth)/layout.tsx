@@ -13,13 +13,11 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <AuthHeader />
 
         <main className="flex flex-1 items-center justify-center px-4 py-12 md:px-8">
-          <div>
-            {children}
-          </div>
+          <div className="w-full max-w-[400px]">{children}</div>
         </main>
 
         <footer className="px-4 py-6 text-center text-body-sm text-content-tertiary md:px-8">
-            2026 Finanzas · Términos · Privacidad · Ayuda
+          2026 Finanzas · Términos · Privacidad · Ayuda
         </footer>
       </div>
     </div>

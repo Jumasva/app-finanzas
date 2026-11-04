@@ -26,7 +26,8 @@ return [
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => [],
+    // El frontend lee Retry-After en los 429 para decir cuánto esperar (contrato de API v1)
+    'exposed_headers' => ['Retry-After'],
 
     'max_age' => 0,
 
