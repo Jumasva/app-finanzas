@@ -1,13 +1,33 @@
+import { Button } from "@/components/ui/atoms/Button";
+import { FormField } from "@/components/ui/molecules/FormField";
+import { ArrowRightIcon } from '@/components/ui/atoms/icons';
+import { AuthFormHeader } from "@/features/auth/components/AuthFormHeader";
+
+
 
 export default function LoginPage() {
 
   return (
     <div>
-      
-      <h1 className="text-h1">
-        Iniciar sesión
-      </h1>
 
+      <AuthFormHeader />
+
+      <form className="flex flex-col gap-4 mt-6 w-[440px]">
+        <FormField
+          label="Correo electrónico"
+          type="email"
+          placeholder="Ingrese su correo electrónico"
+          required
+          helper="Ingrese un correo electrónico válido"
+        />
+
+        <Button type="submit" iconRight={ArrowRightIcon}>
+          Iniciar sesión
+        </Button>
+
+
+
+      </form>
     </div>
   );
 }
