@@ -1,9 +1,5 @@
-import { AuthFormHeader } from "@/features/auth/components/AuthFormHeader";
+import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
 
 export default function RestablecerContrasenaPage() {
-  return (
-
-    <AuthFormHeader />
-
-  );
+  return <AuthFormHeader />;
 }

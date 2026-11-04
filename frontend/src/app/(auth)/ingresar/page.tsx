@@ -1,18 +1,14 @@
-import { Button } from "@/components/ui/atoms/Button";
-import { FormField } from "@/components/ui/molecules/FormField";
+import { Button } from '@/components/ui/atoms/Button';
+import { FormField } from '@/components/ui/molecules/FormField';
 import { ArrowRightIcon } from '@/components/ui/atoms/icons';
-import { AuthFormHeader } from "@/features/auth/components/AuthFormHeader";
-
-
+import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
 
 export default function LoginPage() {
-
   return (
     <div>
-
       <AuthFormHeader />
 
-      <form className="flex flex-col gap-4 mt-6 w-[440px]">
+      <form className="mt-6 flex w-[440px] flex-col gap-4">
         <FormField
           label="Correo electrónico"
           type="email"
@@ -24,9 +20,6 @@ export default function LoginPage() {
         <Button type="submit" iconRight={ArrowRightIcon}>
           Iniciar sesión
         </Button>
-
-
-
       </form>
     </div>
   );
