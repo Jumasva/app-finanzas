@@ -7,6 +7,9 @@ type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type ApiOptions = {
   method?: Method;
   body?: unknown;
+  // true (por defecto): si la sesión no sirve (401 o 403 de cuenta), lleva a donde dice el contrato.
+  // false: la pantalla lo maneja (el login con email_not_verified, o revisar si hay sesión sin redirigir)
+  handleSession?: boolean;
 };
 
 /* ══ ERRORES ══ */
@@ -62,6 +65,21 @@ async function ensureCsrfCookie(force = false): Promise<void> {
   }
 }
 
+/* ══ SESIÓN ══ */
+
+// Qué hace el frontend cuando la sesión no sirve (contrato · Códigos de respuesta).
+// window.location y no el router: se sale de la app por completo y no queda nada de la sesión anterior en memoria
+function handleSessionError(status: number, code?: string) {
+  if (status === 401) {
+    // La sesión venció o se cerró (por inactividad, o al cambiar la contraseña): el login muestra el aviso
+    window.location.replace('/ingresar?sesion=expirada');
+  } else if (status === 403 && code === 'email_not_verified') {
+    window.location.replace('/verifica-tu-correo');
+  } else if (status === 403 && code === 'account_inactive') {
+    window.location.replace('/ingresar');
+  }
+}
+
 /* ══ PETICIÓN ══ */
 
 async function send(path: string, method: Method, body: unknown): Promise<Response> {
@@ -86,7 +104,10 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
-export async function api<T = unknown>(path: string, { method = 'GET', body }: ApiOptions = {}): Promise<T> {
+export async function api<T = unknown>(
+  path: string,
+  { method = 'GET', body, handleSession = true }: ApiOptions = {},
+): Promise<T> {
   let response: Response;
 
   try {
@@ -111,8 +132,11 @@ export async function api<T = unknown>(path: string, { method = 'GET', body }: A
   const data = await readJson(response);
 
   if (!response.ok) {
+    const errorBody = (data ?? {}) as ErrorBody;
+    if (handleSession) handleSessionError(response.status, errorBody.code);
+
     const retryAfter = Number(response.headers.get('Retry-After')) || undefined;
-    throw new ApiError(response.status, (data ?? {}) as ErrorBody, retryAfter);
+    throw new ApiError(response.status, errorBody, retryAfter);
   }
 
   return data as T;
