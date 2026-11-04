@@ -1,4 +1,9 @@
-// src/app/(auth)/verificar-correo/page.tsx
+import { AuthFormHeader } from "@/features/auth/components/AuthFormHeader";
+
 export default function VerificarCorreoPage() {
-  return <h1 className="text-h1">Verificar correo</h1>;
+  return (
+
+    <AuthFormHeader />
+
+  );
 }

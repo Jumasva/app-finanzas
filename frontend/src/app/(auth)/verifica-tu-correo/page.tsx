@@ -1,3 +1,9 @@
+import { AuthFormHeader } from "@/features/auth/components/AuthFormHeader";
+
 export default function VerificaTuCorreoPage() {
-  return <h1 className="text-h1">Verifica tu correo</h1>;
+  return (
+
+    <AuthFormHeader />
+
+  );
 }

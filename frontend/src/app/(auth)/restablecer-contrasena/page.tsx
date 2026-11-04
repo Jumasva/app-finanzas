@@ -1,3 +1,9 @@
+import { AuthFormHeader } from "@/features/auth/components/AuthFormHeader";
+
 export default function RestablecerContrasenaPage() {
-  return <h1 className="text-h1">Restablecer contraseña</h1>;
+  return (
+
+    <AuthFormHeader />
+
+  );
 }

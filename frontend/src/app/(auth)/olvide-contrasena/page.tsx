@@ -1,4 +1,9 @@
+import { AuthFormHeader } from "@/features/auth/components/AuthFormHeader";
 
 export default function OlvideContrasenaPage() {
-  return <h1 className="text-h1">Olvidé mi contraseña</h1>;
+  return (
+
+    <AuthFormHeader />
+
+  );
 }

@@ -1,4 +1,9 @@
-// src/app/(auth)/registro/page.tsx
+import { AuthFormHeader } from "@/features/auth/components/AuthFormHeader";
+
 export default function RegistroPage() {
-  return <h1 className="text-h1">Registrarse</h1>;
+  return (
+
+    <AuthFormHeader />
+
+  );
 }
