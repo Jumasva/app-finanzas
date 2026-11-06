@@ -44,3 +44,13 @@ export { DotIcon } from './DotIcon';
 export { ArrowUpRightIcon } from './ArrowUpRightIcon';
 export { ArrowDownRightIcon } from './ArrowDownRightIcon';
 export { RefreshIcon } from './RefreshIcon';
+
+/* Navegación (Figma › Organisms › O01 Sidebar) */
+export { ReceiptIcon } from './ReceiptIcon';
+export { CreditCardIcon } from './CreditCardIcon';
+export { WalletIcon } from './WalletIcon';
+export { HistoryIcon } from './HistoryIcon';
+export { SettingsIcon } from './SettingsIcon';
+export { LogOutIcon } from './LogOutIcon';
+export { PanelLeftIcon } from './PanelLeftIcon';
+export { MenuIcon } from './MenuIcon';
