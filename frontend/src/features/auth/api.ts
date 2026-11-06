@@ -5,6 +5,8 @@ import { api } from '@/lib/api';
 export type User = {
   id: number;
   name: string;
+  // AAAA-MM-DD. null solo en cuentas creadas antes de pedirla
+  birth_date: string | null;
   email: string;
   email_verified_at: string | null;
   currency_code: 'COP' | 'USD' | 'EUR';
@@ -35,7 +37,13 @@ export function getMe({ handleSession = true } = {}) {
 /* ══ REGISTRO Y VERIFICACIÓN DEL CORREO ══ */
 
 // 201 con el User. No inicia sesión: se envía el enlace para verificar el correo
-export function register(data: { name: string; email: string; password: string; password_confirmation: string }) {
+export function register(data: {
+  name: string;
+  birth_date: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}) {
   return api<{ data: User }>('/auth/register', { method: 'POST', body: data });
 }
 

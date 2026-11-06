@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/atoms/Button';
-import { ArrowRightIcon, UserIcon } from '@/components/ui/atoms/icons';
+import { ArrowRightIcon, CalendarIcon, UserIcon } from '@/components/ui/atoms/icons';
 import { TextLink } from '@/components/ui/atoms/TextLink';
 import { FormField } from '@/components/ui/molecules/FormField';
 import { register } from '@/features/auth/api';
@@ -31,6 +31,7 @@ export function RegisterForm() {
     await run(async () => {
       await register({
         name: String(form.get('name')),
+        birth_date: String(form.get('birth_date')),
         email,
         password,
         password_confirmation: String(form.get('password_confirmation')),
@@ -55,6 +56,18 @@ export function RegisterForm() {
           placeholder="Ej. Laura Gómez"
           required
           error={fieldErrors.name}
+        />
+
+        {/* Edad mínima de 18 años: la valida la API con la fecha de Bogotá. El input date envía AAAA-MM-DD */}
+        <FormField
+          label="Fecha de nacimiento"
+          name="birth_date"
+          type="date"
+          autoComplete="bday"
+          icon={CalendarIcon}
+          required
+          helper="Debes ser mayor de 18 años para crear una cuenta."
+          error={fieldErrors.birth_date}
         />
 
         <FormField
