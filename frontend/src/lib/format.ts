@@ -13,3 +13,13 @@ export function formatMoney(value: number) {
 export function formatWait(seconds: number) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }
+
+// Iniciales para el Avatar: primera letra del primer y del segundo nombre. "Laura Gómez" → "LG", "Ana" → "A"
+export function initials(name: string) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toLocaleUpperCase('es-CO'))
+    .join('');
+}
