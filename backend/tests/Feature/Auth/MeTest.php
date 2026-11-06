@@ -8,7 +8,7 @@ beforeEach(function () {
 });
 
 it('devuelve el usuario de la sesión con los campos del contrato', function () {
-    $user = User::factory()->create(['name' => 'Ana Pérez', 'email' => 'ana@correo.com']);
+    $user = User::factory()->create(['name' => 'Ana Pérez', 'birth_date' => '1995-04-12', 'email' => 'ana@correo.com']);
 
     $this->actingAs($user)
         ->getJson('/api/v1/auth/me')
@@ -17,6 +17,7 @@ it('devuelve el usuario de la sesión con los campos del contrato', function () 
             'data' => [
                 'id' => $user->id,
                 'name' => 'Ana Pérez',
+                'birth_date' => '1995-04-12',
                 'email' => 'ana@correo.com',
                 'email_verified_at' => $user->email_verified_at->toIso8601ZuluString(),
                 'currency_code' => 'COP',
