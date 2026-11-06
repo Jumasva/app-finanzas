@@ -12,12 +12,13 @@ class RegisterUser
     public function __construct(private SendEmailVerification $sendEmailVerification) {}
 
     /**
-     * @param  array{name: string, email: string, password: string}  $data
+     * @param  array{name: string, birth_date: string, email: string, password: string}  $data
      */
     public function handle(array $data): User
     {
         $user = User::create([
             'name' => $data['name'],
+            'birth_date' => $data['birth_date'],
             'email' => $data['email'],
             'password' => $data['password'],
             'currency_code' => config('finance.default_currency'),

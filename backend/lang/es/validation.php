@@ -24,6 +24,11 @@ return [
 
     // Mensajes para un campo y una regla concretos
     'custom' => [
+        'birth_date' => [
+            'date_format' => 'Escribe una fecha de nacimiento válida.',
+            'before_or_equal' => 'Debes tener al menos :age años para crear una cuenta.',
+            'after_or_equal' => 'Escribe una fecha de nacimiento válida.',
+        ],
         'currency_code' => [
             'required' => 'Elige tu moneda.',
         ],
@@ -36,6 +41,7 @@ return [
     // Nombres de los campos tal como los ve el usuario
     'attributes' => [
         'name' => 'nombre',
+        'birth_date' => 'fecha de nacimiento',
         'email' => 'correo',
         'password' => 'contraseña',
         'current_password' => 'contraseña actual',

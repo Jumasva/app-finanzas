@@ -7,6 +7,14 @@ return [
     // Zona horaria de «hoy»: fechas futuras, vencimientos, avisos y períodos (RN-GEN-001)
     'timezone' => 'America/Bogota',
 
+    // Edad para registrarse. 18: mayoría de edad en Colombia (Código Civil, art. 34; Ley 27 de 1977),
+    // necesaria para aceptar los términos y autorizar el tratamiento de datos (Ley 1581 de 2012, art. 7).
+    // max_age solo descarta fechas imposibles
+    'registration' => [
+        'min_age' => 18,
+        'max_age' => 120,
+    ],
+
     // Moneda al crear la cuenta
     'default_currency' => 'COP',
 

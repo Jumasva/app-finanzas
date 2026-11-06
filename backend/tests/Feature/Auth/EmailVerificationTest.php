@@ -24,6 +24,7 @@ function verificationToken(User $user): string
 it('envía el enlace del frontend al registrarse', function () {
     $this->postJson('/api/v1/auth/register', [
         'name' => 'Ana',
+        'birth_date' => '1995-04-12',
         'email' => 'ana@correo.com',
         'password' => 'mi clave segura 7',
         'password_confirmation' => 'mi clave segura 7',

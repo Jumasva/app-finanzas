@@ -17,6 +17,8 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            // Fecha sin hora (AAAA-MM-DD). null solo en cuentas creadas antes de pedirla
+            'birth_date' => $this->birth_date?->toDateString(),
             'email' => $this->email,
             'email_verified_at' => $this->email_verified_at?->toIso8601ZuluString(),
             'currency_code' => $this->currency_code,
