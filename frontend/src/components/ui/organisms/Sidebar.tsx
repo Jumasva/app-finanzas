@@ -51,7 +51,12 @@ type SidebarPanelProps = {
 
 export function SidebarPanel({ collapsed = false, onToggle, onClose }: SidebarPanelProps) {
   return (
-    <div className={cn('flex h-full flex-col gap-8 overflow-y-auto py-6', collapsed ? 'items-center px-3' : 'px-5')}>
+    <div
+      className={cn(
+        'flex h-full flex-col gap-8 overflow-x-hidden overflow-y-auto py-6',
+        collapsed ? 'items-center px-3' : 'px-5',
+      )}
+    >
       <SidebarHeader collapsed={collapsed} onToggle={onToggle} onClose={onClose} />
 
       <nav
@@ -163,16 +168,19 @@ function UserCard({ collapsed }: { collapsed: boolean }) {
   if (!user) return null;
 
   const logoutButton = (
+    <Tooltip content="Cerrar sesión" placement={collapsed ? 'right' : 'top'}>
       <button
         type="button"
         onClick={logout}
         disabled={loggingOut}
         aria-label="Cerrar sesión"
         aria-busy={loggingOut || undefined}
-        className={iconButton}
+        // Acción de salida: al pasar el mouse se pone roja (danger) con el ícono blanco
+        className={cn(iconButton, 'hover:bg-danger hover:text-content-inverse')}
       >
         {loggingOut ? <LoaderIcon size={20} className="animate-spin" /> : <LogOutIcon size={20} />}
       </button>
+    </Tooltip>
   );
 
   return (

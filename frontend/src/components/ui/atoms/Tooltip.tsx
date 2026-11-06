@@ -1,6 +1,6 @@
 'use client';
 
-import { cloneElement, useId, useRef, useState } from 'react';
+import { cloneElement, useEffect, useId, useRef, useState } from 'react';
 import { cn } from '@/lib/cn';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
@@ -15,13 +15,31 @@ type TooltipProps = {
 /* ══ CLASES · Figma › Atomic Design › Tooltip ══ */
 /* Texto corto de ayuda al pasar el mouse o enfocar. Nunca para información importante: en móvil no hay hover */
 
-// Caja: separada 4 px del trigger + 6 px de flecha = 10 px (2.5)
+// Caja: separada 4 px del trigger + 6 px de flecha = 10 px
+const GAP = 10;
+
+// Va con position: fixed, medida desde el trigger al abrirse. Así no la recorta un contenedor con overflow
+// (el Sidebar colapsado, una tabla con scroll) ni lo hace crecer. El translate la centra sobre el punto
 const placements: Record<Placement, string> = {
-  top: 'bottom-full left-1/2 mb-2.5 -translate-x-1/2',
-  bottom: 'top-full left-1/2 mt-2.5 -translate-x-1/2',
-  left: 'right-full top-1/2 mr-2.5 -translate-y-1/2',
-  right: 'left-full top-1/2 ml-2.5 -translate-y-1/2',
+  top: '-translate-x-1/2 -translate-y-full',
+  bottom: '-translate-x-1/2',
+  left: '-translate-x-full -translate-y-1/2',
+  right: '-translate-y-1/2',
 };
+
+// El punto del trigger donde se ancla la caja, en coordenadas de la ventana
+function anchor(rect: DOMRect, placement: Placement) {
+  switch (placement) {
+    case 'top':
+      return { top: rect.top - GAP, left: rect.left + rect.width / 2 };
+    case 'bottom':
+      return { top: rect.bottom + GAP, left: rect.left + rect.width / 2 };
+    case 'left':
+      return { top: rect.top + rect.height / 2, left: rect.left - GAP };
+    case 'right':
+      return { top: rect.top + rect.height / 2, left: rect.right + GAP };
+  }
+}
 
 // Flecha de 6 px: un triángulo hecho con bordes, pegado al lado que mira al trigger
 const arrows: Record<Placement, string> = {
@@ -38,22 +56,44 @@ const DELAY = 300;
 
 export function Tooltip({ content, placement = 'top', children }: TooltipProps) {
   const id = useId();
-  const [open, setOpen] = useState(false);
+  const trigger = useRef<HTMLSpanElement>(null);
+  // null: cerrado. Con valor: abierto en esa posición
+  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   function show() {
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => setOpen(true), DELAY);
+    timer.current = setTimeout(() => {
+      if (trigger.current) setPosition(anchor(trigger.current.getBoundingClientRect(), placement));
+    }, DELAY);
   }
 
   function hide() {
     clearTimeout(timer.current);
-    setOpen(false);
+    setPosition(null);
   }
+
+  // Abierto, se cierra si la página o un contenedor hace scroll, o si cambia el tamaño de la ventana:
+  // la posición medida dejaría de coincidir con el trigger
+  const open = position !== null;
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setPosition(null);
+    window.addEventListener('scroll', close, true);
+    window.addEventListener('resize', close);
+    return () => {
+      window.removeEventListener('scroll', close, true);
+      window.removeEventListener('resize', close);
+    };
+  }, [open]);
+
+  // Se limpia el temporizador si el componente se desmonta antes de abrir
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   return (
     <span
-      className="relative inline-flex"
+      ref={trigger}
+      className="inline-flex"
       onMouseEnter={show}
       onMouseLeave={hide}
       onFocus={show}
@@ -69,10 +109,11 @@ export function Tooltip({ content, placement = 'top', children }: TooltipProps) 
         id={id}
         role="tooltip"
         className={cn(
-          'pointer-events-none absolute z-50 w-max max-w-[200px] rounded-sm bg-navy-900 px-2.5 py-1.5 text-label-sm text-white',
+          'pointer-events-none fixed z-50 w-max max-w-[200px] rounded-sm bg-navy-900 px-2.5 py-1.5 text-label-sm text-white',
           placements[placement],
           !open && 'hidden',
         )}
+        style={position ?? undefined}
       >
         {content}
         <span className={cn('absolute size-0', arrows[placement])} aria-hidden="true" />
