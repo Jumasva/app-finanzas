@@ -163,7 +163,6 @@ function UserCard({ collapsed }: { collapsed: boolean }) {
   if (!user) return null;
 
   const logoutButton = (
-    <Tooltip content="Cerrar sesión" placement={collapsed ? 'right' : 'top'}>
       <button
         type="button"
         onClick={logout}
@@ -174,7 +173,6 @@ function UserCard({ collapsed }: { collapsed: boolean }) {
       >
         {loggingOut ? <LoaderIcon size={20} className="animate-spin" /> : <LogOutIcon size={20} />}
       </button>
-    </Tooltip>
   );
 
   return (
