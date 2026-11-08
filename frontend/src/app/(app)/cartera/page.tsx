@@ -6,11 +6,5 @@ export const metadata: Metadata = { title: 'Cartera · Finanzas' };
 
 // Provisional hasta construir el módulo
 export default function CarteraPage() {
-  return (
-    <ComingSoon
-      title="Cartera"
-      icon={WalletIcon}
-      description="Aquí llevarás las deudas que tienes y lo que te deben."
-    />
-  );
+  return <ComingSoon icon={WalletIcon} description="Aquí llevarás las deudas que tienes y lo que te deben." />;
 }

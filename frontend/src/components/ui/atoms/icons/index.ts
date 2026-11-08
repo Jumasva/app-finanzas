@@ -39,6 +39,7 @@ export { TargetIcon } from './TargetIcon';
 /* Extras: los usan los átomos, aún no están en el set de Figma */
 export { EyeOffIcon } from './EyeOffIcon';
 export { ChevronLeftIcon } from './ChevronLeftIcon';
+export { ChevronRightIcon } from './ChevronRightIcon';
 export { LoaderIcon } from './LoaderIcon';
 export { DotIcon } from './DotIcon';
 export { ArrowUpRightIcon } from './ArrowUpRightIcon';

@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { MenuIcon } from '@/components/ui/atoms/icons';
 import { iconButton, SidebarPanel } from '@/components/ui/organisms/Sidebar';
+import { cn } from '@/lib/cn';
 
-/* ══ MOBILENAV · barra superior con el menú en un cajón, por debajo de 1024 px (lg) ══ */
+/* ══ MOBILENAV · botón del menú (va en la Topbar) y el cajón, por debajo de 1024 px (lg) ══ */
 /* Figma solo tiene el Sidebar de desktop (O01); en móvil y tablet el mismo contenido abre como cajón.
    Es un <dialog> modal: el navegador atrapa el foco, cierra con Escape y devuelve el foco al botón */
 
@@ -35,25 +34,16 @@ export function MobileNav() {
 
   return (
     <>
-      <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border-subtle bg-background-page px-4 lg:hidden">
-        <Link
-          href="/inicio"
-          className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
-        >
-          <Image src="/logo/logo_horizontal.svg" alt="Finanzas, ir al inicio" width={115} height={32} />
-        </Link>
-
-        <button
-          type="button"
-          onClick={openDrawer}
-          aria-label="Abrir menú"
-          aria-haspopup="dialog"
-          aria-expanded={open}
-          className={iconButton}
-        >
-          <MenuIcon size={24} />
-        </button>
-      </header>
+      <button
+        type="button"
+        onClick={openDrawer}
+        aria-label="Abrir menú"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        className={cn(iconButton, '-ml-2 lg:hidden')}
+      >
+        <MenuIcon size={24} />
+      </button>
 
       <dialog
         ref={dialog}
