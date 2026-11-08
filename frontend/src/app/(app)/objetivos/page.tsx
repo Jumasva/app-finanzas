@@ -6,11 +6,5 @@ export const metadata: Metadata = { title: 'Objetivos · Finanzas' };
 
 // Provisional hasta construir el módulo
 export default function ObjetivosPage() {
-  return (
-    <ComingSoon
-      title="Objetivos"
-      icon={TargetIcon}
-      description="Aquí crearás objetivos de ahorro y seguirás su progreso."
-    />
-  );
+  return <ComingSoon icon={TargetIcon} description="Aquí crearás objetivos de ahorro y seguirás su progreso." />;
 }

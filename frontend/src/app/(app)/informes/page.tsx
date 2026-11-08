@@ -7,10 +7,6 @@ export const metadata: Metadata = { title: 'Informes · Finanzas' };
 // Provisional hasta construir el módulo
 export default function InformesPage() {
   return (
-    <ComingSoon
-      title="Informes"
-      icon={ChartIcon}
-      description="Aquí verás informes de tus ingresos, egresos, objetivos y cartera."
-    />
+    <ComingSoon icon={ChartIcon} description="Aquí verás informes de tus ingresos, egresos, objetivos y cartera." />
   );
 }

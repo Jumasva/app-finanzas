@@ -6,5 +6,5 @@ export const metadata: Metadata = { title: 'Nuevo movimiento · Finanzas' };
 
 // Provisional hasta construir el módulo
 export default function NuevoMovimientoPage() {
-  return <ComingSoon title="Nuevo movimiento" icon={PlusIcon} description="Aquí registrarás un ingreso o un egreso." />;
+  return <ComingSoon icon={PlusIcon} description="Aquí registrarás un ingreso o un egreso." />;
 }

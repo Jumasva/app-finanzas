@@ -6,11 +6,5 @@ export const metadata: Metadata = { title: 'Movimientos · Finanzas' };
 
 // Provisional hasta construir el módulo
 export default function MovimientosPage() {
-  return (
-    <ComingSoon
-      title="Movimientos"
-      icon={ReceiptIcon}
-      description="Aquí registrarás tus ingresos y egresos y verás tu saldo."
-    />
-  );
+  return <ComingSoon icon={ReceiptIcon} description="Aquí registrarás tus ingresos y egresos y verás tu saldo." />;
 }

@@ -6,11 +6,5 @@ export const metadata: Metadata = { title: 'Historial · Finanzas' };
 
 // Provisional hasta construir el módulo
 export default function HistorialPage() {
-  return (
-    <ComingSoon
-      title="Historial"
-      icon={HistoryIcon}
-      description="Aquí consultarás todos tus registros y sus cambios."
-    />
-  );
+  return <ComingSoon icon={HistoryIcon} description="Aquí consultarás todos tus registros y sus cambios." />;
 }

@@ -8,7 +8,6 @@ export const metadata: Metadata = { title: 'Tarjetas · Finanzas' };
 export default function TarjetasPage() {
   return (
     <ComingSoon
-      title="Tarjetas"
       icon={CreditCardIcon}
       description="Aquí registrarás tus tarjetas de crédito, sus compras y sus pagos."
     />
