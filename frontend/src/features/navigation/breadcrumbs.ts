@@ -1,23 +1,29 @@
-import { generalNav, isActivePath, mainNav } from '@/features/navigation/items';
+import type { Crumb } from '@/components/ui/molecules/Breadcrumbs';
+import { generalNav, mainNav } from '@/features/navigation/items';
 
-export type Crumb = { label: string; href: string };
+/* ══ BREADCRUMBS · las migas de la barra superior a partir de la ruta ══ */
+/* Se parte la ruta en segmentos y cada uno acumula su href:
+   /ajustes/perfil → [/ajustes «Ajustes», /ajustes/perfil «Mi perfil»] */
 
-// Páginas que cuelgan de un módulo y su nombre en la barra superior. Se agregan aquí al crearlas
-const subpages: Record<string, string> = {
+// El nombre de cada ruta. Los módulos ya tienen nombre en la navegación; aquí solo van las subpáginas
+// cuyo nombre no sale del segmento (la URL no lleva tildes ni palabras extra: «nuevo» es «Nuevo movimiento»)
+const labels: Record<string, string> = {
+  ...Object.fromEntries([...mainNav, ...generalNav].map((item) => [item.href, item.label])),
   '/movimientos/nuevo': 'Nuevo movimiento',
   '/ajustes/perfil': 'Mi perfil',
 };
 
-/* ══ BREADCRUMBS · el título de la barra superior según la ruta ══ */
-/* /inicio → [Inicio] · /movimientos/nuevo → [Movimientos, Nuevo movimiento]. El último es la página actual */
+// Sin nombre registrado: el segmento con mayúscula inicial y guiones como espacios (seguridad → «Seguridad»)
+function labelFromSegment(segment: string) {
+  const text = segment.replaceAll('-', ' ');
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 
 export function breadcrumbs(pathname: string): Crumb[] {
-  const section = [...mainNav, ...generalNav].find((item) => isActivePath(pathname, item.href));
-  if (!section) return [];
+  const segments = pathname.split('/').filter(Boolean);
 
-  const crumbs: Crumb[] = [{ label: section.label, href: section.href }];
-  const subpage = subpages[pathname];
-  if (pathname !== section.href && subpage) crumbs.push({ label: subpage, href: pathname });
-
-  return crumbs;
+  return segments.map((segment, index) => {
+    const href = `/${segments.slice(0, index + 1).join('/')}`;
+    return { href, label: labels[href] ?? labelFromSegment(segment) };
+  });
 }
