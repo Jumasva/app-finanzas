@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Inter, Nunito } from 'next/font/google'; // importe de fuentes para el sistema
+import { ToastProvider } from '@/components/ui/organisms/ToastProvider';
 
 // fuentes: establecidas en diseño
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -14,7 +15,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="es" className={`${inter.variable} ${nunito.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {/* Los Toast (M09) se pueden mostrar desde cualquier pantalla con useToast() */}
+        <ToastProvider>{children}</ToastProvider>
+      </body>
     </html>
   );
 }
