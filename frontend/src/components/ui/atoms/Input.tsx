@@ -19,6 +19,8 @@ type InputProps = Omit<React.ComponentProps<'input'>, 'size' | 'type'> & {
   size?: Size;
   icon?: IconComponent;
   invalid?: boolean;
+  // Algo más dentro de la caja, a la derecha: el botón de limpiar del Search bar
+  suffix?: React.ReactNode;
 };
 
 /* ══ CLASES · Figma › Atomic Design › Input ══ */
@@ -60,6 +62,7 @@ export function Input({
   invalid = false,
   disabled = false,
   inputMode,
+  suffix,
   className,
   ...props
 }: InputProps) {
@@ -93,7 +96,7 @@ export function Input({
         disabled={disabled}
         aria-invalid={invalid || undefined}
         className={cn(
-          'min-w-0 flex-1 bg-transparent text-content-primary outline-none placeholder:text-content-tertiary disabled:cursor-not-allowed disabled:text-content-disabled disabled:placeholder:text-content-disabled',
+          'min-w-0 flex-1 bg-transparent text-content-primary outline-none placeholder:text-content-tertiary disabled:cursor-not-allowed disabled:text-content-disabled disabled:placeholder:text-content-disabled [&::-webkit-search-cancel-button]:hidden',
           isMoney && 'text-right font-medium tabular-nums',
         )}
       />
@@ -113,6 +116,8 @@ export function Input({
       )}
 
       {isMoney && <span className="text-body-sm text-content-tertiary">COP</span>}
+
+      {suffix}
     </div>
   );
 }
