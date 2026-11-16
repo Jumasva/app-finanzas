@@ -30,7 +30,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'sticky top-0 hidden h-screen shrink-0 border-r border-border-subtle bg-background-page transition-[width] duration-200 lg:block',
+        'sticky top-0 hidden h-dvh shrink-0 border-r border-border-subtle bg-background-page transition-[width] duration-200 lg:block',
         collapsed ? 'w-[72px]' : 'w-[264px]',
       )}
     >
@@ -53,7 +53,9 @@ export function SidebarPanel({ collapsed = false, onToggle, onClose }: SidebarPa
   return (
     <div
       className={cn(
-        'flex h-full flex-col gap-8 overflow-x-hidden overflow-y-auto py-6',
+        // Ventanas de menos de 900 px de alto: menos espacio entre bloques para que quepa sin scroll.
+        // El overflow-y-auto se queda: con más zoom o menos altura, el scroll es la forma de llegar abajo
+        'flex h-full flex-col gap-8 overflow-x-hidden overflow-y-auto py-6 [@media(max-height:900px)]:gap-5 [@media(max-height:900px)]:py-4',
         collapsed ? 'items-center px-3' : 'px-5',
       )}
     >
@@ -61,7 +63,10 @@ export function SidebarPanel({ collapsed = false, onToggle, onClose }: SidebarPa
 
       <nav
         aria-label="Principal"
-        className={cn('flex flex-1 flex-col justify-between gap-8', collapsed && 'items-center')}
+        className={cn(
+          'flex flex-1 flex-col justify-between gap-8 [@media(max-height:900px)]:gap-5',
+          collapsed && 'items-center',
+        )}
       >
         <NavSection title="Menú" items={mainNav} collapsed={collapsed} onNavigate={onClose} />
         <NavSection title="General" items={generalNav} collapsed={collapsed} onNavigate={onClose} />
