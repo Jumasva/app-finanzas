@@ -11,7 +11,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen">
         <Sidebar />
         {/* min-w-0: sin esto, una tabla ancha empujaría el contenido por debajo del Sidebar */}
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col ">
           <Topbar />
           <main className="flex-1">{children}</main>
         </div>
