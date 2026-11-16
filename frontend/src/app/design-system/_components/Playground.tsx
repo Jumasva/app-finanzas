@@ -284,3 +284,33 @@ export function Row({ label, children, className }: { label: string; children: R
     </div>
   );
 }
+
+/* ══ EJEMPLO · uso real de un componente controlado: vista en vivo + código para copiar ══ */
+/* Para moléculas y organismos que guardan estado (Select, Dialog…), donde los controles del Playground no alcanzan */
+
+export function Example({
+  title,
+  code,
+  children,
+  previewClassName,
+}: {
+  title: string;
+  code: string;
+  children: React.ReactNode;
+  previewClassName?: string;
+}) {
+  return (
+    <section className="flex flex-col gap-4">
+      <h2 className="text-h3">{title}</h2>
+      <div
+        className={cn(
+          'flex min-h-40 flex-wrap items-center justify-center gap-6 rounded-xl border border-neutral-100 bg-white p-8',
+          previewClassName,
+        )}
+      >
+        {children}
+      </div>
+      <CodeBlock code={code} />
+    </section>
+  );
+}
