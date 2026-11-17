@@ -46,7 +46,7 @@ export function Avatar({ name, size = 40, src, initials, status = false, classNa
         </span>
       ) : (
         // Placeholder: fondo neutral/50 e ícono user
-        <span className="grid size-full place-items-center rounded-full bg-neutral-50 text-neutral-500">
+        <span className="grid size-full place-items-center rounded-full bg-background-subtle text-content-tertiary">
           <UserIcon className={s.icon} />
         </span>
       )}
@@ -55,7 +55,7 @@ export function Avatar({ name, size = 40, src, initials, status = false, classNa
       {status && (
         <span
           aria-hidden="true"
-          className={cn('absolute right-0 bottom-0 rounded-full bg-green-600 ring-2 ring-white', s.status)}
+          className={cn('absolute right-0 bottom-0 rounded-full bg-success ring-2 ring-background-page', s.status)}
         />
       )}
     </span>

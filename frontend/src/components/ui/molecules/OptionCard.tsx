@@ -16,7 +16,7 @@ export function OptionCard({ title, description, icon, className, disabled, ...p
     <label
       className={cn(
         'group relative flex cursor-pointer items-start gap-3 rounded-lg border-[1.5px] border-border-subtle bg-background-page p-4 transition-colors',
-        'hover:border-neutral-400 has-checked:border-brand-primary has-checked:bg-background-brand-subtle',
+        'hover:border-border-default has-checked:border-brand-primary has-checked:bg-background-brand-subtle',
         'has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-border-focus',
         disabled && 'cursor-not-allowed opacity-60 hover:border-border-subtle',
         className,

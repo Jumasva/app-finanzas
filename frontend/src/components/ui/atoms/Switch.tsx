@@ -20,9 +20,9 @@ const track = [
   // El input es el riel: se le quita el dibujo del navegador
   'peer cursor-pointer appearance-none rounded-full bg-neutral-400 transition-colors',
   // On: verde
-  'checked:bg-emerald-600',
+  'checked:bg-brand-primary',
   // Hover sobre toda la fila: un tono más oscuro
-  'enabled:group-hover:bg-neutral-500 enabled:group-hover:checked:bg-emerald-700',
+  'enabled:group-hover:bg-neutral-500 enabled:group-hover:checked:bg-brand-primary-hover',
   // Deshabilitado: off gris claro, on verde claro
   'disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:checked:bg-emerald-200',
 ];
@@ -33,8 +33,8 @@ export function Switch({ size = 'md', disabled = false, className, children, ...
   return (
     <label
       className={cn(
-        'group inline-flex min-h-11 cursor-pointer items-center gap-2.5 text-body text-navy-900',
-        disabled && 'cursor-not-allowed text-neutral-300',
+        'group inline-flex min-h-11 cursor-pointer items-center gap-2.5 text-body text-content-primary',
+        disabled && 'cursor-not-allowed text-content-disabled',
         className,
       )}
     >
@@ -44,7 +44,7 @@ export function Switch({ size = 'md', disabled = false, className, children, ...
         {/* Knob: blanco con sombra nivel 1; se desliza cuando el input está marcado */}
         <span
           className={cn(
-            'pointer-events-none absolute top-0.5 left-0.5 rounded-full bg-white shadow-elevation-1 transition-transform',
+            'pointer-events-none absolute top-0.5 left-0.5 rounded-full bg-background-page shadow-elevation-1 transition-transform',
             sizes[size].knob,
           )}
           aria-hidden="true"

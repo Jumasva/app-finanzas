@@ -15,9 +15,9 @@ type SpinnerProps = Omit<React.ComponentProps<'span'>, 'children'> & {
 
 // Arco de color sobre un riel (track) más claro
 const colors: Record<Color, { arc: string; track: string }> = {
-  brand: { arc: 'stroke-emerald-600', track: 'stroke-neutral-100' },
+  brand: { arc: 'stroke-brand-primary', track: 'stroke-border-subtle' },
   'on-primary': { arc: 'stroke-white', track: 'stroke-white/30' },
-  neutral: { arc: 'stroke-neutral-500', track: 'stroke-neutral-100' },
+  neutral: { arc: 'stroke-content-tertiary', track: 'stroke-border-subtle' },
 };
 
 /* ══ SPINNER · indicador de carga circular ══ */

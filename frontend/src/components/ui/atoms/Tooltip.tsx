@@ -109,7 +109,7 @@ export function Tooltip({ content, placement = 'top', children }: TooltipProps) 
         id={id}
         role="tooltip"
         className={cn(
-          'pointer-events-none fixed z-50 w-max max-w-[200px] rounded-sm bg-navy-900 px-2.5 py-1.5 text-label-sm text-white',
+          'pointer-events-none fixed z-50 w-max max-w-[200px] rounded-sm bg-background-inverse px-2.5 py-1.5 text-label-sm text-content-inverse',
           placements[placement],
           !open && 'hidden',
         )}
