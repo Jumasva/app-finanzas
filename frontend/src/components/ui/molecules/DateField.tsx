@@ -1,14 +1,15 @@
 'use client';
 
-import { useCallback, useId, useRef, useState } from 'react';
+import { useId, useRef } from 'react';
 import { CalendarIcon } from '@/components/ui/atoms/icons';
-import { useDismiss } from '@/components/ui/hooks/useDismiss';
-import { FieldShell, helperIdFor, type FieldShellProps } from '@/components/ui/molecules/FieldShell';
+import { usePopover } from '@/components/ui/hooks/usePopover';
+import { describedBy, FieldShell, type FieldShellProps } from '@/components/ui/molecules/FieldShell';
 import { DatePicker } from '@/components/ui/organisms/DatePicker';
+import { fieldBase, fieldIconSizes, fieldIconState, fieldSizes, fieldState } from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
 import { formatDate } from '@/lib/date';
 
-type DateFieldProps = FieldShellProps & {
+type DateFieldProps = Omit<FieldShellProps, 'success' | 'labelAction'> & {
   // YYYY-MM-DD, como lo pide el contrato
   value: string | null;
   onChange: (value: string) => void;
@@ -20,7 +21,7 @@ type DateFieldProps = FieldShellProps & {
 };
 
 /* ══ DATEFIELD · Figma › Molecules › M15 Date field ══ */
-/* Caja de 48 px como el Input lg, con el calendario a la izquierda. Al abrir muestra el Date picker */
+/* La caja del Input lg con el calendario a la izquierda. Al abrir muestra el Date picker */
 
 export function DateField({
   value,
@@ -41,11 +42,14 @@ export function DateField({
   const generatedId = useId();
   const buttonId = id ?? generatedId;
   const dialogId = `${buttonId}-calendar`;
-  const root = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = useState(false);
-  const close = useCallback(() => setOpen(false), []);
-  useDismiss(root, open, close);
+  const { open, setOpen, root } = usePopover();
+  const invalid = Boolean(error);
+
+  function close() {
+    setOpen(false);
+    button.current?.focus();
+  }
 
   return (
     <FieldShell
@@ -64,8 +68,7 @@ export function DateField({
         onKeyDown={(event) => {
           if (event.key === 'Escape' && open) {
             event.preventDefault();
-            setOpen(false);
-            button.current?.focus();
+            close();
           }
         }}
       >
@@ -77,27 +80,20 @@ export function DateField({
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-controls={open ? dialogId : undefined}
-          aria-describedby={error || helper ? helperIdFor(buttonId) : undefined}
+          aria-describedby={describedBy(buttonId, { helper, error })}
           onClick={() => setOpen((current) => !current)}
           className={cn(
-            'flex h-12 w-full items-center gap-2.5 rounded-md border-[1.5px] bg-background-page px-3.5 text-left text-body-lg transition-colors',
-            disabled && 'cursor-not-allowed border-border-subtle bg-background-subtle text-content-disabled',
-            !disabled && error && 'border-danger ring-3 ring-danger-light',
-            !disabled && !error && open && 'border-border-focus ring-3 ring-emerald-100',
-            !disabled && !error && !open && 'border-border-default hover:border-neutral-500',
+            'group text-left outline-none',
+            fieldBase,
+            fieldSizes.lg,
+            fieldState({ invalid, disabled, open }),
           )}
         >
-          <CalendarIcon
-            className={cn(
-              'size-5',
-              disabled ? 'text-content-disabled' : open ? 'text-brand-primary' : 'text-content-tertiary',
-            )}
-          />
+          <CalendarIcon className={cn(fieldIconSizes.lg, fieldIconState({ invalid, disabled, open }))} />
           <span
             className={cn(
               'flex-1 tabular-nums',
-              !value && 'text-content-tertiary',
-              value && !disabled && 'text-content-primary',
+              disabled ? 'text-content-disabled' : value ? 'text-content-primary' : 'text-content-tertiary',
             )}
           >
             {value ? formatDate(value) : placeholder}
@@ -120,8 +116,7 @@ export function DateField({
               autoFocus
               onChange={(date) => {
                 onChange(date);
-                setOpen(false);
-                button.current?.focus();
+                close();
               }}
             />
           </div>

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { MenuIcon } from '@/components/ui/atoms/icons';
-import { iconButton, SidebarPanel } from '@/components/ui/organisms/Sidebar';
+import { SidebarPanel } from '@/components/ui/organisms/Sidebar';
+import { iconButton, modalBackdrop } from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
 
 /* ══ MOBILENAV · botón del menú (va en la Topbar) y el cajón, por debajo de 1024 px (lg) ══ */
@@ -52,7 +53,10 @@ export function MobileNav() {
         onClose={() => setOpen(false)}
         // Clic en el fondo oscuro: el panel ocupa todo el dialog, así que solo el fondo es el propio dialog
         onClick={(event) => event.target === event.currentTarget && closeDrawer()}
-        className="m-0 h-dvh max-h-none w-[min(300px,85vw)] max-w-none bg-background-page p-0 backdrop:bg-navy-900/40 lg:hidden"
+        className={cn(
+          'm-0 h-dvh max-h-none w-[min(300px,85vw)] max-w-none bg-background-page p-0 lg:hidden',
+          modalBackdrop,
+        )}
       >
         <SidebarPanel onClose={closeDrawer} />
       </dialog>

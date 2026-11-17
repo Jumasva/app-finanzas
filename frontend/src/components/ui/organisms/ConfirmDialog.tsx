@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useId, useRef } from 'react';
+import { useId, useRef } from 'react';
 import { Button } from '@/components/ui/atoms/Button';
-import { AlertIcon, InfoIcon } from '@/components/ui/atoms/icons';
+import { statusIcons, type IconComponent } from '@/components/ui/atoms/icons';
+import { useModal } from '@/components/ui/hooks/useModal';
+import { modalBackdrop, modalPanel } from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
 
-type Tone = 'danger' | 'default';
+type Tone = 'danger' | 'brand';
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -18,6 +20,7 @@ type ConfirmDialogProps = {
   // El verbo de la acción, nunca «Aceptar»: Anular, Desactivar
   confirmLabel: string;
   cancelLabel?: string;
+  // danger: acciones destructivas. brand: confirmaciones que no destruyen nada
   tone?: Tone;
   // Mientras la API responde: spinner en el botón y no se puede cerrar
   loading?: boolean;
@@ -26,11 +29,11 @@ type ConfirmDialogProps = {
 };
 
 /* ══ CLASES · Figma › Organisms › Confirm dialog ══ */
-/* 420 px, ícono de 48 en círculo, título 18 Nunito, botones grandes alineados a la derecha */
+/* 420 px, ícono de 24 en un círculo de 48, título 18 Nunito y botones grandes a la derecha */
 
-const tones: Record<Tone, { icon: typeof AlertIcon; circle: string; button: 'destructive' | 'primary' }> = {
-  danger: { icon: AlertIcon, circle: 'bg-danger-light text-danger', button: 'destructive' },
-  default: { icon: InfoIcon, circle: 'bg-background-brand-subtle text-brand-primary', button: 'primary' },
+const tones: Record<Tone, { icon: IconComponent; circle: string; button: 'destructive' | 'primary' }> = {
+  danger: { icon: statusIcons.danger, circle: 'bg-danger-light text-danger', button: 'destructive' },
+  brand: { icon: statusIcons.info, circle: 'bg-background-brand-subtle text-brand-primary', button: 'primary' },
 };
 
 /* ══ CONFIRMDIALOG · confirmar una acción que no se puede deshacer ══ */
@@ -48,21 +51,11 @@ export function ConfirmDialog({
   loading = false,
   children,
 }: ConfirmDialogProps) {
-  const dialog = useRef<HTMLDialogElement>(null);
   const cancel = useRef<HTMLButtonElement>(null);
+  const dialog = useModal(open, cancel);
   const titleId = useId();
   const descriptionId = useId();
   const { icon: Icon, circle, button } = tones[tone];
-
-  useEffect(() => {
-    const element = dialog.current;
-    if (!element) return;
-    if (open && !element.open) {
-      element.showModal();
-      cancel.current?.focus();
-    }
-    if (!open && element.open) element.close();
-  }, [open]);
 
   return (
     <dialog
@@ -70,11 +63,16 @@ export function ConfirmDialog({
       role="alertdialog"
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
+      // Escape: se cancela el cierre del navegador y decide el padre (loading lo impide)
       onCancel={(event) => {
         event.preventDefault();
         if (!loading) onClose();
       }}
-      className="m-auto w-[420px] max-w-[calc(100vw-2rem)] flex-col gap-4 rounded-xl border border-border-subtle bg-background-page p-6 text-content-primary shadow-elevation-3 backdrop:bg-navy-950/40 open:flex"
+      className={cn(
+        'm-auto w-[420px] max-w-[calc(100vw-2rem)] flex-col gap-4 rounded-xl p-6 open:flex',
+        modalPanel,
+        modalBackdrop,
+      )}
     >
       <span className={cn('grid size-12 place-items-center rounded-full', circle)}>
         <Icon size={24} />

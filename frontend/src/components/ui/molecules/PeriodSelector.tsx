@@ -1,4 +1,5 @@
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/atoms/icons';
+import { iconButton, iconButtonDisabled } from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
 
 type PeriodSelectorProps = {
@@ -17,8 +18,7 @@ type PeriodSelectorProps = {
 /* ══ CLASES · Figma › Molecules › M04 Period selector ══ */
 /* Alto 40, borde 1.5 px border/subtle, flechas de 32 × 32 con ícono de 18, texto 14 SemiBold */
 
-const arrow =
-  'grid size-8 shrink-0 place-items-center rounded-sm text-content-secondary transition-colors hover:bg-background-subtle hover:text-content-primary disabled:cursor-not-allowed disabled:text-content-disabled disabled:hover:bg-transparent';
+const arrow = cn(iconButton, iconButtonDisabled, 'size-8 rounded-sm');
 
 /* ══ PERIODSELECTOR · cambia el periodo que se está viendo (panel, movimientos, informes) ══ */
 

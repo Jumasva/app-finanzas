@@ -1,9 +1,20 @@
 'use client';
 
-import { useCallback, useId, useRef, useState } from 'react';
+import { useId, useState } from 'react';
 import { CheckIcon, ChevronDownIcon, type IconComponent } from '@/components/ui/atoms/icons';
-import { useDismiss } from '@/components/ui/hooks/useDismiss';
-import { FieldShell, helperIdFor, type FieldShellProps } from '@/components/ui/molecules/FieldShell';
+import { moveIndex } from '@/components/ui/hooks/moveIndex';
+import { usePopover } from '@/components/ui/hooks/usePopover';
+import { describedBy, FieldShell, type FieldShellProps } from '@/components/ui/molecules/FieldShell';
+import {
+  fieldBase,
+  fieldIconSizes,
+  fieldIconState,
+  fieldSizes,
+  fieldState,
+  listOption,
+  popoverPanel,
+  type FieldSize,
+} from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
 
 export type SelectOption = {
@@ -13,38 +24,22 @@ export type SelectOption = {
   leading?: React.ReactNode;
 };
 
-type Size = 'md' | 'lg';
-
-type SelectProps = FieldShellProps & {
+type SelectProps = Omit<FieldShellProps, 'success' | 'labelAction'> & {
   options: readonly SelectOption[];
   value: string | null;
   onChange: (value: string) => void;
   placeholder?: string;
   // Ícono fijo a la izquierda cuando la opción elegida no trae el suyo
   icon?: IconComponent;
-  size?: Size;
+  size?: FieldSize;
   // Para enviarlo en un <form>: va en un input oculto
   name?: string;
   id?: string;
 };
 
-/* ══ CLASES · Figma › Molecules › M13 Select ══ */
-/* Misma caja que el Input (borde 1.5, radio 10, alto 48 en lg y 40 en md). El menú es el de M14 */
-
-const sizes: Record<Size, string> = {
-  md: 'h-10 rounded-sm px-3 text-body-lg md:text-body',
-  lg: 'h-12 rounded-md px-3.5 text-body-lg',
-};
-
-function boxState({ open, invalid, disabled }: { open: boolean; invalid: boolean; disabled: boolean }) {
-  if (disabled) return 'cursor-not-allowed border-border-subtle bg-background-subtle text-content-disabled';
-  if (invalid) return 'border-danger ring-3 ring-danger-light';
-  if (open) return 'border-border-focus ring-3 ring-emerald-100';
-  return 'border-border-default hover:border-neutral-500';
-}
-
-/* ══ SELECT · elegir una opción de una lista (cuenta, categoría, moneda) ══ */
-/* Patrón «select-only combobox» de WAI-ARIA: el foco se queda en el botón y aria-activedescendant
+/* ══ SELECT · Figma › Molecules › M13 Select ══ */
+/* Elegir una opción de una lista (cuenta, categoría, moneda). La caja es la del Input y el menú el de M14.
+   Patrón «select-only combobox» de WAI-ARIA: el foco se queda en el botón y aria-activedescendant
    marca la opción. Flechas, Inicio, Fin, Enter y Escape; escribir una letra salta a la opción que empieza con ella */
 
 export function Select({
@@ -69,14 +64,12 @@ export function Select({
   const listId = `${buttonId}-list`;
   const optionId = (index: number) => `${buttonId}-option-${index}`;
 
-  const root = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
+  const { open, setOpen, root } = usePopover();
   const [active, setActive] = useState(0);
 
   const selectedIndex = options.findIndex((option) => option.value === value);
   const selected = options[selectedIndex];
-  const close = useCallback(() => setOpen(false), []);
-  useDismiss(root, open, close);
+  const invalid = Boolean(error);
 
   function openList() {
     setActive(Math.max(selectedIndex, 0));
@@ -89,9 +82,16 @@ export function Select({
   }
 
   function moveTo(index: number) {
-    const next = Math.min(Math.max(index, 0), options.length - 1);
-    setActive(next);
-    document.getElementById(optionId(next))?.scrollIntoView({ block: 'nearest' });
+    setActive(index);
+    document.getElementById(optionId(index))?.scrollIntoView({ block: 'nearest' });
+  }
+
+  // La siguiente opción que empieza con la letra escrita
+  function findByLetter(key: string) {
+    const letter = key.toLocaleLowerCase('es-CO');
+    const order = [...options.slice(active + 1), ...options.slice(0, active + 1)];
+    const match = order.find((option) => option.label.toLocaleLowerCase('es-CO').startsWith(letter));
+    return match ? options.indexOf(match) : undefined;
   }
 
   function onKeyDown(event: React.KeyboardEvent) {
@@ -103,44 +103,21 @@ export function Select({
       return;
     }
 
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        moveTo(active + 1);
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        moveTo(active - 1);
-        break;
-      case 'Home':
-        event.preventDefault();
-        moveTo(0);
-        break;
-      case 'End':
-        event.preventDefault();
-        moveTo(options.length - 1);
-        break;
-      case 'Enter':
-      case ' ':
-        event.preventDefault();
-        choose(active);
-        break;
-      case 'Escape':
-        event.preventDefault();
-        setOpen(false);
-        break;
-      case 'Tab':
-        setOpen(false);
-        break;
-      default:
-        // Una letra: la siguiente opción que empieza con ella
-        if (event.key.length === 1) {
-          const letter = event.key.toLocaleLowerCase('es-CO');
-          const start = active + 1;
-          const order = [...options.slice(start), ...options.slice(0, start)];
-          const match = order.find((option) => option.label.toLocaleLowerCase('es-CO').startsWith(letter));
-          if (match) moveTo(options.indexOf(match));
-        }
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      choose(active);
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Tab') {
+      setOpen(false);
+    } else {
+      const next =
+        moveIndex(event.key, active, options.length, { axis: 'vertical', wrap: false }) ??
+        (event.key.length === 1 ? findByLetter(event.key) : undefined);
+      if (next === undefined) return;
+      event.preventDefault();
+      moveTo(next);
     }
   }
 
@@ -164,27 +141,25 @@ export function Select({
           aria-expanded={open}
           aria-controls={listId}
           aria-activedescendant={open ? optionId(active) : undefined}
-          aria-invalid={Boolean(error) || undefined}
+          aria-invalid={invalid || undefined}
           aria-required={required || undefined}
-          aria-describedby={error || helper ? helperIdFor(buttonId) : undefined}
+          aria-describedby={describedBy(buttonId, { helper, error })}
           disabled={disabled}
           onClick={() => (open ? setOpen(false) : openList())}
           onKeyDown={onKeyDown}
           className={cn(
-            'flex w-full items-center gap-2.5 border-[1.5px] bg-background-page text-left transition-colors',
-            sizes[size],
-            boxState({ open, invalid: Boolean(error), disabled }),
+            'group text-left outline-none',
+            fieldBase,
+            fieldSizes[size],
+            fieldState({ invalid, disabled, open }),
           )}
         >
           {selected?.leading ??
-            (Icon && (
-              <Icon className={cn('size-[18px]', disabled ? 'text-content-disabled' : 'text-content-tertiary')} />
-            ))}
+            (Icon && <Icon className={cn(fieldIconSizes[size], fieldIconState({ invalid, disabled, open }))} />)}
           <span
             className={cn(
               'min-w-0 flex-1 truncate',
-              !selected && 'text-content-tertiary',
-              selected && !disabled && 'text-content-primary',
+              disabled ? 'text-content-disabled' : selected ? 'text-content-primary' : 'text-content-tertiary',
             )}
           >
             {selected?.label ?? placeholder}
@@ -203,10 +178,10 @@ export function Select({
         <ul
           id={listId}
           role="listbox"
-          aria-labelledby={label ? undefined : buttonId}
           aria-label={label}
+          aria-labelledby={label ? undefined : buttonId}
           hidden={!open}
-          className="absolute top-full right-0 left-0 z-40 mt-1.5 max-h-72 overflow-y-auto rounded-lg border border-border-subtle bg-background-page p-1 shadow-elevation-2"
+          className={cn(popoverPanel, 'absolute inset-x-0 top-full z-40 mt-1.5 max-h-72 overflow-y-auto p-1')}
         >
           {options.map((option, index) => {
             const isSelected = option.value === value;
@@ -221,7 +196,8 @@ export function Select({
                 onClick={() => choose(index)}
                 onMouseMove={() => setActive(index)}
                 className={cn(
-                  'flex h-10 cursor-pointer items-center gap-2.5 rounded-sm px-3 text-body text-content-primary',
+                  listOption,
+                  'cursor-pointer gap-2.5',
                   index === active && 'bg-background-subtle',
                   isSelected && 'bg-background-brand-subtle font-semibold',
                 )}

@@ -1,4 +1,4 @@
-import { AlertIcon, InfoIcon, OkIcon, XIcon, type IconComponent } from '@/components/ui/atoms/icons';
+import { statusIcons, XIcon, type Status } from '@/components/ui/atoms/icons';
 import { cn } from '@/lib/cn';
 
 export type ToastTone = 'success' | 'danger' | 'neutral';
@@ -15,17 +15,19 @@ export type ToastProps = {
 /* ══ CLASES · Figma › Molecules › M09 Toast ══ */
 /* Fondo navy/900, texto blanco 14, sombra nivel 3, ancho de 360 a 400. La acción va en emerald/300 */
 
-const tones: Record<ToastTone, { icon: IconComponent; color: string }> = {
-  success: { icon: OkIcon, color: 'text-emerald-300' },
-  danger: { icon: AlertIcon, color: 'text-red-300' },
-  neutral: { icon: InfoIcon, color: 'text-navy-200' },
+// Sobre el fondo oscuro los íconos van en los tonos 300 (200 el neutro) para que contrasten
+const tones: Record<ToastTone, { status: Status; color: string }> = {
+  success: { status: 'success', color: 'text-emerald-300' },
+  danger: { status: 'danger', color: 'text-red-300' },
+  neutral: { status: 'info', color: 'text-navy-200' },
 };
 
 /* ══ TOAST · confirmación temporal después de una acción ══ */
 /* Solo la vista. Mostrarlo, apilarlo y quitarlo a los segundos lo hace ToastProvider (useToast) */
 
 export function Toast({ message, tone = 'neutral', action, onClose, className }: ToastProps) {
-  const { icon: Icon, color } = tones[tone];
+  const { status, color } = tones[tone];
+  const Icon = statusIcons[status];
 
   return (
     <div

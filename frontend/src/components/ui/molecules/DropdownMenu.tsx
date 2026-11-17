@@ -1,9 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import Link from 'next/link';
 import { LoaderIcon, MoreHorizontalIcon, type IconComponent } from '@/components/ui/atoms/icons';
-import { useDismiss } from '@/components/ui/hooks/useDismiss';
+import { moveIndex } from '@/components/ui/hooks/moveIndex';
+import { usePopover } from '@/components/ui/hooks/usePopover';
+import { iconButton, listOption, popoverPanel } from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
 
 export type DropdownMenuItem =
@@ -40,8 +42,10 @@ type DropdownMenuProps = {
 /* ══ CLASES · Figma › Molecules › M14 Dropdown menu ══ */
 /* 240 px de ancho, radio 12, sombra nivel 2, opciones de 40 px con ícono de 18 */
 
-const itemClass =
-  'flex h-10 w-full items-center gap-3 rounded-sm px-3 text-body text-content-primary outline-none transition-colors hover:bg-background-subtle focus-visible:bg-background-subtle disabled:cursor-not-allowed disabled:text-content-disabled';
+const itemClass = cn(
+  listOption,
+  'hover:bg-background-subtle focus-visible:bg-background-subtle disabled:cursor-not-allowed disabled:text-content-disabled',
+);
 
 const dangerClass = 'text-danger-dark hover:bg-danger-light focus-visible:bg-danger-light';
 
@@ -63,18 +67,15 @@ export function DropdownMenu({
   align = 'end',
   className,
 }: DropdownMenuProps) {
-  const [open, setOpen] = useState(false);
-  const root = useRef<HTMLDivElement>(null);
+  const { open, setOpen, root } = usePopover();
   const button = useRef<HTMLButtonElement>(null);
   const menu = useRef<HTMLDivElement>(null);
   const menuId = useId();
 
-  const close = useCallback(({ returnFocus = false } = {}) => {
+  function close({ returnFocus = false } = {}) {
     setOpen(false);
     if (returnFocus) button.current?.focus();
-  }, []);
-  const dismiss = useCallback(() => close(), [close]);
-  useDismiss(root, open, dismiss);
+  }
 
   // Al abrir, el foco pasa a la primera opción
   useEffect(() => {
@@ -82,36 +83,24 @@ export function DropdownMenu({
   }, [open]);
 
   function onMenuKeyDown(event: React.KeyboardEvent) {
-    const list = menuItems(menu.current);
-    const index = list.indexOf(document.activeElement as HTMLElement);
-    const focus = (i: number) => list[(i + list.length) % list.length]?.focus();
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        focus(index + 1);
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        focus(index - 1);
-        break;
-      case 'Home':
-        event.preventDefault();
-        focus(0);
-        break;
-      case 'End':
-        event.preventDefault();
-        focus(list.length - 1);
-        break;
-      case 'Escape':
-        event.preventDefault();
-        close({ returnFocus: true });
-        break;
-      case 'Tab':
-        // Tab sale del menú hacia el siguiente elemento de la página
-        close();
-        break;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close({ returnFocus: true });
+      return;
     }
+    // Tab sale del menú hacia el siguiente elemento de la página
+    if (event.key === 'Tab') {
+      close();
+      return;
+    }
+
+    const list = menuItems(menu.current);
+    const next = moveIndex(event.key, list.indexOf(document.activeElement as HTMLElement), list.length, {
+      axis: 'vertical',
+    });
+    if (next === undefined) return;
+    event.preventDefault();
+    list[next]?.focus();
   }
 
   return (
@@ -131,9 +120,8 @@ export function DropdownMenu({
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         className={cn(
-          !trigger &&
-            'grid size-8 place-items-center rounded-sm text-content-secondary transition-colors hover:bg-background-subtle hover:text-content-primary',
-          open && !trigger && 'bg-background-subtle text-content-primary',
+          // Sin trigger propio: el botón gris de solo ícono, de 32 px
+          !trigger && cn(iconButton, 'size-8 rounded-sm', open && 'bg-background-subtle text-content-primary'),
           triggerClassName,
         )}
       >
@@ -148,7 +136,8 @@ export function DropdownMenu({
           aria-label={label}
           onKeyDown={onMenuKeyDown}
           className={cn(
-            'absolute top-full z-40 mt-2 flex w-60 flex-col rounded-lg border border-border-subtle bg-background-page p-1.5 shadow-elevation-2',
+            popoverPanel,
+            'absolute top-full z-40 mt-2 flex w-60 flex-col p-1.5',
             align === 'end' ? 'right-0' : 'left-0',
           )}
         >
