@@ -55,3 +55,12 @@ export { SettingsIcon } from './SettingsIcon';
 export { LogOutIcon } from './LogOutIcon';
 export { PanelLeftIcon } from './PanelLeftIcon';
 export { MenuIcon } from './MenuIcon';
+
+/* Moléculas y organismos (Figma › Molecules y Organisms) */
+export { MoreHorizontalIcon } from './MoreHorizontalIcon';
+export { FilterIcon } from './FilterIcon';
+export { PencilIcon } from './PencilIcon';
+export { WifiOffIcon } from './WifiOffIcon';
+
+/* El ícono de cada estado: info, success, warning, danger */
+export { statusIcons, type Status } from './statusIcons';

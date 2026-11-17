@@ -23,7 +23,7 @@ export function Divider({ orientation = 'horizontal', inset = false, label, clas
   // Sin role="separator": ese rol esconde su contenido y el lector no leería el texto
   if (label) {
     return (
-      <div className={cn('flex items-center gap-3 text-body-sm text-neutral-500', className)} {...props}>
+      <div className={cn('flex items-center gap-3 text-body-sm text-content-tertiary', className)} {...props}>
         <span className={cn(line, 'h-px flex-1')} aria-hidden="true" />
         {label}
         <span className={cn(line, 'h-px flex-1')} aria-hidden="true" />

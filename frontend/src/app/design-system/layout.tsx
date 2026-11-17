@@ -7,7 +7,7 @@ export default function DesignSystemLayout({ children }: LayoutProps<'/design-sy
 
   return (
     <div className="flex flex-1">
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 overflow-y-auto border-r border-neutral-100 p-6 md:block">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 overflow-y-auto border-r border-border-subtle p-6 md:block">
         <Nav />
       </aside>
 

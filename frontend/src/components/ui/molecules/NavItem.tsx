@@ -64,7 +64,10 @@ function NavLink({ item, collapsed = false, onNavigate, active }: NavItemProps &
         />
       )}
 
-      <Icon size={20} className={active ? 'text-brand-primary' : 'text-neutral-600 group-hover:text-content-primary'} />
+      <Icon
+        size={20}
+        className={active ? 'text-brand-primary' : 'text-content-secondary group-hover:text-content-primary'}
+      />
 
       {/* Colapsado el texto no se ve, pero sigue siendo el nombre del enlace */}
       <span className={cn('truncate', collapsed && 'sr-only')}>{label}</span>

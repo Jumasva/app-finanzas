@@ -16,9 +16,9 @@ const base =
 
 // Borde, fondo y texto según el estado
 function chipState(selected: boolean, disabled: boolean) {
-  if (disabled) return 'border-transparent bg-neutral-50 text-neutral-300';
-  if (selected) return 'border-emerald-600 bg-emerald-50 text-emerald-700 hover:bg-emerald-100';
-  return 'border-neutral-100 bg-white text-navy-900 hover:border-neutral-400 hover:bg-neutral-50';
+  if (disabled) return 'border-transparent bg-background-subtle text-content-disabled';
+  if (selected) return 'border-brand-primary bg-background-brand-subtle text-content-link hover:bg-emerald-100';
+  return 'border-border-subtle bg-background-page text-content-primary hover:border-border-default hover:bg-background-subtle';
 }
 
 // En móvil la zona táctil crece 6 px arriba y abajo (32 → 44) sin cambiar lo que se ve

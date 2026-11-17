@@ -2,12 +2,12 @@ import { ArrowDownRightIcon, ArrowUpRightIcon } from '@/components/ui/atoms/icon
 import { cn } from '@/lib/cn';
 import { formatMoney } from '@/lib/format';
 
-type Type = 'income' | 'expense' | 'neutral';
+export type AmountType = 'income' | 'expense' | 'neutral';
 type Size = 'sm' | 'base' | 'lg' | 'display';
 
 type AmountProps = Omit<React.ComponentProps<'span'>, 'children'> & {
   value: number;
-  type?: Type;
+  type?: AmountType;
   size?: Size;
   // Flecha opcional, solo en sm y base
   arrow?: boolean;
@@ -16,10 +16,11 @@ type AmountProps = Omit<React.ComponentProps<'span'>, 'children'> & {
 /* ══ CLASES · Figma › Atomic Design › Amount ══ */
 /* El signo siempre acompaña al color, para que se entienda sin depender del rojo y el verde */
 
-const types: Record<Type, { color: string; sign: string }> = {
+// Lo usa también Amount entry (M15), para que el monto que se escribe se vea igual al que se muestra
+export const amountTypes: Record<AmountType, { color: string; sign: string }> = {
   income: { color: 'text-green-700', sign: '+' },
   expense: { color: 'text-red-700', sign: '-' },
-  neutral: { color: 'text-navy-900', sign: '' },
+  neutral: { color: 'text-content-primary', sign: '' },
 };
 
 // Cifras tabulares en todos los tamaños
@@ -41,13 +42,13 @@ export function Amount({ value, type = 'neutral', size = 'base', arrow = false, 
       className={cn(
         'inline-flex items-center gap-1.5 whitespace-nowrap tabular-nums',
         sizes[size].text,
-        types[type].color,
+        amountTypes[type].color,
         className,
       )}
       {...props}
     >
       {showArrow && <ArrowIcon className={sizes[size].arrow} />}
-      {types[type].sign}
+      {amountTypes[type].sign}
       {formatMoney(value)}
     </span>
   );

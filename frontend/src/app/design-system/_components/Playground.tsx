@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import * as Icons from '@/components/ui/atoms/icons';
 import type { IconComponent } from '@/components/ui/atoms/icons';
+import { Chip } from '@/components/ui/atoms/Chip';
+import { Input } from '@/components/ui/atoms/Input';
 import { Switch } from '@/components/ui/atoms/Switch';
+import { Select } from '@/components/ui/molecules/Select';
 import { cn } from '@/lib/cn';
 
 /* ══ TIPOS ══ */
@@ -33,6 +36,9 @@ type PlaygroundProps = {
   render: (props: PreviewProps) => React.ReactNode;
   // Props que siempre van, no se cambian: href="#", name="periodo"…
   staticProps?: Record<string, string>;
+  // Props que solo se escriben en el código, tal cual: value={category}, onChange={setCategory}.
+  // Son las que la vista maneja por dentro (componentes controlados)
+  codeProps?: string[];
   // JSX que va dentro de la etiqueta cuando no es un texto (Tooltip)
   childrenCode?: string;
   extraImports?: string[];
@@ -45,6 +51,12 @@ const iconMap = Icons as unknown as Record<string, IconComponent>;
 export const iconNames = Object.keys(iconMap)
   .filter((name) => name.endsWith('Icon'))
   .sort();
+
+// Opciones del control de íconos: cada nombre con su ícono
+const iconOptions = iconNames.map((name) => {
+  const Icon = iconMap[name];
+  return { value: name, label: name, leading: <Icon size={16} className="text-content-secondary" /> };
+});
 
 export function getIcon(name?: string) {
   return name ? iconMap[name] : undefined;
@@ -75,6 +87,7 @@ function buildCode({
   controls,
   values,
   staticProps,
+  codeProps = [],
   childrenCode,
   extraImports = [],
 }: Omit<PlaygroundProps, 'render'> & { values: Values }) {
@@ -91,6 +104,7 @@ function buildCode({
   const props = [
     ...controls.map((c) => propCode(c, values[c.prop])),
     ...Object.entries(staticProps ?? {}).map(([prop, value]) => `${prop}="${value}"`),
+    ...codeProps,
   ].filter(Boolean);
 
   const children = childrenCode ?? (values.children ? String(values.children) : '');
@@ -116,7 +130,7 @@ function ControlField({
   value: Values[string];
   onChange: (value: Values[string]) => void;
 }) {
-  const label = <span className="font-mono text-body-sm text-neutral-600">{control.prop}</span>;
+  const label = <span className="font-mono text-body-sm text-content-secondary">{control.prop}</span>;
 
   if (control.type === 'boolean') {
     return (
@@ -126,60 +140,42 @@ function ControlField({
     );
   }
 
+  // Opciones fijas: un Chip por opción (Figma › Chip: filtra o selecciona)
   if (control.type === 'select') {
     return (
-      <div className="flex flex-col gap-1.5">
+      <div role="group" aria-label={control.prop} className="flex flex-col gap-1.5">
         {label}
         <div className="flex flex-wrap gap-1.5">
           {control.options.map((option) => (
-            <button
-              key={option}
-              type="button"
-              aria-pressed={value === option}
-              onClick={() => onChange(option)}
-              className={cn(
-                'rounded-sm border px-2.5 py-1 text-label-sm transition-colors',
-                value === option
-                  ? 'border-emerald-600 bg-emerald-600 text-white'
-                  : 'border-neutral-100 bg-white text-navy-900 hover:border-neutral-400',
-              )}
-            >
-              {option}
-            </button>
+            <Chip key={option} selected={value === option} onClick={() => onChange(option)}>
+              {String(option)}
+            </Chip>
           ))}
         </div>
       </div>
     );
   }
 
+  // Un ícono del set: el Select del design system, con el ícono a la izquierda de cada nombre
   if (control.type === 'icon') {
     return (
-      <label className="flex flex-col gap-1.5">
-        {label}
-        <select
-          value={String(value ?? '')}
-          onChange={(event) => onChange(event.target.value || undefined)}
-          className="h-9 rounded-sm border border-neutral-400 bg-white px-2 text-body"
-        >
-          {!control.required && <option value="">— ninguno —</option>}
-          {iconNames.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
-      </label>
+      <Select
+        label={control.prop}
+        size="md"
+        options={[...(control.required ? [] : [{ value: '', label: '— ninguno —' }]), ...iconOptions]}
+        value={String(value ?? '')}
+        onChange={(name) => onChange(name || undefined)}
+      />
     );
   }
 
   return (
     <label className="flex flex-col gap-1.5">
       {label}
-      <input
+      <Input
         type={control.type === 'number' ? 'number' : 'text'}
         value={String(value ?? '')}
         onChange={(event) => onChange(control.type === 'number' ? Number(event.target.value) : event.target.value)}
-        className="h-9 rounded-sm border border-neutral-400 bg-white px-2 text-body"
       />
     </label>
   );
@@ -209,7 +205,7 @@ export function Playground({ render, previewClassName, ...config }: PlaygroundPr
         {/* La key vuelve a montar el átomo al cambiar una prop: así defaultChecked, defaultValue… se aplican */}
         <div
           className={cn(
-            'flex min-h-56 items-center justify-center rounded-xl border border-neutral-100 bg-white p-8',
+            'flex min-h-56 items-center justify-center rounded-xl border border-border-subtle bg-background-page p-8',
             previewClassName,
           )}
         >
@@ -218,8 +214,8 @@ export function Playground({ render, previewClassName, ...config }: PlaygroundPr
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 rounded-xl border border-neutral-100 bg-neutral-50/50 p-5">
-          <span className="text-overline text-neutral-500 uppercase">Props</span>
+        <div className="flex flex-col gap-4 rounded-xl border border-border-subtle bg-background-subtle/50 p-5">
+          <span className="text-overline text-content-tertiary uppercase">Props</span>
           {config.controls.map((control) => (
             <ControlField
               key={control.prop}
@@ -255,7 +251,7 @@ export function CodeBlock({ code }: { code: string }) {
       <button
         type="button"
         onClick={copy}
-        className="absolute top-3 right-3 rounded-sm bg-navy-800 px-2.5 py-1 text-label-sm text-white hover:bg-navy-700"
+        className="absolute top-3 right-3 rounded-sm bg-navy-800 px-2.5 py-1 text-label-sm text-content-inverse hover:bg-navy-700"
       >
         {copied ? 'Copiado' : 'Copiar'}
       </button>
@@ -269,7 +265,7 @@ export function Gallery({ title = 'Todas las variantes', children }: { title?: s
   return (
     <section className="flex flex-col gap-4">
       <h2 className="text-h3">{title}</h2>
-      <div className="flex flex-col divide-y divide-neutral-100 rounded-xl border border-neutral-100 bg-white px-6">
+      <div className="flex flex-col divide-y divide-border-subtle rounded-xl border border-border-subtle bg-background-page px-6">
         {children}
       </div>
     </section>
@@ -279,8 +275,38 @@ export function Gallery({ title = 'Todas las variantes', children }: { title?: s
 export function Row({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (
     <div className="flex flex-col gap-3 py-5 md:flex-row md:items-center md:gap-6">
-      <span className="w-36 shrink-0 font-mono text-body-sm text-neutral-500">{label}</span>
+      <span className="w-36 shrink-0 font-mono text-body-sm text-content-tertiary">{label}</span>
       <div className={cn('flex flex-wrap items-center gap-4', className)}>{children}</div>
     </div>
+  );
+}
+
+/* ══ EJEMPLO · uso real de un componente controlado: vista en vivo + código para copiar ══ */
+/* Para moléculas y organismos que guardan estado (Select, Dialog…), donde los controles del Playground no alcanzan */
+
+export function Example({
+  title,
+  code,
+  children,
+  previewClassName,
+}: {
+  title: string;
+  code: string;
+  children: React.ReactNode;
+  previewClassName?: string;
+}) {
+  return (
+    <section className="flex flex-col gap-4">
+      <h2 className="text-h3">{title}</h2>
+      <div
+        className={cn(
+          'flex min-h-40 flex-wrap items-center justify-center gap-6 rounded-xl border border-border-subtle bg-background-page p-8',
+          previewClassName,
+        )}
+      >
+        {children}
+      </div>
+      <CodeBlock code={code} />
+    </section>
   );
 }

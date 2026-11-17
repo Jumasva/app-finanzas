@@ -19,7 +19,7 @@ const base =
   'inline-flex min-w-16 shrink-0 items-center justify-center gap-2 whitespace-nowrap transition-colors select-none';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand-primary text-brand-on-primary hover:bg-emerald-700 active:bg-emerald-800',
+  primary: 'bg-brand-primary text-brand-on-primary hover:bg-brand-primary-hover active:bg-emerald-800',
   secondary:
     'border-[1.5px] border-brand-primary bg-background-page text-content-link hover:bg-background-brand-subtle active:bg-emerald-100',
   tertiary: 'text-content-link hover:bg-background-brand-subtle active:bg-emerald-100',
