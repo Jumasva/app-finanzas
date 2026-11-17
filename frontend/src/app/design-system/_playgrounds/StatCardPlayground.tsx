@@ -3,7 +3,7 @@
 import { CategoryIcon } from '@/components/ui/atoms/CategoryIcon';
 import { ArrowDownRightIcon, ArrowUpRightIcon, TargetIcon, WalletIcon } from '@/components/ui/atoms/icons';
 import { StatCard } from '@/components/ui/molecules/StatCard';
-import { Example, Playground } from '../_components/Playground';
+import { Gallery, Playground } from '../_components/Playground';
 
 export function StatCardPlayground() {
   return (
@@ -15,6 +15,7 @@ export function StatCardPlayground() {
           { type: 'text', prop: 'label', default: 'Gastos' },
           { type: 'number', prop: 'value', default: 2180400 },
         ]}
+        codeProps={["delta={{ percent: 8, tone: 'bad', caption: 'vs. septiembre' }}"]}
         render={(props) => (
           <StatCard
             {...(props as React.ComponentProps<typeof StatCard>)}
@@ -22,18 +23,10 @@ export function StatCardPlayground() {
             className="w-64"
           />
         )}
-        codeProps={["delta={{ percent: 8, tone: 'bad', caption: 'vs. septiembre' }}"]}
       />
-      <Example
-        title="Fila del panel"
-        code={`<StatCard
-  label="Gastos"
-  value={2180400}
-  icon={<CategoryIcon icon={ArrowDownRightIcon} color="red" size={32} shape="square" />}
-  delta={{ percent: 8, tone: 'bad', caption: 'vs. septiembre' }}
-/>`}
-      >
-        <div className="grid w-full gap-4 sm:grid-cols-2 xl:grid-cols-4">
+
+      <Gallery title="Fila del panel">
+        <div className="grid w-full gap-4 py-5 sm:grid-cols-2 xl:grid-cols-4">
           <StatCard
             label="Ingresos"
             value={4250000}
@@ -59,7 +52,7 @@ export function StatCardPlayground() {
             delta={{ percent: -5, tone: 'good', caption: 'vs. septiembre' }}
           />
         </div>
-      </Example>
+      </Gallery>
     </>
   );
 }

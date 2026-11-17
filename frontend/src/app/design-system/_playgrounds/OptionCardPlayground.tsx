@@ -3,7 +3,7 @@
 import { CategoryIcon } from '@/components/ui/atoms/CategoryIcon';
 import { CreditCardIcon, ReceiptIcon, WalletIcon } from '@/components/ui/atoms/icons';
 import { OptionCard } from '@/components/ui/molecules/OptionCard';
-import { Example, Playground } from '../_components/Playground';
+import { Gallery, Playground } from '../_components/Playground';
 
 export function OptionCardPlayground() {
   return (
@@ -17,6 +17,7 @@ export function OptionCardPlayground() {
           { type: 'boolean', prop: 'defaultChecked', default: true },
           { type: 'boolean', prop: 'disabled' },
         ]}
+        codeProps={['name="payment_method"', 'value="cash"', 'icon={<CategoryIcon … />}']}
         render={(props) => (
           <OptionCard
             {...(props as React.ComponentProps<typeof OptionCard>)}
@@ -25,18 +26,11 @@ export function OptionCardPlayground() {
             className="w-80"
           />
         )}
-        codeProps={['name="payment_method"', 'icon={<CategoryIcon … />}']}
       />
-      <Example
-        title="Grupo de opciones (las flechas cambian de opción)"
-        code={`<fieldset>
-  <legend>Medio de pago</legend>
-  <OptionCard name="payment_method" value="cash" title="Efectivo" description="…" icon={<CategoryIcon … />} defaultChecked />
-  <OptionCard name="payment_method" value="debit" title="Débito" description="…" icon={<CategoryIcon … />} />
-</fieldset>`}
-      >
-        <fieldset className="grid w-full gap-3 md:grid-cols-3">
-          <legend className="mb-3 text-label">Medio de pago</legend>
+
+      <Gallery title="Grupo: las flechas cambian de opción">
+        <fieldset className="grid w-full gap-3 py-5 md:grid-cols-3">
+          <legend className="sr-only">Medio de pago</legend>
           <OptionCard
             name="payment_method"
             value="cash"
@@ -61,7 +55,7 @@ export function OptionCardPlayground() {
             disabled
           />
         </fieldset>
-      </Example>
+      </Gallery>
     </>
   );
 }

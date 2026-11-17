@@ -1,9 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/atoms/Button';
-import { PlusIcon, ReceiptIcon, SearchIcon, TargetIcon } from '@/components/ui/atoms/icons';
+import { PlusIcon, SearchIcon } from '@/components/ui/atoms/icons';
 import { EmptyState } from '@/components/ui/molecules/EmptyState';
-import { Example, Playground } from '../_components/Playground';
+import { Gallery, Playground, Row } from '../_components/Playground';
 
 export function EmptyStatePlayground() {
   return (
@@ -19,8 +19,11 @@ export function EmptyStatePlayground() {
             prop: 'description',
             default: 'Registra tu primer gasto o ingreso para empezar a ver tu resumen.',
           },
+          { type: 'select', prop: 'tone', options: ['brand', 'neutral', 'danger'], default: 'brand' },
+          { type: 'select', prop: 'size', options: ['md', 'lg'], default: 'md' },
           { type: 'boolean', prop: 'bordered', default: true },
         ]}
+        codeProps={['action={<ButtonLink href="/movimientos/nuevo" iconLeft={PlusIcon}>Nuevo movimiento</ButtonLink>}']}
         render={(props) => (
           <EmptyState
             {...(props as React.ComponentProps<typeof EmptyState>)}
@@ -28,41 +31,20 @@ export function EmptyStatePlayground() {
             className="w-full max-w-sm"
           />
         )}
-        codeProps={['action={<ButtonLink href="/movimientos/nuevo">Nuevo movimiento</ButtonLink>}']}
       />
-      <Example
-        title="Variantes"
-        code={`<EmptyState
-  icon={ReceiptIcon}
-  title="Aún no tienes movimientos"
-  description="Registra tu primer gasto o ingreso para empezar a ver tu resumen."
-  action={<ButtonLink href="/movimientos/nuevo" iconLeft={PlusIcon}>Nuevo movimiento</ButtonLink>}
-/>`}
-      >
-        <div className="grid w-full gap-4 lg:grid-cols-3">
-          <EmptyState
-            bordered
-            icon={ReceiptIcon}
-            title="Aún no tienes movimientos"
-            description="Registra tu primer gasto o ingreso para empezar a ver tu resumen."
-            action={<Button iconLeft={PlusIcon}>Nuevo movimiento</Button>}
-          />
-          <EmptyState
-            bordered
-            icon={TargetIcon}
-            title="Sin objetivos de ahorro"
-            description="Define cuánto quieres ahorrar y para cuándo."
-            action={<Button iconLeft={PlusIcon}>Crear objetivo</Button>}
-          />
+
+      <Gallery>
+        <Row label="sin resultados" className="w-full max-w-sm">
           <EmptyState
             bordered
             icon={SearchIcon}
             title="Sin resultados"
             description="No encontramos movimientos con «gimnasio». Prueba con otra palabra."
             action={<Button variant="secondary">Limpiar búsqueda</Button>}
+            className="w-full"
           />
-        </div>
-      </Example>
+        </Row>
+      </Gallery>
     </>
   );
 }
