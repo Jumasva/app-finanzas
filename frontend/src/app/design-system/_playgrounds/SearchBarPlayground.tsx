@@ -2,7 +2,13 @@
 
 import { useState } from 'react';
 import { SearchBar } from '@/components/ui/molecules/SearchBar';
-import { Example, Gallery, Row } from '../_components/Playground';
+import { Example, Gallery, Playground, Row } from '../_components/Playground';
+
+// La vista guarda lo escrito: SearchBar es controlado
+function SearchBarDemo(props: Omit<React.ComponentProps<typeof SearchBar>, 'value' | 'onValueChange'>) {
+  const [value, setValue] = useState('');
+  return <SearchBar {...props} value={value} onValueChange={setValue} className="w-full max-w-md" />;
+}
 
 export function SearchBarPlayground() {
   const [query, setQuery] = useState('');
@@ -10,6 +16,26 @@ export function SearchBarPlayground() {
 
   return (
     <>
+      <Playground
+        component="SearchBar"
+        importFrom="@/components/ui/molecules/SearchBar"
+        controls={[
+          { type: 'text', prop: 'label', default: 'Buscar movimientos' },
+          { type: 'text', prop: 'placeholder', default: 'Buscar movimientos' },
+          { type: 'select', prop: 'size', options: ['md', 'lg'], default: 'md' },
+          { type: 'boolean', prop: 'onFiltersClick', code: 'onFiltersClick={() => …}' },
+          { type: 'boolean', prop: 'filtersActive' },
+          { type: 'boolean', prop: 'shortcut' },
+          { type: 'boolean', prop: 'disabled' },
+        ]}
+        render={(props) => (
+          <SearchBarDemo
+            {...(props as React.ComponentProps<typeof SearchBarDemo>)}
+            onFiltersClick={props.onFiltersClick ? () => {} : undefined}
+          />
+        )}
+        codeProps={['value={query}', 'onValueChange={setQuery}']}
+      />
       <Example
         title="En uso"
         code={`const [query, setQuery] = useState('');

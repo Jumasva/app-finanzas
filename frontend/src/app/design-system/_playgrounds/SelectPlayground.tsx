@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { CategoryIcon } from '@/components/ui/atoms/CategoryIcon';
 import { CarIcon, FilmIcon, HeartIcon, HomeIcon, UtensilsIcon, WalletIcon } from '@/components/ui/atoms/icons';
 import { Select } from '@/components/ui/molecules/Select';
-import { Example, Gallery, Row } from '../_components/Playground';
+import { Example, Gallery, Playground, Row } from '../_components/Playground';
 
 // Ícono de categoría de 24: el CategoryIcon de 32 reducido, como en Figma
 const leading = (icon: typeof CarIcon, color: React.ComponentProps<typeof CategoryIcon>['color']) => (
@@ -25,12 +25,35 @@ const currencies = [
   { value: 'EUR', label: 'EUR · Euro' },
 ];
 
+function SelectDemo(props: Omit<React.ComponentProps<typeof Select>, 'options' | 'value' | 'onChange'>) {
+  const [value, setValue] = useState<string | null>(null);
+  return <Select {...props} options={categories} value={value} onChange={setValue} className="w-80" />;
+}
+
 export function SelectPlayground() {
   const [category, setCategory] = useState<string | null>('food');
   const [currency, setCurrency] = useState<string | null>(null);
 
   return (
     <>
+      <Playground
+        component="Select"
+        importFrom="@/components/ui/molecules/Select"
+        controls={[
+          { type: 'text', prop: 'label', default: 'Categoría' },
+          { type: 'text', prop: 'placeholder', default: 'Selecciona una categoría' },
+          { type: 'text', prop: 'helper', default: '' },
+          { type: 'text', prop: 'error', default: '' },
+          { type: 'select', prop: 'size', options: ['lg', 'md'], default: 'lg' },
+          { type: 'icon', prop: 'icon' },
+          { type: 'boolean', prop: 'required' },
+          { type: 'boolean', prop: 'optional' },
+          { type: 'boolean', prop: 'disabled' },
+        ]}
+        render={(props) => <SelectDemo {...(props as React.ComponentProps<typeof SelectDemo>)} />}
+        codeProps={['options={options}', 'value={category}', 'onChange={setCategory}']}
+        previewClassName="min-h-96 items-start"
+      />
       <Example
         title="En uso (flechas, Enter, Escape y escribir una letra)"
         previewClassName="items-start"

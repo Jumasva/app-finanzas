@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { SegmentedControl } from '@/components/ui/molecules/SegmentedControl';
-import { Example, Gallery, Row } from '../_components/Playground';
+import { Example, Gallery, Playground, Row } from '../_components/Playground';
 
 const kinds = [
   { value: 'expense', label: 'Gastos' },
@@ -21,6 +21,13 @@ const views = [
   { value: 'chart', label: 'Gráfico' },
 ] as const;
 
+function SegmentedControlDemo(
+  props: Omit<React.ComponentProps<typeof SegmentedControl>, 'options' | 'value' | 'onChange'>,
+) {
+  const [value, setValue] = useState<string>('expense');
+  return <SegmentedControl {...props} options={kinds} value={value} onChange={setValue} className="w-60" />;
+}
+
 export function SegmentedControlPlayground() {
   const [kind, setKind] = useState<(typeof kinds)[number]['value']>('expense');
   const [period, setPeriod] = useState<(typeof periods)[number]['value']>('month');
@@ -28,6 +35,16 @@ export function SegmentedControlPlayground() {
 
   return (
     <>
+      <Playground
+        component="SegmentedControl"
+        importFrom="@/components/ui/molecules/SegmentedControl"
+        controls={[
+          { type: 'text', prop: 'label', default: 'Tipo de movimiento' },
+          { type: 'select', prop: 'size', options: ['md', 'sm'], default: 'md' },
+        ]}
+        render={(props) => <SegmentedControlDemo {...(props as React.ComponentProps<typeof SegmentedControlDemo>)} />}
+        codeProps={['options={options}', 'value={kind}', 'onChange={setKind}']}
+      />
       <Example
         title="En uso (Tab entra y las flechas cambian de opción)"
         code={`const [kind, setKind] = useState<'expense' | 'income'>('expense');

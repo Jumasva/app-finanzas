@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Tabs } from '@/components/ui/molecules/Tabs';
-import { Example } from '../_components/Playground';
+import { Example, Playground } from '../_components/Playground';
 
 const items = [
   { value: 'summary', label: 'Resumen' },
@@ -16,23 +16,37 @@ const content: Record<(typeof items)[number]['value'], string> = {
   reminders: 'Los recordatorios de pagos próximos.',
 };
 
+function TabsDemo(props: Pick<React.ComponentProps<typeof Tabs>, 'label'>) {
+  const [tab, setTab] = useState<string>('summary');
+  return <Tabs {...props} items={items} value={tab} onChange={setTab} className="w-full max-w-lg" />;
+}
+
 export function TabsPlayground() {
   const [tab, setTab] = useState<(typeof items)[number]['value']>('summary');
 
   return (
-    <Example
-      title="En uso (flechas, Inicio y Fin cambian de pestaña)"
-      previewClassName="justify-start"
-      code={`const [tab, setTab] = useState<'summary' | 'movements' | 'reminders'>('summary');
+    <>
+      <Playground
+        component="Tabs"
+        importFrom="@/components/ui/molecules/Tabs"
+        controls={[{ type: 'text', prop: 'label', default: 'Secciones' }]}
+        render={(props) => <TabsDemo {...(props as React.ComponentProps<typeof TabsDemo>)} />}
+        codeProps={['items={items}', 'value={tab}', 'onChange={setTab}']}
+      />
+      <Example
+        title="En uso (flechas, Inicio y Fin cambian de pestaña)"
+        previewClassName="justify-start"
+        code={`const [tab, setTab] = useState<'summary' | 'movements' | 'reminders'>('summary');
 
 <Tabs label="Secciones" items={items} value={tab} onChange={setTab}>
   {tab === 'summary' && <Resumen />}
   {tab === 'movements' && <Movimientos />}
 </Tabs>`}
-    >
-      <Tabs label="Secciones" items={items} value={tab} onChange={setTab} className="w-full max-w-lg">
-        <p className="text-body text-content-secondary">{content[tab]}</p>
-      </Tabs>
-    </Example>
+      >
+        <Tabs label="Secciones" items={items} value={tab} onChange={setTab} className="w-full max-w-lg">
+          <p className="text-body text-content-secondary">{content[tab]}</p>
+        </Tabs>
+      </Example>
+    </>
   );
 }

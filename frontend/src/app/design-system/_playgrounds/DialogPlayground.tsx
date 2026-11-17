@@ -10,7 +10,29 @@ import { FormField } from '@/components/ui/molecules/FormField';
 import { SegmentedControl } from '@/components/ui/molecules/SegmentedControl';
 import { Dialog } from '@/components/ui/organisms/Dialog';
 import { todayIso } from '@/lib/date';
-import { Example } from '../_components/Playground';
+import { Example, Playground } from '../_components/Playground';
+
+// La vista abre y cierra el diálogo con un botón
+function DialogDemo(props: Omit<React.ComponentProps<typeof Dialog>, 'open' | 'onClose' | 'footer'>) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Abrir</Button>
+      <Dialog
+        {...props}
+        open={open}
+        onClose={() => setOpen(false)}
+        footer={
+          <Button size="lg" onClick={() => setOpen(false)}>
+            Listo
+          </Button>
+        }
+      >
+        <p className="text-body text-content-secondary">Contenido del diálogo.</p>
+      </Dialog>
+    </>
+  );
+}
 
 export function DialogPlayground() {
   const [modal, setModal] = useState(false);
@@ -21,6 +43,18 @@ export function DialogPlayground() {
 
   return (
     <>
+      <Playground
+        component="Dialog"
+        importFrom="@/components/ui/organisms/Dialog"
+        controls={[
+          { type: 'text', prop: 'title', default: 'Nuevo movimiento' },
+          { type: 'text', prop: 'description', default: '' },
+          { type: 'select', prop: 'placement', options: ['center', 'side'], default: 'center' },
+          { type: 'boolean', prop: 'busy' },
+        ]}
+        render={(props) => <DialogDemo {...(props as React.ComponentProps<typeof DialogDemo>)} />}
+        codeProps={['open={open}', 'onClose={() => setOpen(false)}', 'footer={…}']}
+      />
       <Example
         title="Modal · crear un movimiento"
         code={`<Dialog

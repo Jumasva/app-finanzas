@@ -33,6 +33,9 @@ type PlaygroundProps = {
   render: (props: PreviewProps) => React.ReactNode;
   // Props que siempre van, no se cambian: href="#", name="periodo"…
   staticProps?: Record<string, string>;
+  // Props que solo se escriben en el código, tal cual: value={category}, onChange={setCategory}.
+  // Son las que la vista maneja por dentro (componentes controlados)
+  codeProps?: string[];
   // JSX que va dentro de la etiqueta cuando no es un texto (Tooltip)
   childrenCode?: string;
   extraImports?: string[];
@@ -75,6 +78,7 @@ function buildCode({
   controls,
   values,
   staticProps,
+  codeProps = [],
   childrenCode,
   extraImports = [],
 }: Omit<PlaygroundProps, 'render'> & { values: Values }) {
@@ -91,6 +95,7 @@ function buildCode({
   const props = [
     ...controls.map((c) => propCode(c, values[c.prop])),
     ...Object.entries(staticProps ?? {}).map(([prop, value]) => `${prop}="${value}"`),
+    ...codeProps,
   ].filter(Boolean);
 
   const children = childrenCode ?? (values.children ? String(values.children) : '');

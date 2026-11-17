@@ -3,13 +3,30 @@
 import { Button } from '@/components/ui/atoms/Button';
 import { Toast } from '@/components/ui/molecules/Toast';
 import { useToast } from '@/components/ui/organisms/ToastProvider';
-import { Example, Gallery, Row } from '../_components/Playground';
+import { Example, Gallery, Playground, Row } from '../_components/Playground';
 
 export function ToastPlayground() {
   const toast = useToast();
 
   return (
     <>
+      <Playground
+        component="Toast"
+        importFrom="@/components/ui/molecules/Toast"
+        controls={[
+          { type: 'text', prop: 'message', default: 'Movimiento guardado' },
+          { type: 'select', prop: 'tone', options: ['success', 'danger', 'neutral'], default: 'success' },
+          { type: 'boolean', prop: 'action', code: "action={{ label: 'Reintentar', onClick: guardar }}" },
+          { type: 'boolean', prop: 'onClose', default: true, code: 'onClose={() => …}' },
+        ]}
+        render={(props) => (
+          <Toast
+            {...(props as React.ComponentProps<typeof Toast>)}
+            action={props.action ? { label: 'Reintentar', onClick: () => {} } : undefined}
+            onClose={props.onClose ? () => {} : undefined}
+          />
+        )}
+      />
       <Example
         title="useToast() · abajo a la izquierda (arriba en móvil), máximo 3"
         code={`const toast = useToast();

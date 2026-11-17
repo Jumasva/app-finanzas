@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { PeriodSelector } from '@/components/ui/molecules/PeriodSelector';
 import { formatMonth, parseIsoDate, todayIso } from '@/lib/date';
-import { Example, Gallery, Row } from '../_components/Playground';
+import { Example, Gallery, Playground, Row } from '../_components/Playground';
 
 export function PeriodSelectorPlayground() {
   const today = parseIsoDate(todayIso());
@@ -14,6 +14,25 @@ export function PeriodSelectorPlayground() {
 
   return (
     <>
+      <Playground
+        component="PeriodSelector"
+        importFrom="@/components/ui/molecules/PeriodSelector"
+        controls={[
+          { type: 'text', prop: 'label', default: 'Octubre 2026' },
+          { type: 'boolean', prop: 'previousDisabled' },
+          { type: 'boolean', prop: 'nextDisabled' },
+          { type: 'boolean', prop: 'onOpen', code: 'onOpen={() => …}' },
+        ]}
+        render={(props) => (
+          <PeriodSelector
+            {...(props as React.ComponentProps<typeof PeriodSelector>)}
+            onPrevious={() => {}}
+            onNext={() => {}}
+            onOpen={props.onOpen ? () => {} : undefined}
+          />
+        )}
+        codeProps={['onPrevious={() => …}', 'onNext={() => …}']}
+      />
       <Example
         title="En uso (no deja pasar del mes actual)"
         code={`<PeriodSelector

@@ -2,13 +2,30 @@
 
 import { useState } from 'react';
 import { AmountEntry } from '@/components/ui/molecules/AmountEntry';
-import { Example, Gallery, Row } from '../_components/Playground';
+import { Example, Gallery, Playground, Row } from '../_components/Playground';
+
+function AmountEntryDemo(props: Omit<React.ComponentProps<typeof AmountEntry>, 'value' | 'onValueChange'>) {
+  const [value, setValue] = useState('186400');
+  return <AmountEntry {...props} value={value} onValueChange={setValue} className="w-full max-w-md" />;
+}
 
 export function AmountEntryPlayground() {
   const [amount, setAmount] = useState('');
 
   return (
     <>
+      <Playground
+        component="AmountEntry"
+        importFrom="@/components/ui/molecules/AmountEntry"
+        controls={[
+          { type: 'select', prop: 'kind', options: ['expense', 'income', 'neutral'], default: 'expense' },
+          { type: 'text', prop: 'label', default: 'Monto' },
+          { type: 'text', prop: 'currency', default: 'COP · Peso colombiano' },
+          { type: 'text', prop: 'error', default: '' },
+        ]}
+        render={(props) => <AmountEntryDemo {...(props as React.ComponentProps<typeof AmountEntryDemo>)} />}
+        codeProps={['value={amount}', 'onValueChange={setAmount}']}
+      />
       <Example
         title="En uso (escribe un monto)"
         code={`const [amount, setAmount] = useState('');

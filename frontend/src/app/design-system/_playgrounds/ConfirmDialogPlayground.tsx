@@ -5,7 +5,19 @@ import { Button } from '@/components/ui/atoms/Button';
 import { FormField } from '@/components/ui/molecules/FormField';
 import { ConfirmDialog } from '@/components/ui/organisms/ConfirmDialog';
 import { useToast } from '@/components/ui/organisms/ToastProvider';
-import { Example } from '../_components/Playground';
+import { Example, Playground } from '../_components/Playground';
+
+function ConfirmDialogDemo(props: Omit<React.ComponentProps<typeof ConfirmDialog>, 'open' | 'onClose' | 'onConfirm'>) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Abrir
+      </Button>
+      <ConfirmDialog {...props} open={open} onClose={() => setOpen(false)} onConfirm={() => setOpen(false)} />
+    </>
+  );
+}
 
 export function ConfirmDialogPlayground() {
   const [voiding, setVoiding] = useState(false);
@@ -14,6 +26,24 @@ export function ConfirmDialogPlayground() {
 
   return (
     <>
+      <Playground
+        component="ConfirmDialog"
+        importFrom="@/components/ui/organisms/ConfirmDialog"
+        controls={[
+          { type: 'text', prop: 'title', default: '¿Anular el egreso "Mercado" de $120.000?' },
+          {
+            type: 'text',
+            prop: 'description',
+            default: 'Deja de contar en tu saldo. Una anulación no se puede deshacer.',
+          },
+          { type: 'text', prop: 'confirmLabel', default: 'Anular' },
+          { type: 'text', prop: 'cancelLabel', default: 'Cancelar' },
+          { type: 'select', prop: 'tone', options: ['danger', 'default'], default: 'danger' },
+          { type: 'boolean', prop: 'loading' },
+        ]}
+        render={(props) => <ConfirmDialogDemo {...(props as React.ComponentProps<typeof ConfirmDialogDemo>)} />}
+        codeProps={['open={open}', 'onClose={cerrar}', 'onConfirm={anular}']}
+      />
       <Example
         title="Anular un registro"
         code={`<ConfirmDialog
