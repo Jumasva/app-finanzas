@@ -33,7 +33,7 @@ export const mainNav: NavItemData[] = [
 ];
 
 // Sección «General»
-export const generalNav: NavItemData[] = [{ label: 'Ajustes', href: '/ajustes', icon: SettingsIcon }];
+export const generalNav: NavItemData[] = [{ label: 'Configuración', href: '/configuracion', icon: SettingsIcon }];
 
 // El botón principal del Sidebar
 export const NEW_MOVEMENT_HREF = '/movimientos/nuevo';
