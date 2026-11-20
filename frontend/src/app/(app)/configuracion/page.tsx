@@ -5,6 +5,6 @@ import { ComingSoon } from '@/features/navigation/components/ComingSoon';
 export const metadata: Metadata = { title: 'Ajustes · Finanzas' };
 
 // Provisional hasta construir el módulo
-export default function AjustesPage() {
+export default function ConfiguracionPage() {
   return <ComingSoon icon={SettingsIcon} description="Aquí cambiarás tu perfil, tu contraseña y tu moneda." />;
 }
