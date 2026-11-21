@@ -191,7 +191,7 @@ function ProfileForm({ user }: { user: User }) {
         onClose={() => setConfirmEmail(false)}
         onConfirm={() => pending.current && save(pending.current)}
         loading={loading}
-        tone="default"
+        tone="brand"
         title="¿Cambiar tu correo?"
         description={
           <p>
