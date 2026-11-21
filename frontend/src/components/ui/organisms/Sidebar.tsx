@@ -7,6 +7,7 @@ import { ButtonLink } from '@/components/ui/atoms/Button';
 import { LoaderIcon, LogOutIcon, PanelLeftIcon, PlusIcon, XIcon } from '@/components/ui/atoms/icons';
 import { Tooltip } from '@/components/ui/atoms/Tooltip';
 import { NavItem } from '@/components/ui/molecules/NavItem';
+import { iconButton } from '@/components/ui/styles';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useSession } from '@/features/auth/session';
 import { generalNav, mainNav, NEW_MOVEMENT_HREF, type NavItemData } from '@/features/navigation/items';
@@ -16,10 +17,6 @@ import { initials } from '@/lib/format';
 
 /* ══ CLASES · Figma › Organisms › O01 Sidebar ══ */
 /* Navegación principal en desktop: 264 px expandido, 72 px colapsado (solo íconos) */
-
-// Botón de solo ícono, gris: colapsar, cerrar el cajón y cerrar sesión
-export const iconButton =
-  'grid size-9 shrink-0 place-items-center rounded-md text-neutral-500 transition-colors hover:bg-background-subtle hover:text-content-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus disabled:cursor-not-allowed';
 
 /* ══ SIDEBAR · columna fija a la izquierda, desde 1024 px (lg) ══ */
 /* En pantallas más pequeñas la navegación es el cajón de MobileNav */

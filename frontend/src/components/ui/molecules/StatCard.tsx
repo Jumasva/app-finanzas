@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/atoms/Badge';
 import { ArrowDownRightIcon, ArrowUpRightIcon } from '@/components/ui/atoms/icons';
 import { cn } from '@/lib/cn';
 import { formatMoney } from '@/lib/format';
@@ -20,7 +21,7 @@ type StatCardProps = {
 };
 
 /* ══ STATCARD · Figma › Molecules › M07 Stat card ══ */
-/* Una cifra clave del mes con su variación. 1/4 del contenedor en desktop, 100 % en móvil */
+/* Una cifra clave del mes con su variación (un Badge con flecha). 1/4 del contenedor en desktop, 100 % en móvil */
 
 export function StatCard({ label, value, icon, delta, className }: StatCardProps) {
   const ArrowIcon = delta && delta.percent < 0 ? ArrowDownRightIcon : ArrowUpRightIcon;
@@ -38,16 +39,11 @@ export function StatCard({ label, value, icon, delta, className }: StatCardProps
 
       {delta && (
         <div className="flex items-center gap-2">
-          <span
-            className={cn(
-              'inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-label-sm tabular-nums',
-              delta.tone === 'good' ? 'bg-success-light text-success-dark' : 'bg-danger-light text-danger-dark',
-            )}
-          >
+          <Badge tone={delta.tone === 'good' ? 'success' : 'danger'} className="gap-1 text-label-sm tabular-nums">
             <ArrowIcon className="size-3.5" />
             {Math.abs(delta.percent)}%
-            <span className="sr-only">{delta.tone === 'good' ? '(favorable)' : '(desfavorable)'}</span>
-          </span>
+            <span className="sr-only">{delta.tone === 'good' ? ', favorable' : ', desfavorable'}</span>
+          </Badge>
           {delta.caption && <span className="text-body-sm text-content-tertiary">{delta.caption}</span>}
         </div>
       )}

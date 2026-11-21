@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/atoms/icons';
+import { iconButton, iconButtonDisabled } from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
 
 type PaginationProps = {
@@ -25,8 +26,9 @@ export function pageNumbers(page: number, pages: number): (number | 'gap')[] {
   return sorted.flatMap((n, index) => (index > 0 && n - sorted[index - 1] > 1 ? ['gap' as const, n] : [n]));
 }
 
-const square =
-  'grid size-9 shrink-0 place-items-center rounded-sm text-body tabular-nums transition-colors disabled:cursor-not-allowed disabled:text-content-disabled';
+// Anterior y siguiente: el botón gris de solo ícono. Los números, cuadros del mismo tamaño
+const arrow = cn(iconButton, iconButtonDisabled, 'rounded-sm');
+const square = 'grid size-9 shrink-0 place-items-center rounded-sm text-body tabular-nums transition-colors';
 
 /* ══ PAGINATION · Figma › Molecules › M18 Pagination ══ */
 /* Para tablas largas en desktop. En móvil queda solo anterior / siguiente; la lista larga usa «Cargar más» (un Button) */
@@ -49,7 +51,7 @@ export function Pagination({ page, pageSize, total, onPageChange, itemLabel, cla
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
           aria-label="Página anterior"
-          className={cn(square, 'text-content-secondary hover:bg-background-subtle')}
+          className={arrow}
         >
           <ChevronLeftIcon size={20} />
         </button>
@@ -94,7 +96,7 @@ export function Pagination({ page, pageSize, total, onPageChange, itemLabel, cla
           onClick={() => onPageChange(page + 1)}
           disabled={page >= pages}
           aria-label="Página siguiente"
-          className={cn(square, 'text-content-secondary hover:bg-background-subtle')}
+          className={arrow}
         >
           <ChevronRightIcon size={20} />
         </button>

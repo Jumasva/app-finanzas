@@ -20,10 +20,10 @@ type ProgressBarProps = Omit<React.ComponentProps<'div'>, 'children'> & {
 /* Avance de presupuestos y metas. El color cambia según el porcentaje, y el porcentaje se muestra en texto */
 
 const tones: Record<Tone, { fill: string; text: string }> = {
-  brand: { fill: 'bg-emerald-600', text: 'text-neutral-700' },
-  warning: { fill: 'bg-amber-500', text: 'text-amber-800' },
-  danger: { fill: 'bg-red-600', text: 'text-red-700' },
-  success: { fill: 'bg-green-600', text: 'text-green-700' },
+  brand: { fill: 'bg-brand-primary', text: 'text-neutral-700' },
+  warning: { fill: 'bg-warning', text: 'text-amber-800' },
+  danger: { fill: 'bg-danger', text: 'text-red-700' },
+  success: { fill: 'bg-success', text: 'text-green-700' },
 };
 
 const sizes: Record<Size, string> = {
@@ -63,7 +63,7 @@ export function ProgressBar({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuetext={`${percent} %`}
-        className={cn('w-full overflow-hidden rounded-full bg-neutral-50', sizes[size])}
+        className={cn('w-full overflow-hidden rounded-full bg-background-subtle', sizes[size])}
       >
         {/* Pasado el 100 % la barra queda llena */}
         <div
@@ -75,7 +75,7 @@ export function ProgressBar({
       {/* Small va sin label: es para listas compactas */}
       {size === 'md' && (
         <div className="flex items-center justify-between gap-3 text-body-sm">
-          <span className="text-neutral-600">{label}</span>
+          <span className="text-content-secondary">{label}</span>
           <span className={cn('font-semibold tabular-nums', styles.text)}>{percent}%</span>
         </div>
       )}

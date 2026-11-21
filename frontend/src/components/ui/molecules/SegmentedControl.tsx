@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import { moveIndex } from '@/components/ui/hooks/moveIndex';
 import { cn } from '@/lib/cn';
 
 export type SegmentOption<T extends string> = { value: T; label: string };
@@ -39,12 +40,11 @@ export function SegmentedControl<T extends string>({
   const group = useRef<HTMLDivElement>(null);
 
   function onKeyDown(event: React.KeyboardEvent) {
-    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
-    if (!step) return;
+    const index = options.findIndex((option) => option.value === value);
+    const next = moveIndex(event.key, index, options.length);
+    if (next === undefined) return;
     event.preventDefault();
 
-    const index = options.findIndex((option) => option.value === value);
-    const next = (index + step + options.length) % options.length;
     onChange(options[next].value);
     group.current?.querySelectorAll<HTMLElement>('[role="radio"]')[next]?.focus();
   }

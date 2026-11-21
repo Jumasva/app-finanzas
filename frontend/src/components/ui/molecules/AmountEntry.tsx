@@ -1,16 +1,17 @@
 'use client';
 
 import { useId } from 'react';
+import { amountTypes, type AmountType } from '@/components/ui/atoms/Amount';
 import { HelperText } from '@/components/ui/atoms/HelperText';
 import { cn } from '@/lib/cn';
-
-type Kind = 'expense' | 'income' | 'neutral';
+import { formatNumber } from '@/lib/format';
 
 type AmountEntryProps = {
   // Solo dígitos, en unidades enteras de la moneda: '186400'. Vacío mientras no se escriba nada
   value: string;
   onValueChange: (value: string) => void;
-  kind?: Kind;
+  // Los mismos tipos de Amount: gasto (−, rojo), ingreso (+, verde) o neutral
+  type?: AmountType;
   label?: string;
   // «COP · Peso colombiano»: la moneda principal del usuario
   currency?: string;
@@ -20,23 +21,14 @@ type AmountEntryProps = {
   className?: string;
 };
 
-/* ══ CLASES · Figma › Molecules › M15 Amount entry ══ */
-/* El monto grande del formulario de movimiento. El signo acompaña al color (gasto −, ingreso +) */
-
-const kinds: Record<Kind, { color: string; sign: string }> = {
-  expense: { color: 'text-red-700', sign: '-' },
-  income: { color: 'text-green-700', sign: '+' },
-  neutral: { color: 'text-content-primary', sign: '' },
-};
-
-const thousands = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0, useGrouping: 'always' });
-
-/* ══ AMOUNTENTRY · monto que se escribe con el teclado numérico y se ve con puntos de miles ══ */
+/* ══ AMOUNTENTRY · Figma › Molecules › M15 Amount entry ══ */
+/* El monto grande del formulario de movimiento: se escribe con el teclado numérico y se ve con puntos de miles.
+   Color y signo son los del átomo Amount, para que se vea igual que al mostrarlo */
 
 export function AmountEntry({
   value,
   onValueChange,
-  kind = 'expense',
+  type = 'expense',
   label = 'Monto',
   currency = 'COP · Peso colombiano',
   error,
@@ -46,8 +38,8 @@ export function AmountEntry({
 }: AmountEntryProps) {
   const id = useId();
   const digits = value.replace(/\D/g, '').replace(/^0+(?=\d)/, '');
-  const display = digits ? thousands.format(Number(digits)) : '';
-  const { color, sign } = kinds[kind];
+  const display = digits ? formatNumber(Number(digits)) : '';
+  const { color, sign } = amountTypes[type];
 
   return (
     <div

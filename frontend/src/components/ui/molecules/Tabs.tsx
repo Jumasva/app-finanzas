@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useRef } from 'react';
+import { moveIndex } from '@/components/ui/hooks/moveIndex';
 import { cn } from '@/lib/cn';
 
 export type TabItem<T extends string> = { value: T; label: string };
@@ -27,11 +28,7 @@ export function Tabs<T extends string>({ items, value, onChange, label, children
 
   function onKeyDown(event: React.KeyboardEvent) {
     const index = items.findIndex((item) => item.value === value);
-    let next: number | undefined;
-    if (event.key === 'ArrowRight') next = (index + 1) % items.length;
-    if (event.key === 'ArrowLeft') next = (index - 1 + items.length) % items.length;
-    if (event.key === 'Home') next = 0;
-    if (event.key === 'End') next = items.length - 1;
+    const next = moveIndex(event.key, index, items.length, { axis: 'horizontal' });
     if (next === undefined) return;
 
     event.preventDefault();

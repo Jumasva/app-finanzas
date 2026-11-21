@@ -1,12 +1,16 @@
 // Formatos de la app (es-CO)
 
-// Pesos colombianos sin decimales y con punto de miles: 1250000 → "1.250.000"
-// useGrouping 'always': en español el 4250 saldría "4250" sin punto
-const moneyFormat = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0, useGrouping: 'always' });
+// Sin decimales y con punto de miles. useGrouping 'always': en español el 4250 saldría "4250" sin punto
+const numberFormat = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0, useGrouping: 'always' });
+
+// 1250000 → "1.250.000"
+export function formatNumber(value: number) {
+  return numberFormat.format(value);
+}
 
 // 1250000 → "$1.250.000" (sin signo: el signo lo pone quien lo muestra)
 export function formatMoney(value: number) {
-  return `$${moneyFormat.format(Math.abs(value))}`;
+  return `$${formatNumber(Math.abs(value))}`;
 }
 
 // Segundos de espera para una cuenta regresiva: 59 → "0:59", 125 → "2:05"

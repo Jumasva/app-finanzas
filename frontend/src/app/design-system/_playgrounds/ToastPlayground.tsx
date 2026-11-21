@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/atoms/Button';
 import { Toast } from '@/components/ui/molecules/Toast';
 import { useToast } from '@/components/ui/organisms/ToastProvider';
-import { Example, Gallery, Playground, Row } from '../_components/Playground';
+import { Example, Playground } from '../_components/Playground';
 
 export function ToastPlayground() {
   const toast = useToast();
@@ -27,8 +27,9 @@ export function ToastPlayground() {
           />
         )}
       />
+
       <Example
-        title="useToast() · abajo a la izquierda (arriba en móvil), máximo 3"
+        title="En una pantalla: useToast() · abajo a la izquierda (arriba en móvil), máximo 3"
         code={`const toast = useToast();
 
 toast({ message: 'Movimiento guardado', tone: 'success' });
@@ -49,23 +50,6 @@ toast({ message: 'No se pudo guardar', tone: 'danger', action: { label: 'Reinten
           Neutral
         </Button>
       </Example>
-
-      <Gallery>
-        <Row label="success">
-          <Toast tone="success" message="Movimiento guardado" onClose={() => {}} />
-        </Row>
-        <Row label="danger + acción">
-          <Toast
-            tone="danger"
-            message="No se pudo guardar"
-            action={{ label: 'Reintentar', onClick: () => {} }}
-            onClose={() => {}}
-          />
-        </Row>
-        <Row label="neutral">
-          <Toast message="Exportando informe…" onClose={() => {}} />
-        </Row>
-      </Gallery>
     </>
   );
 }

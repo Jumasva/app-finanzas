@@ -22,6 +22,7 @@ export function SectionHeaderPlayground() {
           { type: 'text', prop: 'description', default: 'En los próximos 15 días' },
           { type: 'select', prop: 'as', options: ['h2', 'h3'], default: 'h2' },
         ]}
+        codeProps={['action={<TextLink href="/recordatorios">Ver todo</TextLink>}']}
         render={(props) => (
           <SectionHeader
             {...(props as React.ComponentProps<typeof SectionHeader>)}
@@ -29,28 +30,13 @@ export function SectionHeaderPlayground() {
             className="w-full max-w-xl"
           />
         )}
-        codeProps={['action={<TextLink href="/recordatorios">Ver todo</TextLink>}']}
       />
-      <Gallery>
-        <Row label="título + acción" className="w-full max-w-xl">
-          <SectionHeader
-            title="Movimientos recientes"
-            action={<TextLink href="#">Ver todo</TextLink>}
-            className="w-full"
-          />
-        </Row>
-        <Row label="contador y descripción" className="w-full max-w-xl">
-          <SectionHeader
-            title="Pagos próximos"
-            count={4}
-            description="En los próximos 15 días"
-            action={<TextLink href="#">Ver todo</TextLink>}
-            className="w-full"
-          />
-        </Row>
-        <Row label="con control" className="w-full max-w-xl">
+
+      <Gallery title="Otras acciones">
+        <Row label="segmented" className="w-full max-w-xl">
           <SectionHeader
             title="Gastos por categoría"
+            className="w-full"
             action={
               <SegmentedControl
                 label="Periodo"
@@ -63,18 +49,17 @@ export function SectionHeaderPlayground() {
                 onChange={setPeriod}
               />
             }
-            className="w-full"
           />
         </Row>
-        <Row label="con botón" className="w-full max-w-xl">
+        <Row label="botón" className="w-full max-w-xl">
           <SectionHeader
             title="Mis objetivos"
+            className="w-full"
             action={
               <Button variant="secondary" size="sm" iconLeft={PlusIcon}>
                 Nuevo objetivo
               </Button>
             }
-            className="w-full"
           />
         </Row>
       </Gallery>

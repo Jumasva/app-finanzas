@@ -26,7 +26,7 @@ export function Skeleton({ shape = 'line', className, ...props }: SkeletonProps)
   return (
     <span
       aria-hidden="true"
-      className={cn('block shrink-0 animate-skeleton bg-neutral-50', shapes[shape], className)}
+      className={cn('block shrink-0 animate-skeleton bg-background-subtle', shapes[shape], className)}
       {...props}
     />
   );

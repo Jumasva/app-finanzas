@@ -3,22 +3,28 @@
 
 export type Level = 'atom' | 'molecule' | 'organism';
 
-export type ComponentInfo = {
+type Entry = {
   slug: string;
   name: string;
   description: string;
-  // Desde dónde se importa: va en el encabezado de la página
-  importFrom: string;
+  // Solo si no es components/ui/<nivel>/<name>
+  importFrom?: string;
 };
 
-// Títulos de cada nivel, en el orden en que se muestran
-export const levels: { level: Level; title: string }[] = [
-  { level: 'atom', title: 'Átomos' },
-  { level: 'molecule', title: 'Moléculas' },
-  { level: 'organism', title: 'Organismos' },
-];
+export type ComponentInfo = Required<Entry> & { level: Level };
 
-const atoms: Omit<ComponentInfo, 'importFrom'>[] = [
+// Título y carpeta de cada nivel, en el orden en que se muestran
+const levelInfo: Record<Level, { title: string; folder: string }> = {
+  atom: { title: 'Átomos', folder: 'atoms' },
+  molecule: { title: 'Moléculas', folder: 'molecules' },
+  organism: { title: 'Organismos', folder: 'organisms' },
+};
+
+export function levelTitle(level: Level) {
+  return levelInfo[level].title;
+}
+
+const atoms: Entry[] = [
   { slug: 'button', name: 'Button', description: 'Hace una acción. Para navegar se usa ButtonLink o TextLink.' },
   {
     slug: 'text-link',
@@ -94,11 +100,12 @@ const atoms: Omit<ComponentInfo, 'importFrom'>[] = [
   {
     slug: 'icons',
     name: 'Icons',
+    importFrom: '@/components/ui/atoms/icons',
     description: 'Trazo de Lucide, 24 × 24, trazo 2. El color se hereda del componente que lo contiene.',
   },
 ];
 
-const molecules: Omit<ComponentInfo, 'importFrom'>[] = [
+const molecules: Entry[] = [
   {
     slug: 'form-field',
     name: 'FormField',
@@ -197,7 +204,7 @@ const molecules: Omit<ComponentInfo, 'importFrom'>[] = [
   },
 ];
 
-const organisms: Omit<ComponentInfo, 'importFrom'>[] = [
+const organisms: Entry[] = [
   {
     slug: 'dialog',
     name: 'Dialog',
@@ -230,19 +237,23 @@ const organisms: Omit<ComponentInfo, 'importFrom'>[] = [
   },
 ];
 
-// Nombre del archivo a partir del nombre del componente; Alert es átomo aunque en Figma sea M08
-const folder: Record<Level, string> = { atom: 'atoms', molecule: 'molecules', organism: 'organisms' };
-
-function withImport(level: Level, items: Omit<ComponentInfo, 'importFrom'>[]) {
-  return items.map((item) => ({
-    ...item,
+function withLevel(level: Level, entries: Entry[]): ComponentInfo[] {
+  return entries.map((entry) => ({
+    ...entry,
     level,
-    importFrom: item.slug === 'icons' ? '@/components/ui/atoms/icons' : `@/components/ui/${folder[level]}/${item.name}`,
+    importFrom: entry.importFrom ?? `@/components/ui/${levelInfo[level].folder}/${entry.name}`,
   }));
 }
 
-export const catalog: (ComponentInfo & { level: Level })[] = [
-  ...withImport('atom', atoms),
-  ...withImport('molecule', molecules),
-  ...withImport('organism', organisms),
+export const catalog: ComponentInfo[] = [
+  ...withLevel('atom', atoms),
+  ...withLevel('molecule', molecules),
+  ...withLevel('organism', organisms),
 ];
+
+// Los componentes agrupados por nivel, para la portada y el menú
+export const sections = (Object.keys(levelInfo) as Level[]).map((level) => ({
+  level,
+  title: levelTitle(level),
+  items: catalog.filter((item) => item.level === level),
+}));

@@ -26,7 +26,7 @@ export function NotificationButton({ count = 0, className, ...props }: Notificat
       {count > 0 && (
         <span
           aria-hidden="true"
-          className="absolute -top-1.5 -right-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-danger px-1 text-[10px] leading-none font-semibold text-white tabular-nums ring-2 ring-background-page"
+          className="absolute -top-1.5 -right-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-danger px-1 text-[10px] leading-none font-semibold text-content-inverse tabular-nums ring-2 ring-background-page"
         >
           {count > 99 ? '99+' : count}
         </span>

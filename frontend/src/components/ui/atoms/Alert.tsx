@@ -1,4 +1,4 @@
-import { AlertIcon, InfoIcon, OkIcon, XIcon, type IconComponent } from '@/components/ui/atoms/icons';
+import { statusIcons, XIcon, type Status } from '@/components/ui/atoms/icons';
 import { cn } from '@/lib/cn';
 
 type Variant = 'error' | 'warning' | 'info' | 'success';
@@ -24,17 +24,13 @@ const variants: Record<Variant, { box: string; icon: string; title: string }> = 
   success: { box: 'border-green-200 bg-green-50 text-green-800', icon: 'text-green-600', title: 'text-green-900' },
 };
 
-const icons: Record<Variant, IconComponent> = {
-  error: AlertIcon,
-  warning: AlertIcon,
-  info: InfoIcon,
-  success: OkIcon,
-};
+// El estado de cada variante; «error» es el «danger» de los tokens
+const statuses: Record<Variant, Status> = { error: 'danger', warning: 'warning', info: 'info', success: 'success' };
 
 /* ══ ALERT · mensaje dentro de la página que se queda hasta que el usuario lo cierre o lo resuelva ══ */
 
 export function Alert({ variant = 'info', title, action, onClose, className, children, ...props }: AlertProps) {
-  const Icon = icons[variant];
+  const Icon = statusIcons[statuses[variant]];
   const styles = variants[variant];
 
   return (

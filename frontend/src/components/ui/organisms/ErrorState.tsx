@@ -1,37 +1,15 @@
-import type { IconComponent } from '@/components/ui/atoms/icons';
-import { cn } from '@/lib/cn';
+import { EmptyState, type EmptyStateProps } from '@/components/ui/molecules/EmptyState';
 
-type Tone = 'danger' | 'neutral';
-
-type ErrorStateProps = {
-  icon: IconComponent;
-  title: string;
-  description?: string;
+type ErrorStateProps = Pick<EmptyStateProps, 'icon' | 'title' | 'description' | 'className'> & {
   // Reintentar, Ir al inicio…
   actions?: React.ReactNode;
-  tone?: Tone;
-  className?: string;
+  tone?: 'neutral' | 'danger';
 };
 
-/* ══ CLASES · Figma › Organisms › Error states ══ */
-/* Pantallas de error completas: ícono de 32 en círculo de 72, título 20 Nunito y acciones centradas */
+/* ══ ERRORSTATE · Figma › Organisms › Error states ══ */
+/* Cuando una pantalla no se puede mostrar: sin conexión, página no encontrada, error del servidor.
+   Es el Empty state en grande (círculo de 72, título 20) con el título como h2 de la pantalla */
 
-const tones: Record<Tone, string> = {
-  danger: 'bg-danger-light text-danger',
-  neutral: 'bg-background-subtle text-content-secondary',
-};
-
-/* ══ ERRORSTATE · cuando una pantalla no se puede mostrar: sin conexión, página no encontrada, error del servidor ══ */
-
-export function ErrorState({ icon: Icon, title, description, actions, tone = 'neutral', className }: ErrorStateProps) {
-  return (
-    <div className={cn('flex flex-col items-center px-6 py-12 text-center', className)}>
-      <span className={cn('grid size-18 place-items-center rounded-full', tones[tone])}>
-        <Icon size={32} />
-      </span>
-      <h2 className="mt-4 text-h3 text-content-primary">{title}</h2>
-      {description && <p className="mt-2 max-w-sm text-body text-content-secondary">{description}</p>}
-      {actions && <div className="mt-6 flex flex-wrap justify-center gap-3">{actions}</div>}
-    </div>
-  );
+export function ErrorState({ actions, tone = 'neutral', ...props }: ErrorStateProps) {
+  return <EmptyState {...props} action={actions} size="lg" tone={tone} titleAs="h2" />;
 }

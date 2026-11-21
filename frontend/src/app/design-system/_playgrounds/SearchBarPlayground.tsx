@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { SearchBar } from '@/components/ui/molecules/SearchBar';
-import { Example, Gallery, Playground, Row } from '../_components/Playground';
+import { Gallery, Playground, Row } from '../_components/Playground';
 
 // La vista guarda lo escrito: SearchBar es controlado
 function SearchBarDemo(props: Omit<React.ComponentProps<typeof SearchBar>, 'value' | 'onValueChange'>) {
@@ -11,9 +11,6 @@ function SearchBarDemo(props: Omit<React.ComponentProps<typeof SearchBar>, 'valu
 }
 
 export function SearchBarPlayground() {
-  const [query, setQuery] = useState('');
-  const [filters, setFilters] = useState(false);
-
   return (
     <>
       <Playground
@@ -28,50 +25,21 @@ export function SearchBarPlayground() {
           { type: 'boolean', prop: 'shortcut' },
           { type: 'boolean', prop: 'disabled' },
         ]}
+        codeProps={['value={query}', 'onValueChange={setQuery}']}
         render={(props) => (
           <SearchBarDemo
             {...(props as React.ComponentProps<typeof SearchBarDemo>)}
             onFiltersClick={props.onFiltersClick ? () => {} : undefined}
           />
         )}
-        codeProps={['value={query}', 'onValueChange={setQuery}']}
       />
-      <Example
-        title="En uso"
-        code={`const [query, setQuery] = useState('');
-
-<SearchBar
-  value={query}
-  onValueChange={setQuery}
-  label="Buscar movimientos"
-  onFiltersClick={() => abrirFiltros()}
-  filtersActive={hayFiltros}
-  shortcut
-/>`}
-      >
-        <SearchBar
-          value={query}
-          onValueChange={setQuery}
-          label="Buscar movimientos"
-          onFiltersClick={() => setFilters((value) => !value)}
-          filtersActive={filters}
-          shortcut
-          className="w-full max-w-md"
-        />
-      </Example>
 
       <Gallery>
-        <Row label="default" className="w-full max-w-sm">
-          <SearchBar value="" onValueChange={() => {}} className="w-full" />
-        </Row>
-        <Row label="con texto" className="w-full max-w-sm">
+        <Row label="con texto · limpiar" className="w-full max-w-sm">
           <SearchBar value="Mercado" onValueChange={() => {}} className="w-full" />
         </Row>
         <Row label="filtros activos" className="w-full max-w-sm">
           <SearchBar value="" onValueChange={() => {}} onFiltersClick={() => {}} filtersActive className="w-full" />
-        </Row>
-        <Row label="disabled" className="w-full max-w-sm">
-          <SearchBar value="" onValueChange={() => {}} disabled className="w-full" />
         </Row>
       </Gallery>
     </>

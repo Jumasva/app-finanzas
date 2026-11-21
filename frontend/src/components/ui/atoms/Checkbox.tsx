@@ -22,8 +22,8 @@ const box = [
   'enabled:group-hover:indeterminate:border-brand-primary-hover enabled:group-hover:indeterminate:bg-brand-primary-hover',
   // Deshabilitado: gris, marcado o no
   'disabled:cursor-not-allowed disabled:border-border-subtle disabled:bg-background-subtle',
-  'disabled:checked:border-neutral-100 disabled:checked:bg-neutral-100',
-  'disabled:indeterminate:border-neutral-100 disabled:indeterminate:bg-neutral-100',
+  'disabled:checked:border-border-subtle disabled:checked:bg-neutral-100',
+  'disabled:indeterminate:border-border-subtle disabled:indeterminate:bg-neutral-100',
 ];
 
 // El check y la raya van encima de la caja; pointer-events-none deja que el clic llegue al input

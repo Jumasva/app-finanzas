@@ -2,8 +2,20 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/atoms/icons';
+import { iconButton } from '@/components/ui/styles';
 import { cn } from '@/lib/cn';
-import { daysInMonth, firstWeekday, formatMonth, parseIsoDate, toIsoDate, todayIso } from '@/lib/date';
+import {
+  addDays,
+  addMonths,
+  daysInMonth,
+  firstWeekday,
+  formatLongDate,
+  formatMonth,
+  parseIsoDate,
+  sameDayInMonth,
+  toIsoDate,
+  todayIso,
+} from '@/lib/date';
 
 type DatePickerProps = {
   // Fechas como texto YYYY-MM-DD, igual que en el contrato
@@ -27,18 +39,6 @@ const WEEKDAYS = [
   { short: 'S', long: 'sábado' },
   { short: 'D', long: 'domingo' },
 ];
-
-// Suma días a una fecha YYYY-MM-DD sin pasar por la zona horaria del navegador
-function addDays(value: string, days: number) {
-  const { year, month, day } = parseIsoDate(value);
-  const date = new Date(Date.UTC(year, month - 1, day + days));
-  return toIsoDate(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
-}
-
-function addMonths(year: number, month: number, months: number) {
-  const index = year * 12 + (month - 1) + months;
-  return { year: Math.floor(index / 12), month: (index % 12) + 1 };
-}
 
 /* ══ DATEPICKER · Figma › Organisms › Date picker ══ */
 /* Calendario de 344 px: atajos, mes con flechas y días de 40 × 40 con la semana desde el lunes.
@@ -79,8 +79,7 @@ export function DatePicker({ value, onChange, min, max, presets, autoFocus = fal
     setView(next);
     shouldFocus.current = false;
     // El día marcado pasa al mismo número del otro mes (o al último si no existe)
-    const { day } = parseIsoDate(focused);
-    setFocused(toIsoDate(next.year, next.month, Math.min(day, daysInMonth(next.year, next.month))));
+    setFocused(sameDayInMonth(focused, months));
   }
 
   function onGridKeyDown(event: React.KeyboardEvent) {
@@ -90,9 +89,7 @@ export function DatePicker({ value, onChange, min, max, presets, autoFocus = fal
       moveFocus(addDays(focused, moves[event.key]));
     } else if (event.key === 'PageUp' || event.key === 'PageDown') {
       event.preventDefault();
-      const { year, month, day } = parseIsoDate(focused);
-      const next = addMonths(year, month, event.key === 'PageUp' ? -1 : 1);
-      moveFocus(toIsoDate(next.year, next.month, Math.min(day, daysInMonth(next.year, next.month))));
+      moveFocus(sameDayInMonth(focused, event.key === 'PageUp' ? -1 : 1));
     }
   }
 
@@ -134,7 +131,7 @@ export function DatePicker({ value, onChange, min, max, presets, autoFocus = fal
           type="button"
           onClick={() => changeMonth(-1)}
           aria-label="Mes anterior"
-          className="grid size-8 place-items-center rounded-sm text-content-secondary hover:bg-background-subtle"
+          className={cn(iconButton, 'size-8 rounded-sm')}
         >
           <ChevronLeftIcon size={20} />
         </button>
@@ -145,7 +142,7 @@ export function DatePicker({ value, onChange, min, max, presets, autoFocus = fal
           type="button"
           onClick={() => changeMonth(1)}
           aria-label="Mes siguiente"
-          className="grid size-8 place-items-center rounded-sm text-content-secondary hover:bg-background-subtle"
+          className={cn(iconButton, 'size-8 rounded-sm')}
         >
           <ChevronRightIcon size={20} />
         </button>
@@ -182,9 +179,7 @@ export function DatePicker({ value, onChange, min, max, presets, autoFocus = fal
                   tabIndex={date === focused ? 0 : -1}
                   disabled={disabled}
                   aria-current={isToday ? 'date' : undefined}
-                  aria-label={new Intl.DateTimeFormat('es-CO', { dateStyle: 'full', timeZone: 'UTC' }).format(
-                    new Date(`${date}T00:00:00Z`),
-                  )}
+                  aria-label={formatLongDate(date)}
                   onClick={() => onChange(date)}
                   className={cn(
                     'grid aspect-square w-full max-w-10 place-items-center rounded-md text-body tabular-nums transition-colors disabled:cursor-not-allowed disabled:text-content-disabled',
