@@ -1,5 +1,5 @@
 import { Alert } from '@/components/ui/atoms/Alert';
-import type { FormAlert } from '@/features/auth/hooks/useApiForm';
+import type { FormAlert } from '@/hooks/useApiForm';
 import { formatWait } from '@/lib/format';
 
 // El aviso del formulario. Si hay bloqueo (429), dice cuánto falta para poder intentar de nuevo

@@ -9,7 +9,7 @@ import { AuthAlert } from '@/features/auth/components/AuthAlert';
 import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
 import { ExpiredLinkActions } from '@/features/auth/components/ExpiredLinkActions';
 import { PasswordRules } from '@/features/auth/components/PasswordRules';
-import { useApiForm } from '@/features/auth/hooks/useApiForm';
+import { useApiForm } from '@/hooks/useApiForm';
 import { useLinkParams } from '@/features/auth/hooks/useLinkParams';
 
 /* ══ RESETPASSWORDFORM · /restablecer-contrasena?token&email · POST /auth/reset-password ══ */

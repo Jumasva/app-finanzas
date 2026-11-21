@@ -10,7 +10,7 @@ import { FormField } from '@/components/ui/molecules/FormField';
 import { login } from '@/features/auth/api';
 import { AuthAlert } from '@/features/auth/components/AuthAlert';
 import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
-import { useApiForm } from '@/features/auth/hooks/useApiForm';
+import { useApiForm } from '@/hooks/useApiForm';
 import { useRedirectIfAuthenticated } from '@/features/auth/hooks/useRedirectIfAuthenticated';
 import { savePendingEmail } from '@/features/auth/pendingEmail';
 

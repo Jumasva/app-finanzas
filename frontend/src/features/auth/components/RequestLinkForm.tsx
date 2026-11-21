@@ -7,7 +7,7 @@ import { FormField } from '@/components/ui/molecules/FormField';
 import { AuthAlert } from '@/features/auth/components/AuthAlert';
 import { AuthChecklist } from '@/features/auth/components/AuthChecklist';
 import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
-import { useApiForm } from '@/features/auth/hooks/useApiForm';
+import { useApiForm } from '@/hooks/useApiForm';
 import { formatWait } from '@/lib/format';
 
 // Entre un envío y otro: el backend responde 429 si se repite antes de 60 segundos

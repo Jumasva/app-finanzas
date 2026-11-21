@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/atoms/Button';
 import { FormField } from '@/components/ui/molecules/FormField';
 import { deactivateAccount, getMe, logout } from '@/features/auth/api';
 import { AuthAlert } from '@/features/auth/components/AuthAlert';
-import { useApiForm } from '@/features/auth/hooks/useApiForm';
+import { useApiForm } from '@/hooks/useApiForm';
 import { useSession } from '@/features/auth/session';
 
 /* ══ SESSIONTESTPANEL · solo desarrollo: probar cerrar sesión, desactivar y la sesión vencida ══ */

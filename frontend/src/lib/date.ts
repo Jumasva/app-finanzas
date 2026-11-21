@@ -19,6 +19,11 @@ export function todayIso() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE }).format(new Date());
 }
 
+// La fecha en Bogotá de una marca de tiempo UTC del contrato: '2026-11-21T03:10:00Z' → '2026-11-20'
+export function toBogotaDate(timestamp: string) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE }).format(new Date(timestamp));
+}
+
 // Días que tiene un mes (month de 1 a 12)
 export function daysInMonth(year: number, month: number) {
   return new Date(Date.UTC(year, month, 0)).getUTCDate();

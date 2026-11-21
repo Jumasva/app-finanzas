@@ -7,6 +7,8 @@ import { getMe, type User } from '@/features/auth/api';
 import { ApiError } from '@/lib/api';
 
 const SessionContext = createContext<User | null>(null);
+// Para reemplazar el usuario cuando la API devuelve uno actualizado (perfil, moneda)
+const UpdateSessionContext = createContext<(user: User) => void>(() => {});
 
 /* ══ SESSIONPROVIDER · guardia de las pantallas con sesión ((app)/layout) ══ */
 /* El proxy solo sabe si hay cookie; aquí se confirma con GET /auth/me que la sesión sigue viva.
@@ -40,12 +42,14 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   // que responde 401 sin sesión
   return (
     <SessionContext.Provider value={user}>
-      {!user && (
-        <div className="grid min-h-screen place-items-center">
-          <Spinner size={32} label="Cargando tu sesión" />
-        </div>
-      )}
-      <div hidden={!user}>{children}</div>
+      <UpdateSessionContext.Provider value={setUser}>
+        {!user && (
+          <div className="grid min-h-screen place-items-center">
+            <Spinner size={32} label="Cargando tu sesión" />
+          </div>
+        )}
+        <div hidden={!user}>{children}</div>
+      </UpdateSessionContext.Provider>
     </SessionContext.Provider>
   );
 }
@@ -54,4 +58,10 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 // null solo el primer instante, mientras /auth/me responde (en ese momento la pantalla está oculta)
 export function useSession() {
   return useContext(SessionContext);
+}
+
+// Guarda el User que devolvió la API (PATCH /profile, /profile/preferences): la Topbar, el UserMenu
+// y las pantallas que muestran el nombre, el correo o la moneda se actualizan sin volver a pedir /auth/me
+export function useUpdateSession() {
+  return useContext(UpdateSessionContext);
 }

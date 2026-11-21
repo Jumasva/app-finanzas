@@ -19,7 +19,7 @@ export type NavItemData = {
 
 /* ══ NAVEGACIÓN · Figma › Organisms › O01 Sidebar ══ */
 /* Los nombres son los módulos de los RF (Guía para desarrollo v1): Informes y no «Reportes»,
-   Ajustes y no «Configuración», y se agrega Historial, que no estaba en Figma */
+   Configuración (no «Ajustes», decisión del 20 de noviembre de 2026), y se agrega Historial, que no estaba en Figma */
 
 // Sección «Menú»: un ítem por módulo, en el orden de Figma
 export const mainNav: NavItemData[] = [

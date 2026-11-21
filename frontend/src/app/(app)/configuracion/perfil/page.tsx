@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
-import { UserIcon } from '@/components/ui/atoms/icons';
-import { ComingSoon } from '@/features/navigation/components/ComingSoon';
+import { ProfileView } from '@/features/profile/components/ProfileView';
 
 export const metadata: Metadata = { title: 'Mi perfil · Finanzas' };
 
-// Provisional hasta construir el perfil (RF-COACP: consultar y actualizar nombre y correo)
+// Consultar y actualizar el nombre y el correo (RF-COACP)
 export default function PerfilPage() {
-  return <ComingSoon icon={UserIcon} description="Aquí consultarás y cambiarás tu nombre y tu correo." />;
+
+  console.log(metadata)
+  return (
+      <ProfileView />
+  );
 }
