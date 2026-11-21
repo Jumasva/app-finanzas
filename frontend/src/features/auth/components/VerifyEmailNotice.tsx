@@ -10,7 +10,7 @@ import { AuthAlert } from '@/features/auth/components/AuthAlert';
 import { AuthChecklist } from '@/features/auth/components/AuthChecklist';
 import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
 import { EmailBox } from '@/features/auth/components/EmailBox';
-import { useApiForm } from '@/features/auth/hooks/useApiForm';
+import { useApiForm } from '@/hooks/useApiForm';
 import { usePendingEmail } from '@/features/auth/pendingEmail';
 import { formatWait } from '@/lib/format';
 

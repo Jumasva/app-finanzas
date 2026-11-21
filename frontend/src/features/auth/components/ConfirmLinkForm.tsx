@@ -8,7 +8,7 @@ import { AuthAlert } from '@/features/auth/components/AuthAlert';
 import { AuthFormHeader } from '@/features/auth/components/AuthFormHeader';
 import { EmailBox } from '@/features/auth/components/EmailBox';
 import { ExpiredLinkActions } from '@/features/auth/components/ExpiredLinkActions';
-import { useApiForm } from '@/features/auth/hooks/useApiForm';
+import { useApiForm } from '@/hooks/useApiForm';
 import { useLinkParams } from '@/features/auth/hooks/useLinkParams';
 
 type ConfirmLinkFormProps = {

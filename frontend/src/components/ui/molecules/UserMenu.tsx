@@ -8,7 +8,7 @@ import { useSession } from '@/features/auth/session';
 import { initials } from '@/lib/format';
 
 /* ══ USERMENU · Figma › Organisms › O02 Topbar › User menu ══ */
-/* Avatar del usuario con su menú: Mi perfil, Ajustes y Cerrar sesión. El menú es el Dropdown menu (M14) */
+/* Avatar del usuario con su menú: Mi perfil, Configuración y Cerrar sesión. El menú es el Dropdown menu (M14) */
 
 export function UserMenu() {
   const user = useSession();
@@ -35,8 +35,8 @@ export function UserMenu() {
         </div>
       }
       items={[
-        { label: 'Mi perfil', href: '/ajustes/perfil', icon: UserIcon },
-        { label: 'Ajustes', href: '/ajustes', icon: SettingsIcon },
+        { label: 'Mi perfil', href: '/configuracion/perfil', icon: UserIcon },
+        { label: 'Configuración', href: '/configuracion', icon: SettingsIcon },
         'divider',
         {
           label: 'Cerrar sesión',

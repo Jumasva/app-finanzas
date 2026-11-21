@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { SettingsIcon } from '@/components/ui/atoms/icons';
-import { ComingSoon } from '@/features/navigation/components/ComingSoon';
+import { SettingsView } from '@/features/profile/components/SettingsView';
 
-export const metadata: Metadata = { title: 'Ajustes · Finanzas' };
+export const metadata: Metadata = { title: 'Configuración · Finanzas' };
 
-// Provisional hasta construir el módulo
+// Perfil, contraseña, moneda y desactivar la cuenta (Módulo 1: COACP, CACON, COPRE y GESCU)
 export default function ConfiguracionPage() {
-  return <ComingSoon icon={SettingsIcon} description="Aquí cambiarás tu perfil, tu contraseña y tu moneda." />;
+  return <SettingsView />;
 }

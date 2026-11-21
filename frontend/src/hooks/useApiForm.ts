@@ -6,7 +6,7 @@ import { ApiError } from '@/lib/api';
 
 export type FormAlert = { variant: 'error' | 'warning' | 'success'; message: string };
 
-// Lo que comparten todos los formularios de auth al llamar a la API:
+// Lo que comparten los formularios al llamar a la API (auth y configuración):
 // el botón cargando, los errores por campo (422), el aviso y el bloqueo con cuenta regresiva (429)
 export function useApiForm() {
   const [loading, setLoading] = useState(false);
@@ -42,5 +42,11 @@ export function useApiForm() {
     }
   }
 
-  return { loading, fieldErrors, alert, setAlert, wait, run };
+  // Deja el formulario limpio, sin errores ni aviso (al cerrar un diálogo para volver a abrirlo vacío)
+  function reset() {
+    setFieldErrors({});
+    setAlert(undefined);
+  }
+
+  return { loading, fieldErrors, alert, setAlert, wait, run, reset };
 }
